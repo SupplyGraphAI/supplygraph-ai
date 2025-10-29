@@ -88,6 +88,7 @@ Our platform is designed for **fast, standards-based integration**:
 **Ideal for:**  
 AI engineers, data-science teams, supply-chain developers, and risk-automation architects building intelligent enterprise workflows.
 
+For full setup, authentication, and API key usage, see the [Getting Started Guide](./docs/getting-started.md).
 
 
 ## Who Uses SupplyGraph AI
