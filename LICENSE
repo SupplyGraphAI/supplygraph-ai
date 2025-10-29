@@ -9,6 +9,6 @@ Use of these SDKs and related code is subject to the following conditions:
 2. You may not copy, redistribute, sublicense, or sell this code or any derivative works for any purpose other than integration with SupplyGraph.AI’s APIs.
 3. You may not attempt to reverse-engineer, replicate, or bypass any part of SupplyGraph.AI’s services, authentication, or billing mechanisms.
 4. All rights, title, and interest in and to the code and underlying services remain the exclusive property of SupplyGraph.AI, Inc.
-5. Use of the APIs and SDKs is further governed by the Terms of Service and API Usage Policy available at [supplygraph.ai](https://supplygraph.ai).
+5. Use of the APIs and SDKs is further governed by the Terms of Service and API Usage Policy available at https://supplygraph.ai.
 
 By using this code, you acknowledge and agree to these terms.
