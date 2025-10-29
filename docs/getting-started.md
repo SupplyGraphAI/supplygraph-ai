@@ -4,7 +4,7 @@ Welcome to the **SupplyGraph AI Developer Platform** — the gateway to accessin
 
 This guide walks you through the essentials: creating an account, managing credits, generating an API key, and making your first request.
 
----
+
 
 ## 1. Create an Account
 1. Visit [https://www.supplygraph.ai](https://www.supplygraph.ai)
@@ -16,7 +16,7 @@ Once signed in, you’ll have access to:
 - API key management  
 - Usage analytics and credit balance  
 
----
+
 
 ## 2. Recharge Credits
 SupplyGraph AI uses a **credit-based pay-as-you-go** model.  
@@ -28,7 +28,7 @@ Each API or A2A request deducts a small number of credits, depending on the agen
 
 💡 *You only pay for what you use — there are no recurring fees unless you subscribe to enterprise plans.*
 
----
+
 
 ## 3. Generate an API Key
 All API and A2A integrations require authentication via an API key.
@@ -41,7 +41,7 @@ All API and A2A integrations require authentication via an API key.
 - Never expose them in client-side code or public repositories.  
 - Rotate them regularly through the dashboard.
 
----
+
 
 ## 4. Make Your First API Call
 
@@ -70,7 +70,7 @@ curl -X POST https://api.supplygraph.ai/v1/agents/tariff-calculation \
 }
 ```
 
----
+
 
 ## 5. Integration Options
 
@@ -82,7 +82,7 @@ SupplyGraph AI provides three integration modes:
 | **A2A (Agent-to-Agent)** | For autonomous workflows and inter-agent communication. | [A2A Protocol](./a2a.md) |
 | **MCP (Multi-Channel Protocol)** | For large-scale orchestration across enterprise systems. | *(Coming Soon)* |
 
----
+
 
 ## 6. Error Handling & Rate Limits
 
@@ -98,7 +98,7 @@ Common errors:
 
 See [API Reference](./api.md) for the full error schema.
 
----
+
 
 ## 7. Next Steps
 
@@ -106,7 +106,7 @@ See [API Reference](./api.md) for the full error schema.
 - Learn about [Agent-to-Agent Integration](./a2a.md)  
 - Review full API specs in [API Reference](./api.md)
 
----
+
 
 <p align="center">
   © 2025 <b>SupplyGraph AI, Inc.</b> All rights reserved.
