@@ -20,7 +20,7 @@ Autonomous, auditable, and real-time supply-chain intelligence that maps how com
 
 
 
-## 🧭 Table of Contents
+## Table of Contents
 1. [Introduction](#introduction)  
 2. [What We Do](#what-we-do)  
 3. [Why It Matters](#why-it-matters)  
@@ -35,24 +35,24 @@ Autonomous, auditable, and real-time supply-chain intelligence that maps how com
 
 
 
-## 🚀 Introduction
+## Introduction
 **SupplyGraph AI** delivers real-time global supply graph intelligence — an AI-native risk infrastructure that reveals multi-hop visibility with auditable analytics for enterprises, financial institutions, and public stakeholders.
 
 
 
-## 🌍 What We Do
+## What We Do
 We map how products, companies, and geographies connect across extended supply networks, surfacing risks and validated alternatives in real time.  
 Our AI-native graph infrastructure powers multi-hop visibility so teams can see, simulate, and secure complex value chains without adding tooling overhead.
 
 
 
-## ⚡ Why It Matters
+## Why It Matters
 Legacy solutions rarely reach beyond Tier 1–2 and depend heavily on static, probabilistic data or user-uploaded supplier lists.  
 SupplyGraph AI eliminates these blind spots, exposing 10+ tiers of verified enterprise-product relationships with explainable, source-linked evidence.
 
 
 
-## 🧠 How It Works
+## How It Works
 We maintain a continuously updated graph of hundreds of millions of enterprise records and millions of product nodes.  
 Each relationship is tied to live signals and an auditable evidence chain.  
 
@@ -60,7 +60,7 @@ Each relationship is tied to live signals and an auditable evidence chain.
 
 
 
-## 🤖 Two Groups of AI Agents
+## Two Groups of AI Agents
 
 ### Group 1: Automation & Efficiency Agents
 Automate repetitive and time-consuming workflows:
@@ -78,18 +78,18 @@ Deliver enterprise-centered global supply–product graph intelligence:
 
 
 
-## 🧩 Integration & Developer Experience
+## Integration & Developer Experience
 Our platform is designed for **fast, standards-based integration**:
 - **RESTful APIs** — Simple, secure, schema-stable endpoints.  
 - **Agent-to-Agent (A2A) and MCP Interfaces** — Built on industry standards for interoperability.  
 - **Integration Time:** Typically **15–30 minutes** for most enterprise environments.  
 
-👩‍💻 **Ideal for:**  
+**Ideal for:**  
 AI engineers, data-science teams, supply-chain developers, and risk-automation architects building intelligent enterprise workflows.
 
 
 
-## 💡 Why We’re Different
+## Why We’re Different
 - **10+ tier visibility** — Exposes deep-tier dependencies unseen by legacy tools.  
 - **Real-time updates** — Continuously refreshed global graph data.  
 - **Auditable analytics** — Every output backed by verifiable evidence.  
@@ -98,7 +98,7 @@ AI engineers, data-science teams, supply-chain developers, and risk-automation a
 
 
 
-## 📊 Real Results Across Industries
+## Real Results Across Industries
 
 | Sector | Impact Example |
 |:-------|:----------------|
@@ -110,20 +110,20 @@ AI engineers, data-science teams, supply-chain developers, and risk-automation a
 
 
 
-## 🔐 Security & Privacy
+## Security & Privacy
 Insights are built from enterprise–product relationships and open signals.  
 Customer data is never required nor stored.  
 Every analytic output maintains a **verifiable evidence trail**, ensuring transparency, compliance, and audit readiness.
 
 
 
-## 🏢 About SupplyGraph AI
+## About SupplyGraph AI
 **SupplyGraph AI** redefines how the world understands and secures supply chains.  
 Through autonomous graph intelligence, we empower organizations to predict risks, optimize operations, and act with confidence — all without sharing private data.
 
 
 
-## 📬 Contact
+## Contact
 For partnerships, integrations, or research collaborations:  
 📧 **info@supplygraph.ai**  
 🌐 [https://www.supplygraph.ai](https://www.supplygraph.ai)  
