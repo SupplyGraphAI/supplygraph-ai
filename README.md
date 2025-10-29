@@ -71,11 +71,10 @@ Automate repetitive and time-consuming workflows:
 
 ### Group 2: Data Intelligence & Supply Graph Agents
 Deliver enterprise-centered global supply–product graph intelligence:
-- Visualize global supply dependencies  
-- Identify single-country concentration risks  
-- Discover Tier-1 suppliers  
-- Recommend regional substitutions  
-
+- **Global Supply Dependency Visualization Agent** — Visualizes multi-tier supply dependencies across global companies and products.
+- **Single-Country Concentration Risk Agent** — Identifies hidden geographic dependencies and quantifies country-level exposure.
+- **Tier-1 Supplier Discovery Agent** — Finds qualified, low-risk Tier-1 suppliers worldwide within minutes.
+- **Regional Substitution Recommendation Agent** — Recommends practical regional supplier alternatives to strengthen resilience.
 
 
 ## Integration & Developer Experience
