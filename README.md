@@ -2,7 +2,7 @@
   <img src="./docs/logo-placeholder.png" alt="SupplyGraph.AI Logo" width="120" height="120"/>
 </p>
 
-<h1 align="center">SupplyGraph.AI</h1>
+<h1 align="center">SupplyGraph AI</h1>
 <h3 align="center">AI-Native Supply Graph Intelligence Platform</h3>
 
 <p align="center">
@@ -30,27 +30,27 @@ Autonomous, auditable, and real-time supply-chain intelligence that maps how com
 7. [Why We’re Different](#why-were-different)  
 8. [Real Results Across Industries](#real-results-across-industries)  
 9. [Security & Privacy](#security--privacy)  
-10. [About SupplyGraph.AI](#about-supplygraphai)  
+10. [About SupplyGraph AI](#about-supplygraphai)  
 11. [Contact](#contact)
 
----
+
 
 ## 🚀 Introduction
-**SupplyGraph.AI** delivers real-time global supply graph intelligence — an AI-native risk infrastructure that reveals multi-hop visibility with auditable analytics for enterprises, financial institutions, and public stakeholders.
+**SupplyGraph AI** delivers real-time global supply graph intelligence — an AI-native risk infrastructure that reveals multi-hop visibility with auditable analytics for enterprises, financial institutions, and public stakeholders.
 
----
+
 
 ## 🌍 What We Do
 We map how products, companies, and geographies connect across extended supply networks, surfacing risks and validated alternatives in real time.  
 Our AI-native graph infrastructure powers multi-hop visibility so teams can see, simulate, and secure complex value chains without adding tooling overhead.
 
----
+
 
 ## ⚡ Why It Matters
 Legacy solutions rarely reach beyond Tier 1–2 and depend heavily on static, probabilistic data or user-uploaded supplier lists.  
-SupplyGraph.AI eliminates these blind spots, exposing 10+ tiers of verified enterprise-product relationships with explainable, source-linked evidence.
+SupplyGraph AI eliminates these blind spots, exposing 10+ tiers of verified enterprise-product relationships with explainable, source-linked evidence.
 
----
+
 
 ## 🧠 How It Works
 We maintain a continuously updated graph of hundreds of millions of enterprise records and millions of product nodes.  
@@ -58,7 +58,7 @@ Each relationship is tied to live signals and an auditable evidence chain.
 
 ✅ **No customer data required** — our enterprise-centric design removes the need for supplier uploads, minimizing disclosure risk while accelerating time-to-value.
 
----
+
 
 ## 🤖 Two Groups of AI Agents
 
@@ -76,7 +76,7 @@ Deliver enterprise-centered global supply–product graph intelligence:
 - Discover Tier-1 suppliers  
 - Recommend regional substitutions  
 
----
+
 
 ## 🧩 Integration & Developer Experience
 Our platform is designed for **fast, standards-based integration**:
@@ -87,7 +87,7 @@ Our platform is designed for **fast, standards-based integration**:
 👩‍💻 **Ideal for:**  
 AI engineers, data-science teams, supply-chain developers, and risk-automation architects building intelligent enterprise workflows.
 
----
+
 
 ## 💡 Why We’re Different
 - **10+ tier visibility** — Exposes deep-tier dependencies unseen by legacy tools.  
@@ -96,7 +96,7 @@ AI engineers, data-science teams, supply-chain developers, and risk-automation a
 - **Zero data dependency** — No customer-provided data required.  
 - **Zero hallucination** — Fully explainable, policy-aware AI reasoning.
 
----
+
 
 ## 📊 Real Results Across Industries
 
@@ -108,28 +108,28 @@ AI engineers, data-science teams, supply-chain developers, and risk-automation a
 | **Research** | Enabled new empirical studies with verified supply-chain datasets. |
 | **Government** | Supported policy simulations and concentration analytics for regulatory planning. |
 
----
+
 
 ## 🔐 Security & Privacy
 Insights are built from enterprise–product relationships and open signals.  
 Customer data is never required nor stored.  
 Every analytic output maintains a **verifiable evidence trail**, ensuring transparency, compliance, and audit readiness.
 
----
 
-## 🏢 About SupplyGraph.AI
-**SupplyGraph.AI** redefines how the world understands and secures supply chains.  
+
+## 🏢 About SupplyGraph AI
+**SupplyGraph AI** redefines how the world understands and secures supply chains.  
 Through autonomous graph intelligence, we empower organizations to predict risks, optimize operations, and act with confidence — all without sharing private data.
 
----
+
 
 ## 📬 Contact
 For partnerships, integrations, or research collaborations:  
 📧 **info@supplygraph.ai**  
 🌐 [https://www.supplygraph.ai](https://www.supplygraph.ai)  
 
----
+
 
 <p align="center">
-  © 2025 <b>SupplyGraph.AI, Inc.</b> All rights reserved.  
+  © 2025 <b>SupplyGraph AI, Inc.</b> All rights reserved.  
 </p>
