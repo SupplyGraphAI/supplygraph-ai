@@ -65,7 +65,7 @@ Each relationship is tied to live signals and an auditable evidence chain.
 
 ### Group 1: Automation & Efficiency Agents
 Automate repetitive and time-consuming workflows:
-- **Customs Classification Agent** — Maps products to correct HS/HTS codes.  
+- **[Customs Classification Agent](./agents/customs-classification.md)** — Maps products to correct HS/HTS codes.  
 - **Tariff Calculation Agent** — Calculates U.S. duty rates and additional tariffs.  
 - **Tariff Monitoring Agent** — Detects tariff changes and sends actionable alerts.  
 - **Due Diligence Agent** — Generates multi-industry company intelligence in minutes.
