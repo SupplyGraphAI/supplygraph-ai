@@ -1,11 +1,27 @@
-# SupplyGraph.AI  
-### AI-Native Supply Graph Intelligence Platform  
+<p align="center">
+  <img src="./docs/logo-placeholder.png" alt="SupplyGraph.AI Logo" width="120" height="120"/>
+</p>
 
-Autonomous, auditable, and real-time supply-chain intelligence that maps how companies, products, and geographies connect across the global economy — enabling visibility, resilience, and efficiency without requiring any customer-provided data.
+<h1 align="center">SupplyGraph.AI</h1>
+<h3 align="center">AI-Native Supply Graph Intelligence Platform</h3>
+
+<p align="center">
+  <a href="https://www.supplygraph.ai"><img src="https://img.shields.io/badge/Website-supplygraph.ai-blue?style=flat-square" alt="Website"/></a>
+  <a href="#api-documentation"><img src="https://img.shields.io/badge/API-Docs-green?style=flat-square" alt="API Docs"/></a>
+  <a href="#integration--developer-experience"><img src="https://img.shields.io/badge/Integration-Ready-orange?style=flat-square" alt="Integration Ready"/></a>
+  <a href="#security--privacy"><img src="https://img.shields.io/badge/Security-Auditable-critical?style=flat-square" alt="Security"/></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/License-Proprietary-lightgrey?style=flat-square" alt="License"/></a>
+</p>
 
 ---
 
-## Table of Contents
+<p align="center">
+Autonomous, auditable, and real-time supply-chain intelligence that maps how companies, products, and geographies connect across the global economy — enabling visibility, resilience, and efficiency <b>without requiring any customer-provided data</b>.
+</p>
+
+---
+
+## 🧭 Table of Contents
 1. [Introduction](#introduction)  
 2. [What We Do](#what-we-do)  
 3. [Why It Matters](#why-it-matters)  
@@ -15,42 +31,44 @@ Autonomous, auditable, and real-time supply-chain intelligence that maps how com
 7. [Why We’re Different](#why-were-different)  
 8. [Real Results Across Industries](#real-results-across-industries)  
 9. [Security & Privacy](#security--privacy)  
-10. [About SupplyGraph.AI](#about-supplygraphai)
+10. [About SupplyGraph.AI](#about-supplygraphai)  
+11. [Contact](#contact)
 
 ---
 
-## Introduction
-**SupplyGraph.AI** delivers real-time global supply graph intelligence — an AI-native risk infrastructure revealing multi-hop visibility with auditable analytics for enterprises, financial institutions, and public stakeholders.
+## 🚀 Introduction
+**SupplyGraph.AI** delivers real-time global supply graph intelligence — an AI-native risk infrastructure that reveals multi-hop visibility with auditable analytics for enterprises, financial institutions, and public stakeholders.
 
 ---
 
-## What We Do
+## 🌍 What We Do
 We map how products, companies, and geographies connect across extended supply networks, surfacing risks and validated alternatives in real time.  
 Our AI-native graph infrastructure powers multi-hop visibility so teams can see, simulate, and secure complex value chains without adding tooling overhead.
 
 ---
 
-## Why It Matters
-Traditional solutions rarely reach beyond Tier 1–2 and depend heavily on static, probabilistic data or user-uploaded supplier lists.  
+## ⚡ Why It Matters
+Legacy solutions rarely reach beyond Tier 1–2 and depend heavily on static, probabilistic data or user-uploaded supplier lists.  
 SupplyGraph.AI eliminates these blind spots, exposing 10+ tiers of verified enterprise-product relationships with explainable, source-linked evidence.
 
 ---
 
-## How It Works
-We maintain a continuously updated global graph of hundreds of millions of enterprise records and millions of product nodes.  
-Each connection is tied to live signals and an auditable evidence chain.  
+## 🧠 How It Works
+We maintain a continuously updated graph of hundreds of millions of enterprise records and millions of product nodes.  
+Each relationship is tied to live signals and an auditable evidence chain.  
+
 ✅ **No customer data required** — our enterprise-centric design removes the need for supplier uploads, minimizing disclosure risk while accelerating time-to-value.
 
 ---
 
-## Two Groups of AI Agents
+## 🤖 Two Groups of AI Agents
 
 ### Group 1: Automation & Efficiency Agents
-Automate manual, time-consuming tasks such as:
-- **Customs Classification Agent** – Maps products to correct HS/HTS codes.  
-- **Tariff Calculation Agent** – Calculates U.S. duty rates and additional tariffs.  
-- **Tariff Monitoring Agent** – Detects U.S. tariff changes and notifies within hours.  
-- **Due Diligence Report Agent** – Generates multi-industry due-diligence insights in minutes.
+Automate repetitive and time-consuming workflows:
+- **Customs Classification Agent** — Maps products to correct HS/HTS codes.  
+- **Tariff Calculation Agent** — Calculates U.S. duty rates and additional tariffs.  
+- **Tariff Monitoring Agent** — Detects tariff changes and sends actionable alerts.  
+- **Due Diligence Agent** — Generates multi-industry company intelligence in minutes.
 
 ### Group 2: Data Intelligence & Supply Graph Agents
 Deliver enterprise-centered global supply–product graph intelligence:
@@ -61,50 +79,58 @@ Deliver enterprise-centered global supply–product graph intelligence:
 
 ---
 
-## Integration & Developer Experience
+## 🧩 Integration & Developer Experience
 Our platform is designed for **fast, standards-based integration**:
 - **RESTful APIs** — Simple, secure, schema-stable endpoints.  
-- **Agent-to-Agent (A2A) and MCP interfaces** — Built on industry standards for interoperability.  
-- **Integration time:** Typically **15–30 minutes** for most enterprise environments.  
+- **Agent-to-Agent (A2A) and MCP Interfaces** — Built on industry standards for interoperability.  
+- **Integration Time:** Typically **15–30 minutes** for most enterprise environments.  
 
 👩‍💻 **Ideal for:**  
 AI engineers, data-science teams, supply-chain developers, and risk-automation architects building intelligent enterprise workflows.
 
 ---
 
-## Why We’re Different
-- **10+ tier visibility** – Exposes deep-tier dependencies unseen by traditional tools.  
-- **Real-time updates** – Continuously refreshed global graph data.  
-- **Auditable analytics** – Every insight backed by verifiable evidence.  
-- **Zero data dependency** – No customer-provided data required.  
-- **Zero hallucination** – Fully explainable AI reasoning at scale.
+## 💡 Why We’re Different
+- **10+ tier visibility** — Exposes deep-tier dependencies unseen by legacy tools.  
+- **Real-time updates** — Continuously refreshed global graph data.  
+- **Auditable analytics** — Every output backed by verifiable evidence.  
+- **Zero data dependency** — No customer-provided data required.  
+- **Zero hallucination** — Fully explainable, policy-aware AI reasoning.
 
 ---
 
-## Real Results Across Industries
+## 📊 Real Results Across Industries
 
 | Sector | Impact Example |
 |:-------|:----------------|
 | **Supply Chain Management** | Global 500 client reduced tariff filing time from hours to minutes with our Tariff Monitoring Suite. |
-| **Consulting** | Integrated our Due Diligence Suite into advisory workflows, cutting analysis time by 90%. |
-| **Financial Services** | Expanded visibility from Tier-3 to Tier-10 suppliers using our agent-to-agent integration. |
-| **Research** | Supported multiple academic publications with validated supply-chain datasets. |
-| **Government** | Enabled policy modeling and concentration analysis for think tanks and agencies. |
+| **Consulting** | Embedded our Due Diligence Suite into advisory workflows, cutting analysis time by 90%. |
+| **Financial Services** | Extended visibility from Tier-3 to Tier-10 suppliers through A2A integration. |
+| **Research** | Enabled new empirical studies with verified supply-chain datasets. |
+| **Government** | Supported policy simulations and concentration analytics for regulatory planning. |
 
 ---
 
-## Security & Privacy
-Insights are built from enterprise-product relationships and open-source signals.  
+## 🔐 Security & Privacy
+Insights are built from enterprise–product relationships and open signals.  
 Customer data is never required nor stored.  
-Every analytic output maintains a **verifiable evidence chain**, ensuring transparency, compliance, and audit readiness.
+Every analytic output maintains a **verifiable evidence trail**, ensuring transparency, compliance, and audit readiness.
 
 ---
 
-## About SupplyGraph.AI
+## 🏢 About SupplyGraph.AI
 **SupplyGraph.AI** redefines how the world understands and secures supply chains.  
-Through autonomous graph intelligence, we empower organizations to predict risks, optimize operations, and act with confidence — all without sharing a single line of private data.
+Through autonomous graph intelligence, we empower organizations to predict risks, optimize operations, and act with confidence — all without sharing private data.
 
 ---
 
-© 2025 SupplyGraph AI, Inc. All rights reserved.
+## 📬 Contact
+For partnerships, integrations, or research collaborations:  
+📧 **info@supplygraph.ai**  
+🌐 [https://www.supplygraph.ai](https://www.supplygraph.ai)  
 
+---
+
+<p align="center">
+  © 2025 <b>SupplyGraph.AI, Inc.</b> All rights reserved.  
+</p>
