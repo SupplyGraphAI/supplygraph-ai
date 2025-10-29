@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="./docs/logo-placeholder.png" alt="SupplyGraph.AI Logo" width="120" height="120"/>
+  <img src="./docs/sgai_4_black.png" alt="SupplyGraph.AI Logo" width="120" height="120"/>
 </p>
 
 <h1 align="center">SupplyGraph AI</h1>
