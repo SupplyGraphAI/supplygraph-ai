@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="./docs/sgai_4_black.png" alt="SupplyGraph.AI Logo" width="120" height="120"/>
+  <img src="./docs/sgai_4_black.png" alt="SupplyGraph AI Logo" width="120" height="120"/>
 </p>
 
 <h1 align="center">SupplyGraph AI</h1>
@@ -27,11 +27,12 @@ Autonomous, auditable, and real-time supply-chain intelligence that maps how com
 4. [How It Works](#how-it-works)  
 5. [Two Groups of AI Agents](#two-groups-of-ai-agents)  
 6. [Integration & Developer Experience](#integration--developer-experience)  
-7. [Why We’re Different](#why-were-different)  
-8. [Real Results Across Industries](#real-results-across-industries)  
-9. [Security & Privacy](#security--privacy)  
-10. [About SupplyGraph AI](#about-supplygraphai)  
-11. [Contact](#contact)
+7. [Who Uses SupplyGraph AI](#who-uses-supplygraph-ai)  
+8. [Why We’re Different](#why-were-different)  
+9. [Real Results Across Industries](#real-results-across-industries)  
+10. [Security & Privacy](#security--privacy)  
+11. [About SupplyGraph AI](#about-supplygraph-ai)  
+12. [Contact](#contact)
 
 
 
@@ -71,10 +72,11 @@ Automate repetitive and time-consuming workflows:
 
 ### Group 2: Data Intelligence & Supply Graph Agents
 Deliver enterprise-centered global supply–product graph intelligence:
-- **Global Supply Dependency Visualization Agent** — Visualizes multi-tier supply dependencies across global companies and products.
-- **Single-Country Concentration Risk Agent** — Identifies hidden geographic dependencies and quantifies country-level exposure.
-- **Tier-1 Supplier Discovery Agent** — Finds qualified, low-risk Tier-1 suppliers worldwide within minutes.
+- **Global Supply Dependency Visualization Agent** — Visualizes multi-tier supply dependencies across global companies and products.  
+- **Single-Country Concentration Risk Agent** — Identifies hidden geographic dependencies and quantifies country-level exposure.  
+- **Tier-1 Supplier Discovery Agent** — Finds qualified, low-risk Tier-1 suppliers worldwide within minutes.  
 - **Regional Substitution Recommendation Agent** — Recommends practical regional supplier alternatives to strengthen resilience.
+
 
 
 ## Integration & Developer Experience
@@ -85,6 +87,18 @@ Our platform is designed for **fast, standards-based integration**:
 
 **Ideal for:**  
 AI engineers, data-science teams, supply-chain developers, and risk-automation architects building intelligent enterprise workflows.
+
+
+
+## Who Uses SupplyGraph AI
+**SupplyGraph AI** is built for organizations and developers who depend on complex, global supply networks:  
+
+- **Manufacturing & Automotive Enterprises** — Manage supplier dependencies, sourcing diversification, and tariff impact.  
+- **Energy, Electronics & Industrial Companies** — Monitor upstream material risks and regional concentration exposure.  
+- **Retail & Consumer Goods Brands** — Evaluate supply resilience, compliance, and substitution opportunities.  
+- **Consulting & Risk Advisory Firms** — Embed automated due diligence and risk intelligence into client workflows.  
+- **Financial Institutions & Investors** — Analyze network-based exposure for portfolio or credit risk modeling.  
+- **Public Sector & Research Institutes** — Model supply interdependencies, concentration trends, and policy scenarios.  
 
 
 
