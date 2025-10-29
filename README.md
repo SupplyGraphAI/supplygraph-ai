@@ -13,13 +13,12 @@
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-Proprietary-lightgrey?style=flat-square" alt="License"/></a>
 </p>
 
----
 
 <p align="center">
 Autonomous, auditable, and real-time supply-chain intelligence that maps how companies, products, and geographies connect across the global economy — enabling visibility, resilience, and efficiency <b>without requiring any customer-provided data</b>.
 </p>
 
----
+
 
 ## 🧭 Table of Contents
 1. [Introduction](#introduction)  
