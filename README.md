@@ -106,5 +106,5 @@ Through autonomous graph intelligence, we empower organizations to predict risks
 
 ---
 
-© 2025 SupplyGraph.AI, Inc. All rights reserved.
+© 2025 SupplyGraph AI, Inc. All rights reserved.
 
