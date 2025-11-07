@@ -112,7 +112,7 @@ data: [DONE]
 | 4️⃣ | Retrieve results — obtain the final due diligence report |
 
 
-### Related Docs
+## Related Docs
 - [Getting Started](../getting-started.md)  
 - [API Reference](../api.md)  
 - [A2A Protocol](../a2a.md)
