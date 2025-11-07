@@ -21,7 +21,7 @@ Below is a complete, step-by-step example of calling the **Due Diligence Report 
 curl -N -X POST https://agent.supplygraph.ai/api/v1/agents/due_diligence_report/run \
      -H "Content-Type: application/json" \
      -H "Authorization: Bearer <YOUR_API_KEY>" \
-     -d '{"text": "Tesla, Inc.", "stream": true}''
+     -d '{"text": "Tesla, Inc.", "stream": true}'
 ```
 
 **Example Response:**
@@ -35,7 +35,7 @@ data: [DONE]
 ```
 
 ### 2. Confirm the Execution
-**Purpose:** Respond with **Yes** to confirm and proceed with task execution.
+**Purpose:** Respond with `Yes` to confirm and proceed with task execution.
 ```bash
 curl -N -X POST https://agent.supplygraph.ai/api/v1/agents/due_diligence_report/run \
      -H "Content-Type: application/json" \
@@ -52,7 +52,7 @@ data: [DONE]
 ```
 
 ### 3. Check Task Status
-**Purpose:** Query the current status of the task using the same **task_id**.
+**Purpose:** Query the current status of the task using the same `task_id`.
 ```bash
 curl -N -X POST https://agent.supplygraph.ai/api/v1/agents/due_diligence_report/run \
      -H "Content-Type: application/json" \
