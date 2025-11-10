@@ -123,13 +123,10 @@ Common errors:
 
 | Code | Description |
 |------|--------------|
-| `INVALID_AUTH` | API key missing or expired |
+| `UNAUTHORIZED` | API key missing or expired |
 | `INSUFFICIENT_CREDITS` | Not enough credits for this request |
 | `RATE_LIMITED` | Too many requests — try again later |
-| `INVALID_PAYLOAD` | Missing or malformed parameters |
-
-See [API Reference](./api.md) for the full error schema.
-
+| `INVALID_REQUEST` | outside the current agent’s scope |
 
 
 ## 7. Next Steps
