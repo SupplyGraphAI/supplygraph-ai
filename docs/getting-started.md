@@ -45,31 +45,67 @@ All A2A and MCP integrations require authentication via an API key.
 
 ## 4. Make Your First A2A Call
 
-Below is a minimal RESTful example using the **Tariff Calculation Agent**:
+Below is a minimal example using the **Tariff classification Agent**:
 
-```
-curl -X POST https://api.supplygraph.ai/v1/agents/tariff-calculation \
+### Step 1: Submit the Initial Request
+**Purpose:** Start a new task by providing a product description.
+```bash
+curl -X POST https://agent.supplygraph.ai/v1/agents/tariff_classification/run \
   -H "Authorization: Bearer <YOUR_API_KEY>" \
   -H "Content-Type: application/json" \
   -d '{
-    "hts_code": "2105.00.20.00",
-    "country_of_origin": "CN"
+    "text":"Cotton T-shirts for women, 100%cotton, made in Mexico",
+    "stream": true
   }'
 ```
 
-**Response Example:**
+**Example Response:**
 ```
-{
-  "status": "success",
-  "data": {
-    "base_duty": "17%",
-    "additional_tariff": "25%",
-    "total_effective_rate": "42%"
-  },
-  "credits_used": 3
-}
+data: {"event": "stream", "data": {"task_id": "<system-generated-task-id>", "agent": "tariff_classification", "stage": "interpreting", "code": "THINKING", "progress": 0, "reasoning": ["Attempting to extract the HTS code and country of origin from the input text."], "timestamp": "2025-11-10T09:51:58.457382+00:00", "is_final": false}}
+
+data: {"event": "stream", "data": {"task_id": "<system-generated-task-id>", "agent": "tariff_classification", "stage": "interpreting", "code": "THINKING", "progress": 0, "reasoning": ["Matched 20 related HTS codes. Assessing their relevance and matching accuracy."], "timestamp": "2025-11-10T09:52:06.518056+00:00", "is_final": false}}
+
+data: {"event": "stream", "data": {"task_id": "<system-generated-task-id>", "agent": "tariff_classification", "stage": "interpreting", "code": "THINKING", "progress": 0, "reasoning": ["Processing in progress — please hang tight."], "timestamp": "2025-11-10T09:52:14.077191+00:00", "is_final": false}}
+
+data: {"success": true, "code": "TASK_ACCEPTED", "message": "Task accepted and queued for execution.", "data": {"task_id": "<system-generated-task-id>", "agent": "tariff_classification", "stage": "executing", "code": "TASK_ACCEPTED", "progress": 0, "reasoning": [], "timestamp": "2025-11-10T09:52:34.557890+00:00", "is_final": true, "content": "task accepted"}, "metadata": {"agent": "tariff_classification", "timestamp": "2025-11-10T09:52:34.557922+00:00"}, "errors": null}
+
+event: end
+data: [DONE]
 ```
 
+### Step 2: Check Task Status
+**Purpose:** Query the current status of the task using the same `task_id`.
+```bash
+curl -N -X POST https://agent.supplygraph.ai/api/v1/agents/tariff_classification/run \
+     -H "Content-Type: application/json" \
+     -H "Authorization: Bearer <YOUR_API_KEY>" \
+     -d '{"text": "", "stream": true, "task_id": "<system-generated-task-id>", "mode": "status"}'
+```
+
+**Example Response:**
+```text
+data: {"success": true, "code": "TASK_COMPLETED", "message": "Task completed successfully.", "data": {"task_id": "<system-generated-task-id>", "agent": "tariff_classification", "stage": "completed", "code": "TASK_COMPLETED", "progress": 100, "reasoning": [], "timestamp": "2025-11-10T10:03:50.442559+00:00", "is_final": true, "content": ""}, "metadata": {"agent": "tariff_classification", "timestamp": "2025-11-10T10:03:50.442601+00:00", "credits_used": 0.0}, "errors": null}
+
+event: end
+data: [DONE]
+```
+
+### Step 3: Retrieve the Final Results
+**Purpose:** Once the task is complete, request the final content.
+```bash
+curl -N -X POST https://agent.supplygraph.ai/api/v1/agents/tariff_classification/run \
+     -H "Content-Type: application/json" \
+     -H "Authorization: Bearer <YOUR_API_KEY>" \
+     -d '{"text": "", "stream": true, "task_id": "<system-generated-task-id>", "mode": "results"}'
+```
+
+**Example Response:**
+```text
+data: {"success": true, "code": "TASK_COMPLETED", "message": "Task completed successfully.", "data": {"task_id": "<system-generated-task-id>", "agent": "tariff_classification", "stage": "completed", "code": "TASK_COMPLETED", "progress": 100, "reasoning": [], "timestamp": "2025-11-10T10:04:49.748779+00:00", "is_final": true, "content": "##Best match:\nHTS code: 6109.10.00.40\n\n##Other possible HTS codes include:\n-6109.10.00.70: This code is for 'T-shirts, singlets, tank tops and similar garments, knitted or crocheted > Of cotton > Women's or girls' > Other > Other'. While the primary description is for T-shirts, this code could apply if the T-shirts have features that do not fit the more specific T-shirt category, but it is less likely given the straightforward description.\n-6114.20.00.10: This code is for 'Other garments, knitted or crocheted > Of cotton > Tops > Women's or girls''. While the product is specifically a T-shirt, this code could be considered if the T-shirts are categorized more broadly as tops, but it is less specific than the primary code."}, "metadata": {"agent": "tariff_classification", "timestamp": "2025-11-10T10:04:49.748823+00:00", "credits_used": 10}, "errors": null}
+
+event: end
+data: [DONE]
+```
 
 
 ## 5. Integration Options
