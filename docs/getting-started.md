@@ -53,10 +53,7 @@ Below is a minimal example using the **Tariff classification Agent**:
 curl -X POST https://agent.supplygraph.ai/v1/agents/tariff_classification/run \
   -H "Authorization: Bearer <YOUR_API_KEY>" \
   -H "Content-Type: application/json" \
-  -d '{
-    "text":"Cotton T-shirts for women, 100%cotton, made in Mexico",
-    "stream": true
-  }'
+  -d '{"text":"Cotton T-shirts for women, 100%cotton, made in Mexico", "stream": true}'
 ```
 
 **Example Response:**
