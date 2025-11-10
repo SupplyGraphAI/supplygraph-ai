@@ -81,15 +81,14 @@ Deliver enterprise-centered global supply–product graph intelligence:
 
 ## Integration & Developer Experience
 Our platform is designed for **fast, standards-based integration**:
-- **RESTful APIs** — Simple, secure, schema-stable endpoints.  
 - **Agent-to-Agent (A2A) and MCP Interfaces** — Built on industry standards for interoperability.  
 - **Integration Time:** Typically **15–30 minutes** for most enterprise environments.  
 
 **Ideal for:**  
 AI engineers, data-science teams, supply-chain developers, and risk-automation architects building intelligent enterprise workflows.
 
-For full setup, authentication, and API key usage, see the [Getting Started Guide](./docs/getting-started.md).  
-For endpoint specifications, refer to the [API Reference](./docs/api.md) and [A2A Protocol](./docs/a2a.md).
+For full setup, authentication, and A2A/MCP key usage, see the [Getting Started Guide](./docs/getting-started.md).  
+For endpoint specifications, refer to the [A2A Protocol](./docs/a2a.md).
 
 
 ## Who Uses SupplyGraph AI
