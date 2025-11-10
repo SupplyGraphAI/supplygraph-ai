@@ -13,14 +13,14 @@ This guide walks you through the essentials: creating an account, managing credi
 
 Once signed in, you’ll have access to:
 - Account and billing settings  
-- API key management  
+- A2A/MCP key management  
 - Usage analytics and credit balance  
 
 
 
 ## 2. Recharge Credits
 SupplyGraph AI uses a **credit-based pay-as-you-go** model.  
-Each API or A2A request deducts a small number of credits, depending on the agent used.
+Each A2A or MCP request deducts a small number of credits, depending on the agent used.
 
 1. Navigate to **Billing → Recharge** in the dashboard.  
 2. Choose your preferred payment method.  
@@ -30,20 +30,20 @@ Each API or A2A request deducts a small number of credits, depending on the agen
 
 
 
-## 3. Generate an API Key
-All API and A2A integrations require authentication via an API key.
+## 3. Generate an A2A/MCP Key
+All A2A and MCP integrations require authentication via an API key.
 
-1. Go to **Developer Settings → API Keys**  
+1. Go to **Developer Settings → A2A/MCP Keys**  
 2. Click **Create New Key**  
 3. Copy your key and store it securely  
 
-⚠️ API keys are personal credentials.  
+⚠️ A2A/MCP keys are personal credentials.  
 - Never expose them in client-side code or public repositories.  
 - Rotate them regularly through the dashboard.
 
 
 
-## 4. Make Your First API Call
+## 4. Make Your First A2A Call
 
 Below is a minimal RESTful example using the **Tariff Calculation Agent**:
 
@@ -78,7 +78,6 @@ SupplyGraph AI provides three integration modes:
 
 | Mode | Description | Docs |
 |------|--------------|------|
-| **RESTful API** | Standard HTTPS endpoints for all agents. | [API Reference](./api.md) |
 | **A2A (Agent-to-Agent)** | For autonomous workflows and inter-agent communication. | [A2A Protocol](./a2a.md) |
 | **MCP (Multi-Channel Protocol)** | For large-scale orchestration across enterprise systems. | *(Coming Soon)* |
 
@@ -104,7 +103,6 @@ See [API Reference](./api.md) for the full error schema.
 
 - Explore the available [AI Agents](../README.md#two-groups-of-ai-agents)  
 - Learn about [Agent-to-Agent Integration](./a2a.md)  
-- Review full API specs in [API Reference](./api.md)
 
 
 
