@@ -7,7 +7,7 @@
 
 <p align="center">
   <a href="https://www.supplygraph.ai"><img src="https://img.shields.io/badge/Website-supplygraph.ai-blue?style=flat-square" alt="Website"/></a>
-  <a href="#integration--developer-experience"><img src="https://img.shields.io/badge/API-Docs-green?style=flat-square" alt="A2A/MCP Docs"/></a>
+  <a href="#integration--developer-experience"><img src="https://img.shields.io/badge/A2A%2FMCP-Docs-green?style=flat-square" alt="A2A/MCP Docs"/></a>
   <a href="#integration--developer-experience"><img src="https://img.shields.io/badge/Integration-Ready-orange?style=flat-square" alt="Integration Ready"/></a>
   <a href="#security--privacy"><img src="https://img.shields.io/badge/Security-Auditable-critical?style=flat-square" alt="Security"/></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-Proprietary-lightgrey?style=flat-square" alt="License"/></a>
