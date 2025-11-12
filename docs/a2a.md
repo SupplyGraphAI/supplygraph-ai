@@ -147,21 +147,7 @@ data: [DONE]
 ```
 
 
-## 6. Standard Intents (Optional Semantic Layer)
-Teams may define semantic “intents” to standardize high‑level actions across agents. Example catalog:
-| Intent | Description | Typical Source | Typical Target |
-|--------|-------------|----------------|----------------|
-| `tariff_change` | Notify tariff schedule changes | Tariff Monitoring Agent | Visualization Agent |
-| `risk_alert` | Propagate risk alerts | Risk Sentinel Agent | Dashboard Agent |
-| `supply_update` | Supply graph update notification | Graph Builder Agent | Visualization Agent |
-| `due_diligence_ready` | Due diligence report completed | Due Diligence Agent | Consulting Partner Agent |
-| `agent_status` | Query target readiness | Any | Any |
-| `agent_manifest` | Retrieve target manifest | Any | Target agent |
-
-> Intents are advisory semantics layered over A2A; the **transport remains `/run` with `mode`**.
-
-
-## 7. Error Handling
+## 6. Error Handling
 Unified codes (align with agent docs):
 | Code | Description |
 |------|-------------|
@@ -177,7 +163,7 @@ Unified codes (align with agent docs):
 All responses include `success`, `code`, and `message`. See agent docs for stage‑specific codes per lifecycle.
 
 
-## 8. Retry & Acknowledgment
+## 7. Retry & Acknowledgment
 
 Acknowledgment example:
 
@@ -199,17 +185,17 @@ Guidelines:
 - Deliveries must be idempotent.
 
 
-## 9. Security & Access Control
+## 8. Security & Access Control
 - Authenticate with Bearer tokens (API keys or signed service tokens).  
 - Authorize per agent and scope; agents publish capabilities in `/manifest`.  
 - Use TLS 1.3+ for HTTPS/WSS; encrypt sensitive payloads as policy requires.  
 - Log cross‑agent activity with a `trace_id` for observability.
 
 
-## 10. Versioning
+## 9. Versioning
 Include `metadata.version` in envelopes. Agents SHOULD validate compatibility and reject incompatible versions with `code: INVALID_REQUEST` and an explanatory `message`.
 
 
-## 11. Related Documentation
+## 10. Related Documentation
 - [Getting Started Guide](./getting-started.md)  
 - [Agent Specifications](./agents/)
