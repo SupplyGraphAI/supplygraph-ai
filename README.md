@@ -67,15 +67,15 @@ Each relationship is tied to live signals and an auditable evidence chain.
 Automate repetitive and time-consuming workflows:
 - **[Customs Classification Agent](./docs/agents/tariff_classification.md)** — Maps products to correct HS/HTS codes.  
 - **[Tariff Calculation Agent](./docs/agents/tariff_calc.md)** — Calculates U.S. duty rates and additional tariffs.  
-- **[Tariff Monitoring Agent](./docs/agents/tariff_diff.md)** — Detects tariff changes and sends actionable alerts.  
+- **Tariff Monitoring Agent** — Detects tariff changes and sends actionable alerts.  
 - **[Due Diligence Agent](./docs/agents/due_diligence_report.md)** — Generates multi-industry company intelligence in minutes.
 
 ### Group 2: Data Intelligence & Supply Graph Agents
 Deliver enterprise-centered global supply–product graph intelligence:
 - **[Global Supply Dependency Visualization Agent](./docs/agents/sg_visualization.md)** — Visualizes multi-tier supply dependencies across global companies and products.  
 - **[Single-Country Concentration Risk Agent](./docs/agents/sg_chokepoint.md)** — Identifies hidden geographic dependencies and quantifies country-level exposure.  
-- **[Tier-1 Supplier Discovery Agent](./docs/agents/sg_supplier_discovery.md)** — Finds qualified, low-risk Tier-1 suppliers worldwide within minutes.  
-- **[Regional Substitution Recommendation Agent](./docs/agents/sg_substitutability.md)** — Recommends practical regional supplier alternatives to strengthen resilience.
+- **Tier-1 Supplier Discovery Agent** — Finds qualified, low-risk Tier-1 suppliers worldwide within minutes.  
+- **Regional Substitution Recommendation Agent** — Recommends practical regional supplier alternatives to strengthen resilience.
 
 
 
