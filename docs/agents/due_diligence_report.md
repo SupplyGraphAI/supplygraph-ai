@@ -71,16 +71,11 @@ curl -X POST https://agent.supplygraph.ai/api/v1/agents/due_diligence_report/run
 **Example Response 1:**
 ```text
 {"success": false, "code": "WAITING_USER", "message": "waiting user", "data": {"task_id": "81c9d8f37c8933f5257d21d3f85b8755", "agent": "due_diligence_report", "stage": "interpreting", "code": "WAITING_USER", "progress": 0, "reasoning": [], "timestamp": "2025-11-14T02:46:44.242486Z", "is_final": true, "content": "Your input must include a valid company name (ideally the full legal name, e.g. Apple Inc.) so that we can provide more accurate and precise service for you."}, "metadata": {"agent": "due_diligence_report", "timestamp": "2025-11-14T02:46:44.242541Z"}, "errors": null}
-event: end
-data: [DONE]
 ```
 
 **Example Response 2:**
 ```text
 {"success": false, "code": "WAITING_USER", "message": "waiting user", "data": {"task_id": "<system-generated-task-id>", "agent": "due_diligence_report", "stage": "interpreting", "code": "WAITING_USER", "progress": 0, "reasoning": [], "timestamp": "2025-11-07T01:44:57.409211+00:00", "is_final": true, "content": "Here are the companies we’ve identified.\nPlease review the information below to confirm accuracy.\nCompany Name: Tesla, Inc.\nCountry: United States\nIf everything looks correct, type [Yes] or [Y] to proceed.\nIf this isn’t the intended company, type [No] or [N]."}, "metadata": {"agent": "due_diligence_report", "timestamp": "2025-11-07T01:44:57.409256+00:00"}, "errors": null}
-
-event: end
-data: [DONE]
 ```
 
 ### 2. Confirm the Execution
@@ -98,9 +93,6 @@ curl -N -X POST https://agent.supplygraph.ai/api/v1/agents/due_diligence_report/
 **Example Response:**
 ```text
 data: {"success": true, "code": "TASK_ACCEPTED", "message": "Task accepted and queued for execution.", "data": {"task_id": "<system-generated-task-id>", "agent": "due_diligence_report", "stage": "executing", "code": "TASK_ACCEPTED", "progress": 0, "reasoning": [], "timestamp": "2025-11-07T01:44:57.409211+00:00", "is_final": true, "content": "Task accepted and queued for execution."}, "metadata": {"agent": "due_diligence_report", "timestamp": "2025-11-07T01:44:57.409256+00:00"}, "errors": null}
-
-event: end
-data: [DONE]
 ```
 
 ## Status Endpoint
