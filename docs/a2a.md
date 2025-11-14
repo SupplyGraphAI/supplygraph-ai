@@ -199,3 +199,17 @@ Include `metadata.version` in envelopes. Agents SHOULD validate compatibility an
 ## 10. Related Documentation
 - [Getting Started Guide](./getting-started.md)  
 - [Agent Specifications](./agents/)
+
+## 11. SupplyGraph AI A2A SDK (Python)
+
+Looking for the official Python SDK for integrating SupplyGraph A2A Agents?
+
+➡️ **[SupplyGraph AI A2A Python SDK](https://github.com/SupplyGraphAI/supplygraphai_a2a_sdk)**  
+Directly maintained under the same GitHub organization.
+
+The SDK includes:
+- Core A2A API client  
+- Multi-round BaseAgent abstraction  
+- Full adapter ecosystem (LangChain, LangGraph, AutoGen, CrewAI, DSPy, Semantic Kernel, Flowise, Haystack, Airflow, BentoML, Google A2A, MCP)  
+- Documentation & integration examples  
+
