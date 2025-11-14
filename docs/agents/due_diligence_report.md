@@ -59,7 +59,7 @@ curl -X GET https://agent.supplygraph.ai/api/v1/agents/due_diligence_report/mani
 ### 1. Submit the Initial Request
 #### Purpose
 Start a new task with this Agent.  
-This endpoint supports non-streaming (`stream=false`) modes.
+This endpoint supports non-streaming (`stream=false`) modes and allows the use of the `chapter_name` parameter to control the generation of a specific individual chapter in the report.
 
 #### Request
 ```bash
@@ -80,7 +80,7 @@ curl -X POST https://agent.supplygraph.ai/api/v1/agents/due_diligence_report/run
 
 ### 2. Confirm the Execution
 #### Purpose
-Respond with `Yes` to confirm and proceed with task execution.
+Respond with `Yes` to confirm and proceed with task execution, ensuring the `chapter_name` parameter is kept consistent with the initial task creation.
 
 #### Request
 ```bash
@@ -95,9 +95,7 @@ curl -N -X POST https://agent.supplygraph.ai/api/v1/agents/due_diligence_report/
 data: {"success": true, "code": "TASK_ACCEPTED", "message": "Task accepted and queued for execution.", "data": {"task_id": "<system-generated-task-id>", "agent": "due_diligence_report", "stage": "executing", "code": "TASK_ACCEPTED", "progress": 0, "reasoning": [], "timestamp": "2025-11-07T01:44:57.409211+00:00", "is_final": true, "content": "Task accepted and queued for execution."}, "metadata": {"agent": "due_diligence_report", "timestamp": "2025-11-07T01:44:57.409256+00:00"}, "errors": null}
 ```
 
-### chapter name
-
-#### chapter_name Parameter
+### chapter_name Parameter
 
 The `chapter_name` parameter specifies the chapter of the report to generate. It can be set to "ALL" to include all chapters or one of the specific chapter names listed below.
 
