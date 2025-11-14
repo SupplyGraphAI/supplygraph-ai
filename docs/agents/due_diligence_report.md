@@ -70,7 +70,7 @@ curl -X POST https://agent.supplygraph.ai/api/v1/agents/due_diligence_report/run
 ```
 **Example Response 1:**
 ```text
-{"success": false, "code": "WAITING_USER", "message": "waiting user", "data": {"task_id": "81c9d8f37c8933f5257d21d3f85b8755", "agent": "due_diligence_report", "stage": "interpreting", "code": "WAITING_USER", "progress": 0, "reasoning": [], "timestamp": "2025-11-14T02:46:44.242486Z", "is_final": true, "content": "Your input must include a valid company name (ideally the full legal name, e.g. Apple Inc.) so that we can provide more accurate and precise service for you."}, "metadata": {"agent": "due_diligence_report", "timestamp": "2025-11-14T02:46:44.242541Z"}, "errors": null}
+{"success": false, "code": "WAITING_USER", "message": "waiting user", "data": {"task_id": "<system-generated-task-id>", "agent": "due_diligence_report", "stage": "interpreting", "code": "WAITING_USER", "progress": 0, "reasoning": [], "timestamp": "2025-11-14T02:46:44.242486Z", "is_final": true, "content": "Your input must include a valid company name (ideally the full legal name, e.g. Apple Inc.) so that we can provide more accurate and precise service for you."}, "metadata": {"agent": "due_diligence_report", "timestamp": "2025-11-14T02:46:44.242541Z"}, "errors": null}
 ```
 
 **Example Response 2:**
@@ -93,6 +93,66 @@ curl -N -X POST https://agent.supplygraph.ai/api/v1/agents/due_diligence_report/
 **Example Response:**
 ```text
 data: {"success": true, "code": "TASK_ACCEPTED", "message": "Task accepted and queued for execution.", "data": {"task_id": "<system-generated-task-id>", "agent": "due_diligence_report", "stage": "executing", "code": "TASK_ACCEPTED", "progress": 0, "reasoning": [], "timestamp": "2025-11-07T01:44:57.409211+00:00", "is_final": true, "content": "Task accepted and queued for execution."}, "metadata": {"agent": "due_diligence_report", "timestamp": "2025-11-07T01:44:57.409256+00:00"}, "errors": null}
+```
+
+### chapter name
+
+#### chapter_name Parameter
+
+The `chapter_name` parameter specifies the chapter of the report to generate. It can be set to "ALL" to include all chapters or one of the specific chapter names listed below.
+
+**Schema Definition:**
+
+```json
+{
+    "type": "string",
+    "enum": [
+        "ALL",
+        "Company Registration Information",
+        "Branch Offices",
+        "Corporate Brand Initiatives",
+        "Administrative Sanctions",
+        "Software Copyright Details",
+        "Outbound Investments",
+        "Financing Activities",
+        "Competitor Analysis",
+        "Subsidiary Companies",
+        "Trademark Portfolio",
+        "Patent Holdings",
+        "Website Registrations",
+        "Court Judgments",
+        "Shareholder Structure",
+        "Senior Management Team",
+        "Administrative Permits",
+        "Court Hearing Notices",
+        "Court Notices",
+        "Equity Pledges",
+        "Mobile Applications",
+        "Copyrighted Works",
+        "Equity Freezes",
+        "Chattel Mortgages",
+        "WeChat Official Accounts",
+        "Tendering and Bidding Activities",
+        "Qualification Certificates",
+        "Engineering Irregularities",
+        "Major Regulatory Violations",
+        "Compensation and Benefits",
+        "Enforcement Targets",
+        "Supplier Network",
+        "Credit Ratings",
+        "Tax Offenses",
+        "Regulatory Spot Checks",
+        "Import-Export Credit Records",
+        "Regulatory Actions",
+        "Granted Government Subsidies",
+        "Eligible Government Subsidies",
+        "Consolidated Statements of Operations",
+        "Income Statement",
+        "Statement of Cash Flows",
+        "Consolidated Balance Sheets"
+    ],
+    "default": "ALL"
+}
 ```
 
 ## Status Endpoint
