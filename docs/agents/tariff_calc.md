@@ -3,11 +3,11 @@
 ### Overview
 Automatically calculates U.S. duty rates and applicable additional tariffs based on the product’s HTS code and country of origin.
 
-### Challenge
+### Pain
 For customs and trade compliance specialists, determining an item’s duty rate and applicable tariffs usually means manually searching through thousands of pages of tariff schedules.  
 This process is not only time-consuming but also error-prone, leading to inconsistent or incomplete results.
 
-### Value
+### Breakthrough
 **AutoTariff** automates the calculation of duty rates and applicable additional tariffs, cutting analysis time from **hours to seconds**.  
 It supports accurate decision-making, enables tariff optimization, and ensures compliance with evolving customs regulations.
 
