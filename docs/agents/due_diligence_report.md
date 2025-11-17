@@ -317,6 +317,6 @@ cancelled:
 
 ## Maintainer & License
 
-Maintainer: {{maintainer_email}}  
+Maintainer: info@supplygraph.ai
 License: Proprietary / Internal  
 © 2025 SupplyGraph AI
