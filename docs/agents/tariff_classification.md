@@ -3,12 +3,12 @@
 ### Overview  
 Automatically maps products to the correct HS/HTS codes, ensuring compliance, accuracy, and tariff optimization — all within seconds.
 
-### Challenge  
+### Pain  
 For customs specialists, getting an item’s HTS code is a critical workflow task that involves manually checking product descriptions against thousands of classification tables.  
 This process is time-consuming, mentally exhausting, and prone to human error.  
 Moreover, single products may correspond to multiple potential HTS codes, each implying different tariff implications.
 
-### Value  
+### Breakthrough  
 Automated classification reduces manual work time from **hours or days to seconds**, while unlocking opportunities for **tariff optimization**.  
 By automating classification, organizations can ensure consistency, accuracy, and compliance across product catalogs and trade operations.
 
