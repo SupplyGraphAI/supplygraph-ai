@@ -69,6 +69,7 @@ Automate repetitive and time-consuming workflows:
 - **[Tariff Calculation Agent](./docs/agents/tariff_calc.md)** — Calculates U.S. duty rates and additional tariffs.  
 - **Tariff Monitoring Agent** — Detects tariff changes and sends actionable alerts.  
 - **[Due Diligence Agent](./docs/agents/due_diligence_report.md)** — Generates multi-industry company intelligence in minutes.
+- **[Corporate Exception Agent](./docs/agents/corporate_exception_report.md)** — Real-time automated corporate exception monitoring.
 
 ### Group 2: Data Intelligence & Supply Graph Agents
 Deliver enterprise-centered global supply–product graph intelligence:
