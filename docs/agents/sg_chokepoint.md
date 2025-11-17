@@ -3,12 +3,12 @@
 ### Overview
 Analyzes and quantifies **geographic concentration risks** across global supply networks — identifying where a company’s upstream dependencies rely too heavily on a single country or region.
 
-### Challenge
+### Pain
 Most organizations believe their supply chains are diversified — until a single-country dependency quietly halts production.  
 Geopolitical shocks, export bans, and natural disasters can ripple through 4–10 tiers of suppliers, causing component shortages, delivery delays, and millions in lost revenue.  
 Traditional visibility tools fail to detect such deep-tier dependencies before disruptions occur.
 
-### Value
+### Breakthrough
 The agent reveals **hidden single-country dependencies** by tracing multi-tier supplier relationships and mapping geographic exposure from Tier-2 to Tier-10.  
 It provides quantifiable concentration metrics such as **Herfindahl–Hirschman Index (HHI)** and **regional dependency ratios**, helping teams prioritize diversification and resilience planning.
 
