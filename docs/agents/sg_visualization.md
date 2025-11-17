@@ -3,12 +3,12 @@
 ### Overview
 Constructs and visualizes an **enterprise-centered global supply–product graph**, mapping dependencies across multiple tiers — from Tier-1 suppliers to raw material origins — to reveal systemic risks and hidden vulnerabilities.
 
-### Challenge
+### Pain
 Global supply chains are vast, opaque, and interconnected.  
 Most enterprises only see their Tier-1 suppliers, leaving deep-tier dependencies and concentration risks invisible.  
 When a disruption occurs upstream — a factory closure, a logistics bottleneck, or a policy change — its cascading impact often catches companies off guard.
 
-### Value
+### Breakthrough
 This agent builds a **dynamic company-centered supply graph**, allowing users to explore supplier relationships, trace dependencies, and simulate potential disruptions across 10+ tiers.  
 It provides the visibility and analytical depth needed to **anticipate, quantify, and mitigate** risk before it affects operations.
 
