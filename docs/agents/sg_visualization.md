@@ -44,8 +44,8 @@ curl -X GET https://agent.supplygraph.ai/api/v1/agents/sg_visualization/manifest
 ### Example Response
 ```json
 {
-  "agent_id": "{{agent_id}}",
-  "name": "{{agent_name}}",
+  "agent_id": "sg_visualization",
+  "name": "Enterprise Supply Graph Agent",
   "version": "1.0.0",
   "description": "Performs {{agent_function_description}}",
   "input_schema": { ... },
@@ -87,7 +87,7 @@ The example below demonstrates a typical streaming sequence with intermediate re
   "event": "stream",
   "data": {
     "task_id": "<task-id>",
-    "agent": "{{agent_id}}",
+    "agent": "sg_visualization",
     "stage": "interpreting",
     "code": "THINKING",
     "reasoning": ["Analyzing input..."],
@@ -105,7 +105,7 @@ The example below demonstrates a typical streaming sequence with intermediate re
   "message": "Task accepted and queued.",
   "data": {
     "task_id": "<task-id>",
-    "agent": "{{agent_id}}",
+    "agent": "sg_visualization",
     "stage": "executing",
     "code": "TASK_ACCEPTED",
     "timestamp": "2025-11-12T09:00:10Z",
@@ -132,7 +132,7 @@ data: [DONE]
   "message": "Task accepted and queued for execution.",
   "data": {
     "task_id": "<task-id>",
-    "agent": "{{agent_id}}",
+    "agent": "sg_visualization",
     "stage": "executing",
     "code": "TASK_ACCEPTED",
     "progress": 0,
@@ -140,7 +140,7 @@ data: [DONE]
     "is_final": true
   },
   "metadata": {
-    "agent": "{{agent_id}}",
+    "agent": "sg_visualization",
     "timestamp": "2025-11-12T09:00:10Z"
   },
   "errors": null
@@ -182,7 +182,7 @@ Check the current progress or completion state of a previously submitted task.
 
 ### Request
 ```bash
-curl -X POST https://agent.supplygraph.ai/api/v1/agents/{{agent_id}}/run   
+curl -X POST https://agent.supplygraph.ai/api/v1/agents/sg_visualization/run   
   -H "Authorization: Bearer <YOUR_API_KEY>"   
   -H "Content-Type: application/json"   
   -d '{"mode": "status", "task_id": "<task-id>"}'
@@ -196,7 +196,7 @@ curl -X POST https://agent.supplygraph.ai/api/v1/agents/{{agent_id}}/run
   "message": "Task is still running.",
   "data": {
     "task_id": "<task-id>",
-    "agent": "{{agent_id}}",
+    "agent": "sg_visualization",
     "stage": "running",
     "code": "TASK_RUNNING",
     "progress": 65.5,
@@ -204,7 +204,7 @@ curl -X POST https://agent.supplygraph.ai/api/v1/agents/{{agent_id}}/run
     "is_final": false
   },
   "metadata": {
-    "agent": "{{agent_id}}",
+    "agent": "sg_visualization",
     "timestamp": "2025-11-12T09:05:00Z"
   },
   "errors": null
@@ -237,7 +237,7 @@ Retrieve the final output of a completed task.
 
 ### Request
 ```bash
-curl -X POST https://agent.supplygraph.ai/api/v1/agents/{{agent_id}}/run
+curl -X POST https://agent.supplygraph.ai/api/v1/agents/sg_visualization/run
   -H "Authorization: Bearer <YOUR_API_KEY>"
   -H "Content-Type: application/json"
   -d '{"mode": "results", "task_id": "<task-id>"}'
@@ -251,7 +251,7 @@ curl -X POST https://agent.supplygraph.ai/api/v1/agents/{{agent_id}}/run
   "message": "Task completed successfully.",
   "data": {
     "task_id": "<task-id>",
-    "agent": "{{agent_id}}",
+    "agent": "sg_visualization",
     "stage": "completed",
     "code": "TASK_COMPLETED",
     "progress": 100,
@@ -260,7 +260,7 @@ curl -X POST https://agent.supplygraph.ai/api/v1/agents/{{agent_id}}/run
     "content": "## Example final output text"
   },
   "metadata": {
-    "agent": "{{agent_id}}",
+    "agent": "sg_visualization",
     "timestamp": "2025-11-12T09:10:00Z",
     "credits_used": 10
   },
