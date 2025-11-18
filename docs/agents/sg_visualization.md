@@ -1,7 +1,7 @@
-# {{sg_visualization}}
+# Enterprise Supply Graph Agent
 
 ## Overview
-Describe the purpose and primary function of this Agent within the SupplyGraph AI ecosystem.
+automatically generates a multi-tiered, company-centric global supply-chain product dependency map for any enterprise in the world.
 
 ## Pain
 Companies struggle with limited data to visualize their worldwide supply networks. Without this infrastructure, they are unable to assess single-region concentration risks, identify alternative sources for critical components, or respond to thousands of daily incidents that could trigger disruptions.
