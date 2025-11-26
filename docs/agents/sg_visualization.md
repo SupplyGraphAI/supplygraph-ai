@@ -1,18 +1,17 @@
 # Enterprise Supply Graph Agent
 
-## Overview
+### Overview
 Automatically generates a multi-tiered, company-centric global supply-chain product dependency map for any enterprise in the world.
 
-## Pain
+### Pain
 Companies struggle with limited data to visualize their worldwide supply networks. Without this infrastructure, they are unable to assess single-region concentration risks, identify alternative sources for critical components, or respond to thousands of daily incidents that could trigger disruptions.
 
-## Breakthrough
+### Breakthrough
 Visualizes a company-centered global supply product graph that maps dependencies from Tier-1 suppliers to raw materials, linking components to supply, demand, and channels entities. The data graph also lays the infrastructure to quantify regional concentration, evaluate alternatives sourcing, and identify high-impact incidents before they trigger costly disruptions.
 
-## Why Us
+### Why Us
 Powered by data on 100M+ companies, 1M+ key products, and 8,000+ industry benchmarks, continuously monitored 24/7, SupplyGraph.AI delivers the world’s first intelligent platform that allows any enterprise to visualize, monitor, and analyze its global supply graph in real time — transforming hidden dependencies into actionable resilience.
 
----
 
 ## API Overview
 This section provides an overview of the A2A API structure and usage.
@@ -28,7 +27,6 @@ This section provides an overview of the A2A API structure and usage.
 - `mode=status` — check task progress (non-streaming)  
 - `mode=results` — retrieve task output (non-streaming)
 
----
 
 ## Manifest
 
@@ -55,7 +53,6 @@ curl -X GET https://agent.supplygraph.ai/api/v1/agents/sg_visualization/manifest
 }
 ```
 
----
 
 ## Run Endpoint
 
@@ -173,7 +170,6 @@ data: [DONE]
 - Handle `"WAITING_USER"` to collect additional user input.  
 - Use UTC timestamps (`YYYY-MM-DDTHH:MM:SSZ`).  
 
----
 
 ## Status Endpoint
 
@@ -228,7 +224,6 @@ curl -X POST https://agent.supplygraph.ai/api/v1/agents/sg_visualization/run
 - If `TASK_FAILED`, review `errors` for details.  
 - Avoid excessive polling to prevent rate limiting.  
 
----
 
 ## Results Endpoint
 
@@ -284,7 +279,6 @@ curl -X POST https://agent.supplygraph.ai/api/v1/agents/sg_visualization/run
 - Parse Markdown in `content` for structured rendering if applicable.  
 - Handle `"TASK_FAILED"` with fallback or retry logic.  
 
----
 
 ## Make Your First A2A Call
 
@@ -293,16 +287,21 @@ Demonstrates the typical three-step workflow:
 2. Check progress with `mode=status`  
 3. Retrieve output with `mode=results`  
 
----
 
 ## Integration Options
+### Protocols
 
-| Mode | Description | Documentation |
-|------|--------------|----------------|
-| A2A (Agent-to-Agent) | Autonomous inter-agent workflow mode. | A2A Protocol |
-| MCP (Multi-Channel Protocol) | Large-scale enterprise orchestration (coming soon). | Coming Soon |
+| Protocol | Description | Docs |
+|------|------|------|
+| **A2A (Agent-to-Agent)** | Native protocol for autonomous agent workflows and communication | [A2A Protocol](../a2a.md) |
+| **MCP (Multi-Channel Protocol)** | Next-generation orchestration protocol for enterprise and multi-system environments | *(Coming Soon)* |
 
----
+### Developer Interfaces
+
+| Interface | Description | Docs |
+|------|------|------|
+| **Python SDK (A2A Client)** | Official Python wrapper built on top of the A2A protocol for rapid integration | [supplygraphai_a2a_sdk](https://github.com/SupplyGraphAI/supplygraphai_a2a_sdk) |
+
 
 ## Error Handling & Rate Limits
 
@@ -334,10 +333,9 @@ cancelled:
   TASK_CANCELLED
 ```
 
----
 
 ## Maintainer & License
 
-Maintainer: {{maintainer_email}}  
+Maintainer: info@supplygraph.ai  
 License: Proprietary / Internal  
 © 2025 SupplyGraph AI
