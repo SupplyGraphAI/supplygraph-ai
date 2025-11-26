@@ -13,6 +13,29 @@ Behind the scenes, our system performs node-by-node analysis of a company-center
 As a company, our mission is to build the data infrastructure to deliver global supply chain risk insights. Leveraging 100M+ companies, 8,000+ benchmarks, and 1M+ key products 24/7, we provide actionable, large-scale supply concentration analysis.
 
 
+## Try the Geographic Concentration Analysis Agent (Live Chatbot)
+
+Before integrating this agent via API, you can experience it directly through our interactive chatbot.
+
+This live demo allows you to:
+- Enter a company name
+- Confirm the correct entity
+- Analyze geographic concentration across the supply chain
+- Identify regional dependency risks and hidden vulnerabilities
+- Preview the structure, insights, and analytics of the output
+
+👉 [**Launch the Geographic Concentration Chatbot**](https://supplygraph.ai/zk_chat_os/agentic/dialog.html?name=sg_chokepoint)
+
+To use the chatbot, you’ll first need to:
+- Create a SupplyGraph AI account
+- Top up your credit balance
+
+The chatbot is powered by the **same Geographic Concentration Analysis Agent and A2A endpoints** described in this documentation.  
+Credits used in the chatbot are deducted in the same way as API/A2A usage.
+
+Everything you experience in the chatbot can be fully embedded into your own system through A2A integration below.
+
+
 ## API Overview
 This section provides an overview of the A2A API structure and usage.
 
@@ -278,29 +301,6 @@ curl -X POST https://agent.supplygraph.ai/api/v1/agents/sg_chokepoint/run
 - Always ensure `code` is `TASK_COMPLETED` before using content.  
 - Parse Markdown in `content` for structured rendering if applicable.  
 - Handle `"TASK_FAILED"` with fallback or retry logic.  
-
-
-## Try the Geographic Concentration Analysis Agent (Live Chatbot)
-
-Before integrating this agent via API, you can experience it directly through our interactive chatbot.
-
-This live demo allows you to:
-- Enter a company name
-- Confirm the correct entity
-- Analyze geographic concentration across the supply chain
-- Identify regional dependency risks and hidden vulnerabilities
-- Preview the structure, insights, and analytics of the output
-
-👉 [**Launch the Geographic Concentration Chatbot**](https://supplygraph.ai/zk_chat_os/agentic/dialog.html?name=sg_chokepoint)
-
-To use the chatbot, you’ll first need to:
-- Create a SupplyGraph AI account
-- Top up your credit balance
-
-The chatbot is powered by the **same Geographic Concentration Analysis Agent and A2A endpoints** described in this documentation.  
-Credits used in the chatbot are deducted in the same way as API/A2A usage.
-
-Everything you experience in the chatbot can be fully embedded into your own system through A2A integration below.
 
 
 ## Make Your First A2A Call
