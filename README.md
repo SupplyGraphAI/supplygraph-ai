@@ -213,13 +213,28 @@ For partnerships, integrations, or research collaborations:
 
 
 ## More about SupplyGraph AI
+Explore more about the SupplyGraph AI ecosystem:
 
-📘 Main Documentation: https://github.com/SupplyGraphAI/supplygraph-ai  
-🚀 Getting Started Guide: ./docs/getting-started.md  
-🤝 A2A / MCP Protocol: ./docs/a2a.md  
-🤖 Agents Library: ./docs/agents/  
-📦 Developer SDK: https://github.com/SupplyGraphAI/supplygraphai_a2a_sdk  
-🌐 Official Website: https://www.supplygraph.ai  
+📘 **Getting Started Guide**  
+  https://github.com/SupplyGraphAI/supplygraph-ai/blob/main/docs/getting-started.md
+
+🤖 **Agent Specifications & Library**  
+  https://github.com/SupplyGraphAI/supplygraph-ai/tree/main/docs/agents
+
+🧠 **SupplyGraph AI Documentation Hub**  
+  https://github.com/SupplyGraphAI/supplygraph-ai
+
+📦 **Python A2A SDK (Official Repository)**  
+  https://github.com/SupplyGraphAI/supplygraphai_a2a_sdk
+
+🌐 **Official Website & Use Cases**  
+  https://www.supplygraph.ai
+
+📄 **Future Protocols & Enterprise Specifications** *(Coming Soon)*  
+  MCP, multi-agent orchestration & deployment whitepapers
+
+
+
 
 **Key Focus Areas:**  
 AI-powered supply chain, tariff calculation, HTS classification, trade compliance, multi-tier risk analysis, agent-to-agent systems.
