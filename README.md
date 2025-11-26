@@ -156,10 +156,8 @@ else:
 AI engineers, data-science teams, supply-chain developers, and risk-automation architects building intelligent enterprise workflows.
 
 For full setup, authentication, and A2A/MCP key usage, see the [Getting Started Guide](./docs/getting-started.md).  
-For endpoint specifications, refer to the [A2A Protocol](./docs/a2a.md).
-
-📦 For programmatic integration, SDKs and sample code, visit:  
-👉 **[SupplyGraphAI/supplygraphai_a2a_sdk](https://github.com/SupplyGraphAI/supplygraphai_a2a_sdk)**
+For endpoint specifications, refer to the [A2A Protocol](./docs/a2a.md).  
+For programmatic integration, SDKs and sample code, visit: [supplygraphai_a2a_sdk](https://github.com/SupplyGraphAI/supplygraphai_a2a_sdk).
 
 ## Who Uses SupplyGraph AI
 **SupplyGraph AI** is built for organizations and developers who depend on complex, global supply networks:  
