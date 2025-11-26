@@ -1,18 +1,17 @@
 # Geographic Concentration Analysis Agent
 
-## Overview
+### Overview
 This agent evaluates an enterprise’s supply chain by computing geographic concentration across every stage—using metrics like the Herfindahl–Hirschman Index (HHI)—and generates a comprehensive analytical report that reveals how different regions and countries participate in and dominate the company’s upstream and downstream value-chain, highlighting potential vulnerabilities and informing mitigation strategies
 
-## Pain
+### Pain
 Most companies believe their supply chain is diversified—until a single-country dependency quietly brings an entire production line to a halt. For example, Nvidia was believed to have one of the most diversified supply chains—until our analysis revealed that certain key components in its Tier-6 have an HHI index showing over 90% concentration in a single country, which surprised us and many industry analysts. When a geopolitical shock, export ban, or natural disaster strikes, Tier-2 or raw material concentration can trigger cascading failures: component shortages, months-long delivery delays, and millions in lost revenue.
 
-## Breakthrough
+### Breakthrough
 Behind the scenes, our system performs node-by-node analysis of a company-centered supply product graph, using statistical benchmarking and a global enterprise database to calculate precise HHI indices and reveal hidden dependencies. For users, it’s effortless: provide a company name and receive a clean, fully documented, data-driven report with a highly readable summary. Advanced analytics, delivered through a simple, intuitive interface.
 
-## Why Us
+### Why Us
 As a company, our mission is to build the data infrastructure to deliver global supply chain risk insights. Leveraging 100M+ companies, 8,000+ benchmarks, and 1M+ key products 24/7, we provide actionable, large-scale supply concentration analysis.
 
----
 
 ## API Overview
 This section provides an overview of the A2A API structure and usage.
@@ -28,7 +27,6 @@ This section provides an overview of the A2A API structure and usage.
 - `mode=status` — check task progress (non-streaming)  
 - `mode=results` — retrieve task output (non-streaming)
 
----
 
 ## Manifest
 
@@ -55,7 +53,6 @@ curl -X GET https://agent.supplygraph.ai/api/v1/agents/sg_chokepoint/manifest
 }
 ```
 
----
 
 ## Run Endpoint
 
@@ -173,7 +170,6 @@ data: [DONE]
 - Handle `"WAITING_USER"` to collect additional user input.  
 - Use UTC timestamps (`YYYY-MM-DDTHH:MM:SSZ`).  
 
----
 
 ## Status Endpoint
 
@@ -228,7 +224,6 @@ curl -X POST https://agent.supplygraph.ai/api/v1/agents/sg_chokepoint/run
 - If `TASK_FAILED`, review `errors` for details.  
 - Avoid excessive polling to prevent rate limiting.  
 
----
 
 ## Results Endpoint
 
@@ -284,7 +279,6 @@ curl -X POST https://agent.supplygraph.ai/api/v1/agents/sg_chokepoint/run
 - Parse Markdown in `content` for structured rendering if applicable.  
 - Handle `"TASK_FAILED"` with fallback or retry logic.  
 
----
 
 ## Make Your First A2A Call
 
@@ -293,16 +287,21 @@ Demonstrates the typical three-step workflow:
 2. Check progress with `mode=status`  
 3. Retrieve output with `mode=results`  
 
----
 
 ## Integration Options
+### Protocols
 
-| Mode | Description | Documentation |
-|------|--------------|----------------|
-| A2A (Agent-to-Agent) | Autonomous inter-agent workflow mode. | A2A Protocol |
-| MCP (Multi-Channel Protocol) | Large-scale enterprise orchestration (coming soon). | Coming Soon |
+| Protocol | Description | Docs |
+|------|------|------|
+| **A2A (Agent-to-Agent)** | Native protocol for autonomous agent workflows and communication | [A2A Protocol](../a2a.md) |
+| **MCP (Multi-Channel Protocol)** | Next-generation orchestration protocol for enterprise and multi-system environments | *(Coming Soon)* |
 
----
+### Developer Interfaces
+
+| Interface | Description | Docs |
+|------|------|------|
+| **Python SDK (A2A Client)** | Official Python wrapper built on top of the A2A protocol for rapid integration | [supplygraphai_a2a_sdk](https://github.com/SupplyGraphAI/supplygraphai_a2a_sdk) |
+
 
 ## Error Handling & Rate Limits
 
@@ -334,7 +333,6 @@ cancelled:
   TASK_CANCELLED
 ```
 
----
 
 ## Maintainer & License
 
