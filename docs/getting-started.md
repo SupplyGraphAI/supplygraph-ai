@@ -146,6 +146,27 @@ Common errors:
 - Learn about [Agent-to-Agent Integration](./a2a.md)  
 
 
+## 8. Related Documentation
+Explore more about the SupplyGraph AI ecosystem:
+
+📘 **Getting Started Guide**  
+  https://github.com/SupplyGraphAI/supplygraph-ai/blob/main/docs/getting-started.md
+
+🤖 **Agent Specifications & Library**  
+  https://github.com/SupplyGraphAI/supplygraph-ai/tree/main/docs/agents
+
+🧠 **SupplyGraph AI Documentation Hub**  
+  https://github.com/SupplyGraphAI/supplygraph-ai
+
+📦 **Python A2A SDK (Official Repository)**  
+  https://github.com/SupplyGraphAI/supplygraphai_a2a_sdk
+
+🌐 **Official Website & Use Cases**  
+  https://www.supplygraph.ai
+
+📄 **Future Protocols & Enterprise Specifications** *(Coming Soon)*  
+  MCP, multi-agent orchestration & deployment whitepapers
+
 
 <p align="center">
   © 2025 <b>SupplyGraph AI, Inc.</b> All rights reserved.
