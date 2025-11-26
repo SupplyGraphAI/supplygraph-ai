@@ -84,10 +84,6 @@ Each relationship is tied to live signals and an auditable evidence chain.
 
 
 ## Two Groups of AI Agents
-
-> 📚 Full agent descriptions and usage examples are available here:  
-> 👉 [Browse all agents](./docs/agents/)
-
 ### Group 1: Automation & Efficiency Agents
 Automate repetitive and time-consuming workflows:
 - **[Customs Classification Agent](./docs/agents/tariff_classification.md)** — Maps products to correct HS/HTS codes.  
@@ -103,6 +99,9 @@ Deliver enterprise-centered global supply–product graph intelligence:
 - **Tier-1 Supplier Discovery Agent** — Finds qualified, low-risk Tier-1 suppliers worldwide within minutes.  
 - **Regional Substitution Recommendation Agent** — Recommends practical regional supplier alternatives to strengthen resilience.
 
+
+> 📚 Full agent descriptions and usage examples are available here:  
+> 👉 [Browse all agents](./docs/agents/)
 
 
 ## Integration & Developer Experience
