@@ -9,7 +9,6 @@ Automated due diligence cuts research time by up to 90%, delivers standardized, 
 ### Why Us
 Our due diligence is powered by real-time data from 100M+ companies, 8,000+ benchmarks, and 1M+ key products—continuously structured and monitored for faster, deeper, always-current insights.
 
----
 
 ## API Overview
 This section provides an overview of the A2A API structure and usage.
@@ -25,7 +24,6 @@ This section provides an overview of the A2A API structure and usage.
 - `mode=status` — check task progress (non-streaming)  
 - `mode=results` — retrieve task output (non-streaming)
 
----
 
 ## Manifest
 
@@ -52,10 +50,8 @@ curl -X GET https://agent.supplygraph.ai/api/v1/agents/due_diligence_report/mani
 }
 ```
 
----
 
 ## Run Endpoint
-
 ### 1. Submit the Initial Request
 #### Purpose
 Start a new task with this Agent.  
@@ -206,7 +202,6 @@ curl -X POST https://agent.supplygraph.ai/api/v1/agents/due_diligence_report/run
 - If `TASK_FAILED`, review `errors` for details.  
 - Avoid excessive polling to prevent rate limiting.  
 
----
 
 ## Results Endpoint
 
@@ -262,7 +257,6 @@ curl -X POST https://agent.supplygraph.ai/api/v1/agents/due_diligence_report/run
 - Parse Markdown in `content` for structured rendering if applicable.  
 - Handle `"TASK_FAILED"` with fallback or retry logic.  
 
----
 
 ## Make Your First A2A Call
 
@@ -272,16 +266,21 @@ Demonstrates the typical workflow:
 3. Check progress with `mode=status`  
 4. Retrieve output with `mode=results`  
 
----
 
 ## Integration Options
+### Protocols
 
-| Mode | Description | Documentation |
-|------|--------------|----------------|
-| A2A (Agent-to-Agent) | Autonomous inter-agent workflow mode. | A2A Protocol |
-| MCP (Multi-Channel Protocol) | Large-scale enterprise orchestration (coming soon). | Coming Soon |
+| Protocol | Description | Docs |
+|------|------|------|
+| **A2A (Agent-to-Agent)** | Native protocol for autonomous agent workflows and communication | [A2A Protocol](../a2a.md) |
+| **MCP (Multi-Channel Protocol)** | Next-generation orchestration protocol for enterprise and multi-system environments | *(Coming Soon)* |
 
----
+### Developer Interfaces
+
+| Interface | Description | Docs |
+|------|------|------|
+| **Python SDK (A2A Client)** | Official Python wrapper built on top of the A2A protocol for rapid integration | [supplygraphai_a2a_sdk](https://github.com/SupplyGraphAI/supplygraphai_a2a_sdk) |
+
 
 ## Error Handling & Rate Limits
 
@@ -313,7 +312,6 @@ cancelled:
   TASK_CANCELLED
 ```
 
----
 
 ## Maintainer & License
 
