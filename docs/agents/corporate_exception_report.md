@@ -246,11 +246,18 @@ Demonstrates the typical workflow:
 ---
 
 ## Integration Options
+### Protocols
 
-| Mode | Description | Documentation |
-|------|--------------|----------------|
-| A2A (Agent-to-Agent) | Autonomous inter-agent workflow mode. | A2A Protocol |
-| MCP (Multi-Channel Protocol) | Large-scale enterprise orchestration (coming soon). | Coming Soon |
+| Protocol | Description | Docs |
+|------|------|------|
+| **A2A (Agent-to-Agent)** | Native protocol for autonomous agent workflows and communication | [A2A Protocol](../a2a.md) |
+| **MCP (Multi-Channel Protocol)** | Next-generation orchestration protocol for enterprise and multi-system environments | *(Coming Soon)* |
+
+### Developer Interfaces
+
+| Interface | Description | Docs |
+|------|------|------|
+| **Python SDK (A2A Client)** | Official Python wrapper built on top of the A2A protocol for rapid integration | [supplygraphai_a2a_sdk](https://github.com/SupplyGraphAI/supplygraphai_a2a_sdk) |
 
 ---
 
