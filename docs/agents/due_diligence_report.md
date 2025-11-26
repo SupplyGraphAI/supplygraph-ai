@@ -10,6 +10,28 @@ Automated due diligence cuts research time by up to 90%, delivers standardized, 
 Our due diligence is powered by real-time data from 100M+ companies, 8,000+ benchmarks, and 1M+ key products—continuously structured and monitored for faster, deeper, always-current insights.
 
 
+## Try the Due Diligence Agent (Live Chatbot)
+
+Before integrating this agent via API, you can experience it directly through our interactive chatbot.
+
+This live demo allows you to:
+- Enter a company name
+- Confirm the correct entity
+- Generate a full or chapter-specific due diligence report
+- Preview the exact structure and quality of the output
+
+👉 [**Launch the Due Diligence Chatbot**](https://supplygraph.ai/zk_chat_os/agentic/dialog.html?name=due_diligence_report)
+
+To use the chatbot, you’ll first need to:
+- Create a SupplyGraph AI account
+- Top up your credit balance
+
+The chatbot is powered by the **same Due Diligence Agent and A2A endpoints** described in this documentation.  
+Credits used in the chatbot are deducted in the same way as API/A2A usage.
+
+Everything you experience in the chatbot can be fully embedded into your own system through A2A integration below.
+
+
 ## API Overview
 This section provides an overview of the A2A API structure and usage.
 
@@ -256,28 +278,6 @@ curl -X POST https://agent.supplygraph.ai/api/v1/agents/due_diligence_report/run
 - Always ensure `code` is `TASK_COMPLETED` before using content.  
 - Parse Markdown in `content` for structured rendering if applicable.  
 - Handle `"TASK_FAILED"` with fallback or retry logic.  
-
-
-## Try the Due Diligence Agent (Live Chatbot)
-
-Before integrating this agent via API, you can experience it directly through our interactive chatbot.
-
-This live demo allows you to:
-- Enter a company name
-- Confirm the correct entity
-- Generate a full or chapter-specific due diligence report
-- Preview the exact structure and quality of the output
-
-👉 [**Launch the Due Diligence Chatbot**](https://supplygraph.ai/zk_chat_os/agentic/dialog.html?name=due_diligence_report)
-
-To use the chatbot, you’ll first need to:
-- Create a SupplyGraph AI account
-- Top up your credit balance
-
-The chatbot is powered by the **same Due Diligence Agent and A2A endpoints** described in this documentation.  
-Credits used in the chatbot are deducted in the same way as API/A2A usage.
-
-Everything you experience in the chatbot can be fully embedded into your own system through A2A integration below.
 
 
 ## Make Your First A2A Call
