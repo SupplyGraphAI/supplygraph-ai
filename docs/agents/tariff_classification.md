@@ -17,6 +17,27 @@ SupplyGraph AI integrates **real-time global tariff databases** with **graph-bas
 Each classification is supported by evidence paths that link back to official customs sources, minimizing compliance risk at scale.
 
 
+## Try the Customs Classification Agent (Live Chatbot)
+
+Before integrating this agent via API, you can experience it instantly through our interactive classification chatbot.
+
+This live demo allows you to:
+- Enter a product description in natural language
+- Receive the most relevant HS / HTS code candidates
+- Understand why each code is suggested
+- Explore alternative classifications and their implications
+- Reduce ambiguity and manual lookup work
+
+👉 [**Launch the Customs Classification Chatbot**](https://supplygraph.ai/zk_chat_os/agentic/dialog.html?name=tariff_classification)
+
+To use the chatbot, you’ll first need to:
+- Create a SupplyGraph AI account
+- Top up your credit balance
+
+This chatbot is powered by the **same Customs Classification Agent and A2A endpoints** described in this documentation.  
+Credits used in the chatbot are deducted in the same way as API/A2A usage.
+
+
 ## API Overview
 This section provides an overview of the A2A API structure and usage.
 
@@ -346,27 +367,6 @@ When the task completes successfully (`success: true` and `code: "TASK_COMPLETED
 - Always ensure `code` is `TASK_COMPLETED` before using content.  
 - Parse Markdown in `content` for structured rendering if applicable.  
 - Handle `"TASK_FAILED"` with fallback or retry logic.  
-
-
-## Try the Customs Classification Agent (Live Chatbot)
-
-Before integrating this agent via API, you can experience it instantly through our interactive classification chatbot.
-
-This live demo allows you to:
-- Enter a product description in natural language
-- Receive the most relevant HS / HTS code candidates
-- Understand why each code is suggested
-- Explore alternative classifications and their implications
-- Reduce ambiguity and manual lookup work
-
-👉 [**Launch the Customs Classification Chatbot**](https://supplygraph.ai/zk_chat_os/agentic/dialog.html?name=tariff_classification)
-
-To use the chatbot, you’ll first need to:
-- Create a SupplyGraph AI account
-- Top up your credit balance
-
-This chatbot is powered by the **same Customs Classification Agent and A2A endpoints** described in this documentation.  
-Credits used in the chatbot are deducted in the same way as API/A2A usage.
 
 
 ## Make Your First A2A Call
