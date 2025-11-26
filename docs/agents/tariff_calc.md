@@ -16,6 +16,29 @@ SupplyGraph AI integrates **real-time global tariff databases** with **graph-bas
 Each result is backed by verifiable source data, ensuring full transparency and minimizing compliance risk at scale.
 
 
+## Try the U.S. Tariff Calculation Agent (Live Chatbot)
+
+Before integrating this agent via API, you can experience it instantly through our interactive tariff analysis chatbot.
+
+This live demo allows you to:
+- Describe your product in natural language
+- Identify the most relevant HTS codes
+- Apply the correct country of origin
+- Calculate U.S. base duties and applicable additional tariffs (including Chapter 99)
+- See how tariffs impact your landed cost in real time
+- Compare alternative classification or sourcing scenarios
+
+👉 [**Launch the U.S. Tariff Calculation Chatbot**](https://supplygraph.ai/zk_chat_os/agentic/dialog.html?name=tariff_calc)
+
+To use the chatbot, you’ll first need to:
+- Create a SupplyGraph AI account
+- Top up your credit balance
+
+This chatbot is powered by the **same U.S. Tariff Calculation Agent and A2A endpoints** described in this documentation.  
+Credits used in the chatbot are deducted in the same way as API/A2A usage.
+
+Everything you experience in the chatbot can be fully embedded into your own system through A2A integration below.
+
 
 ## API Overview
 This section provides an overview of the A2A API structure and usage.
@@ -313,31 +336,6 @@ curl -X POST https://agent.supplygraph.ai/api/v1/agents/tariff_calc/run
 - Always ensure `code` is `TASK_COMPLETED` before using content.  
 - Parse Markdown in `content` for structured rendering if applicable.  
 - Handle `"TASK_FAILED"` with fallback or retry logic.  
-
-
-## Try the U.S. Tariff Calculation Agent (Live Chatbot)
-
-Before integrating this agent via API, you can experience it instantly through our interactive tariff analysis chatbot.
-
-This live demo allows you to:
-- Describe your product in natural language
-- Identify the most relevant HTS codes
-- Apply the correct country of origin
-- Calculate U.S. base duties and applicable additional tariffs (including Chapter 99)
-- See how tariffs impact your landed cost in real time
-- Compare alternative classification or sourcing scenarios
-
-👉 [**Launch the U.S. Tariff Calculation Chatbot**](https://supplygraph.ai/zk_chat_os/agentic/dialog.html?name=tariff_calc)
-
-To use the chatbot, you’ll first need to:
-- Create a SupplyGraph AI account
-- Top up your credit balance
-
-This chatbot is powered by the **same U.S. Tariff Calculation Agent and A2A endpoints** described in this documentation.  
-Credits used in the chatbot are deducted in the same way as API/A2A usage.
-
-Everything you experience in the chatbot can be fully embedded into your own system through A2A integration below.
-
 
 
 ## Make Your First A2A Call
