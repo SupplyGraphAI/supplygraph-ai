@@ -18,6 +18,28 @@
 Autonomous, auditable, and real-time supply-chain intelligence that maps how companies, products, and geographies connect across the global economy — enabling visibility, resilience, and efficiency <b>without requiring any customer-provided data</b>.
 </p>
 
+<p align="center">
+<strong>Keywords:</strong> AI-powered supply chain intelligence, tariff calculation, HTS classification, trade compliance, multi-tier supply chain risk analysis, A2A agent platform
+</p>
+
+## Documentation Map
+
+This repository contains the official documentation of **SupplyGraph AI** and is structured as follows:
+
+📘 **Getting Started** – Setup, authentication and first request  
+👉 [`docs/getting-started.md`](./docs/getting-started.md)
+
+🤝 **A2A / MCP Protocol** – Agent-to-Agent interface & interoperability  
+👉 [`docs/a2a.md`](./docs/a2a.md)
+
+🤖 **Agent Library Overview** – All available AI agents  
+👉 [`docs/agents/`](./docs/agents/)
+
+📦 **Developer SDK** – Programmatic access for integration  
+👉 https://github.com/SupplyGraphAI/supplygraphai_a2a_sdk
+
+🌐 **Official Website** – Product, use cases & demo  
+👉 https://www.supplygraph.ai
 
 
 ## Table of Contents
@@ -37,7 +59,7 @@ Autonomous, auditable, and real-time supply-chain intelligence that maps how com
 
 
 ## Introduction
-**SupplyGraph AI** delivers real-time global supply graph intelligence — an AI-native risk infrastructure that reveals multi-hop visibility with auditable analytics for enterprises, financial institutions, and public stakeholders.
+**SupplyGraph AI** delivers real-time, AI-powered global supply graph intelligence for **multi-tier supply chain risk analysis, tariff calculation, HTS classification, and trade compliance** — an AI-native risk infrastructure that reveals multi-hop visibility with auditable analytics for enterprises, financial institutions, and public stakeholders.
 
 
 
@@ -63,6 +85,9 @@ Each relationship is tied to live signals and an auditable evidence chain.
 
 ## Two Groups of AI Agents
 
+> 📚 Full agent descriptions and usage examples are available here:  
+> 👉 [Browse all agents](./docs/agents/)
+
 ### Group 1: Automation & Efficiency Agents
 Automate repetitive and time-consuming workflows:
 - **[Customs Classification Agent](./docs/agents/tariff_classification.md)** — Maps products to correct HS/HTS codes.  
@@ -85,12 +110,57 @@ Our platform is designed for **fast, standards-based integration**:
 - **Agent-to-Agent (A2A) and MCP Interfaces** — Built on industry standards for interoperability.  
 - **Integration Time:** Typically **15–30 minutes** for most enterprise environments.  
 
+### Quick Example (Python SDK — A2A Pattern)
+
+```python
+from supplygraphai_a2a_sdk import AgentClient
+import time
+
+client = AgentClient(api_key="YOUR_API_KEY")
+
+# 1. Submit a task to the Tariff Calculation Agent
+run_response = client.run(
+    agent_id="tariff_calc",
+    text="Lithium-ion batteries for electric vehicles manufactured in China"
+)
+
+task_id = run_response.get("task_id")
+print(f"Task submitted: {task_id}")
+
+# 2. Check task status
+status = "PENDING"
+while status not in ("COMPLETED", "FAILED"):
+    time.sleep(3)
+    status_response = client.status(
+        agent_id="tariff_calc",
+        task_id=task_id
+    )
+    status = status_response.get("status")
+    print("Current status:", status)
+
+# 3. Retrieve final results
+if status == "COMPLETED":
+    result = client.results(
+        agent_id="tariff_calc",
+        task_id=task_id
+    )
+    print("Final result:")
+    print(result)
+else:
+    print("Task failed or cancelled.")
+```
+> This example demonstrates the complete A2A (Agent-to-Agent) lifecycle
+> — **run** → **status** → **results** — for **HTS-based tariff calculation and U.S. trade compliance analysis**
+> using SupplyGraph AI.
+
 **Ideal for:**  
 AI engineers, data-science teams, supply-chain developers, and risk-automation architects building intelligent enterprise workflows.
 
 For full setup, authentication, and A2A/MCP key usage, see the [Getting Started Guide](./docs/getting-started.md).  
 For endpoint specifications, refer to the [A2A Protocol](./docs/a2a.md).
 
+📦 For programmatic integration, SDKs and sample code, visit:  
+👉 **[SupplyGraphAI/supplygraphai_a2a_sdk](https://github.com/SupplyGraphAI/supplygraphai_a2a_sdk)**
 
 ## Who Uses SupplyGraph AI
 **SupplyGraph AI** is built for organizations and developers who depend on complex, global supply networks:  
@@ -142,6 +212,20 @@ Through autonomous graph intelligence, we empower organizations to predict risks
 For partnerships, integrations, or research collaborations:  
 📧 **info@supplygraph.ai**  
 🌐 [https://www.supplygraph.ai](https://www.supplygraph.ai)  
+
+
+
+## More about SupplyGraph AI
+
+📘 Main Documentation: https://github.com/SupplyGraphAI/supplygraph-ai  
+🚀 Getting Started Guide: ./docs/getting-started.md  
+🤝 A2A / MCP Protocol: ./docs/a2a.md  
+🤖 Agents Library: ./docs/agents/  
+📦 Developer SDK: https://github.com/SupplyGraphAI/supplygraphai_a2a_sdk  
+🌐 Official Website: https://www.supplygraph.ai  
+
+**Key Focus Areas:**  
+AI-powered supply chain, tariff calculation, HTS classification, trade compliance, multi-tier risk analysis, agent-to-agent systems.
 
 
 
