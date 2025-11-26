@@ -13,6 +13,30 @@ Visualizes a company-centered global supply product graph that maps dependencies
 Powered by data on 100M+ companies, 1M+ key products, and 8,000+ industry benchmarks, continuously monitored 24/7, SupplyGraph.AI delivers the world’s first intelligent platform that allows any enterprise to visualize, monitor, and analyze its global supply graph in real time — transforming hidden dependencies into actionable resilience.
 
 
+## Try the Enterprise Supply Graph Agent (Live Chatbot)
+
+Before integrating this agent via API, you can experience it directly through our interactive visualization chatbot.
+
+This live demo allows you to:
+- Enter a company name
+- Automatically generate a multi-tier supply graph (Tier-1 to deep-tier)
+- Visualize product, supplier, and regional dependencies
+- Identify concentration risks and hidden exposure
+- Explore alternative sourcing pathways
+- Experience the structure and depth of the intelligence graph
+
+👉 [**Launch the Enterprise Supply Graph Chatbot**](https://supplygraph.ai/zk_chat_os/agentic/dialog.html?name=sg_visualization)
+
+To use the chatbot, you’ll first need to:
+- Create a SupplyGraph AI account
+- Top up your credit balance
+
+This chatbot is powered by the **same Enterprise Supply Graph Agent and A2A endpoints** described in this documentation.  
+Credits used in the chatbot are deducted in the same way as API/A2A usage.
+
+Everything you experience in the chatbot can be fully embedded into your own system through A2A integration below.
+
+
 ## API Overview
 This section provides an overview of the A2A API structure and usage.
 
@@ -278,30 +302,6 @@ curl -X POST https://agent.supplygraph.ai/api/v1/agents/sg_visualization/run
 - Always ensure `code` is `TASK_COMPLETED` before using content.  
 - Parse Markdown in `content` for structured rendering if applicable.  
 - Handle `"TASK_FAILED"` with fallback or retry logic.  
-
-
-## Try the Enterprise Supply Graph Agent (Live Chatbot)
-
-Before integrating this agent via API, you can experience it directly through our interactive visualization chatbot.
-
-This live demo allows you to:
-- Enter a company name
-- Automatically generate a multi-tier supply graph (Tier-1 to deep-tier)
-- Visualize product, supplier, and regional dependencies
-- Identify concentration risks and hidden exposure
-- Explore alternative sourcing pathways
-- Experience the structure and depth of the intelligence graph
-
-👉 [**Launch the Enterprise Supply Graph Chatbot**](https://supplygraph.ai/zk_chat_os/agentic/dialog.html?name=sg_visualization)
-
-To use the chatbot, you’ll first need to:
-- Create a SupplyGraph AI account
-- Top up your credit balance
-
-This chatbot is powered by the **same Enterprise Supply Graph Agent and A2A endpoints** described in this documentation.  
-Credits used in the chatbot are deducted in the same way as API/A2A usage.
-
-Everything you experience in the chatbot can be fully embedded into your own system through A2A integration below.
 
 
 ## Make Your First A2A Call
