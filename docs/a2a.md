@@ -15,7 +15,7 @@ Through this protocol, developers can:
 - Query task status via `POST /run` with `mode=status` (non‑streaming).
 - Retrieve final results via `POST /run` with `mode=results` (non‑streaming).
 
-All timestamps use UTC ISO format `YYYY-MM-DDTHH:MM:SSZ`.
+> All timestamps use UTC ISO format `YYYY-MM-DDTHH:MM:SSZ`.
 
 
 ## 2. Transport & Authentication
@@ -27,7 +27,7 @@ All timestamps use UTC ISO format `YYYY-MM-DDTHH:MM:SSZ`.
 | Encoding | UTF‑8 JSON. |
 | Direction | Request/response. Agents may act as both caller and callee. |
 
-Unauthorized or malformed requests return `success: false` with `code: UNAUTHORIZED`.
+> Unauthorized or malformed requests return `success: false` with `code: UNAUTHORIZED`.
 
 
 ## 3. Endpoints Summary
@@ -172,10 +172,25 @@ Unified codes (align with agent docs):
 All responses include `success`, `code`, and `message`. See agent docs for stage‑specific codes per lifecycle.
 
 
-## 7. Retry & Acknowledgment
+## 7. Retry & Acknowledgment(Forward-Looking / Reserved)
+This section describes **future-oriented reliability mechanisms** designed for advanced Agent-to-Agent and event-driven communication scenarios.
 
-Acknowledgment example:
+In **v1.0**, SupplyGraph AI primarily operates on a **request–task–result** model:
 
+`run → status → results`
+
+Requests are initiated by the client and responses are retrieved via task polling.  
+**Acknowledgment (ACK) and message retry mechanisms are not required for normal operation in this version.**
+
+However, as SupplyGraph AI evolves to support:
+- Direct Agent-to-Agent task delegation
+- Event-driven orchestration
+- Pub/Sub or message-queue-based delivery
+- Cross-system autonomous collaboration
+
+a standardized acknowledgment and retry mechanism will be introduced to ensure **reliable**, **idempotent delivery** of agent instructions and events.
+
+### **Example (future format)**
 ```json
 {
   "ack": true,
@@ -188,10 +203,14 @@ Acknowledgment example:
 }
 ```
 
-Guidelines:
-- Retry if no acknowledgment within 3 seconds.
-- Use exponential backoff; cap at 3 attempts.
-- Deliveries must be idempotent.
+### **Planned Guidelines**
+When this mechanism is activated in future versions:
+- If no acknowledgment is received within **3 seconds**, the sender SHOULD retry.
+- Use **exponential backoff**, capped at **3 retry attempts**.
+- All event deliveries MUST be **idempotent** (duplicate events must not trigger duplicate processing).
+- Every event SHOULD carry a unique `event_id` and optional `trace_id` for observability.
+
+This section is intentionally included to establish **forward protocol compatibility** and to enable future support for fully autonomous, distributed multi-agent architectures within the SupplyGraph AI ecosystem.
 
 
 ## 8. Security & Access Control
@@ -201,13 +220,55 @@ Guidelines:
 - Log cross‑agent activity with a `trace_id` for observability.
 
 
-## 9. Versioning
-Include `metadata.version` in envelopes. Agents SHOULD validate compatibility and reject incompatible versions with `code: INVALID_REQUEST` and an explanatory `message`.
+## 9. Versioning(Forward Compatibility Strategy)
+In the current **v1.0** release, SupplyGraph AI focuses on providing a **stable and simplified integration surface** for external developers and systems.
+
+At this stage:
+- A fixed API path structure is used (`/api/v1/agents/...`)
+- Breaking changes are **avoided**
+- Backward compatibility within the same major version is preserved
+
+Formal, multi-version negotiation using `metadata.version` is **not required for standard client integrations at this time**.
+
+However, in future releases, SupplyGraph AI will introduce:
+- Semantic versioning for agent capabilities
+- Explicit protocol version fields in the metadata layer
+- Compatibility validation between agents and orchestration systems
+- Graceful rejection of incompatible requests with `code: INVALID_REQUEST` and a descriptive message
+
+This design ensures that:
+
+✅ Existing integrations remain stable  
+✅ New capabilities can evolve independently  
+✅ Multi-agent ecosystems can safely operate across versions  
+✅ Enterprise orchestration platforms can programmatically validate compatibility
+
+> Note: Forward compatibility is built into the protocol design from day one,
+> even when not fully activated in the current version.
 
 
 ## 10. Related Documentation
-- [Getting Started Guide](./getting-started.md)  
-- [Agent Specifications](./agents/)
+
+Explore more about the SupplyGraph AI ecosystem:
+
+📘 **Getting Started Guide**  
+  https://github.com/SupplyGraphAI/supplygraph-ai/blob/main/docs/getting-started.md
+
+🤖 **Agent Specifications & Library**  
+  https://github.com/SupplyGraphAI/supplygraph-ai/tree/main/docs/agents
+
+🧠 **SupplyGraph AI Documentation Hub**  
+  https://github.com/SupplyGraphAI/supplygraph-ai
+
+📦 **Python A2A SDK (Official Repository)**  
+  https://github.com/SupplyGraphAI/supplygraphai_a2a_sdk
+
+🌐 **Official Website & Use Cases**  
+  https://www.supplygraph.ai
+
+📄 **Future Protocols & Enterprise Specifications** *(Coming Soon)*  
+  MCP, multi-agent orchestration & deployment whitepapers
+
 
 ## 11. SupplyGraph AI A2A SDK (Python)
 
