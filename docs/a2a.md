@@ -31,7 +31,9 @@ Unauthorized or malformed requests return `success: false` with `code: UNAUTHORI
 
 
 ## 3. Endpoints Summary
-A2A surfaces a single POST endpoint with **mode switching** plus a read‑only manifest:
+A2A surfaces a single POST endpoint with **mode switching** plus a read-only manifest,
+enabling a unified interaction pattern across heterogeneous systems and agent-based architectures.
+
 
 | Endpoint | Method | Mode | Streaming | Purpose |
 |----------|--------|------|-----------|---------|
@@ -64,6 +66,10 @@ A2A requests and responses share a consistent structure across agents.
 - `task_id` required for `status` and `results`.
 - `extra` is agent‑specific options.
 
+> This unified envelope allows orchestration layers to handle agents generically without
+hardcoding agent-specific contracts.
+
+
 ### 4.2 Response (envelope)
 
 ```json
@@ -93,7 +99,10 @@ A2A requests and responses share a consistent structure across agents.
 
 ## 5. Streaming Events (mode=run only)
 
-When `"stream": true`, servers may send Server‑Sent Events (SSE). A typical sequence:
+When `"stream": true`, SupplyGraph AI exposes its internal reasoning and
+execution phases through Server-Sent Events (SSE), enabling real-time
+observability into autonomous agent behavior.
+
 
 | Event | Stage | Code | Description |
 |-------|-------|------|-------------|
@@ -207,9 +216,29 @@ Looking for the official Python SDK for integrating SupplyGraph A2A Agents?
 ➡️ **[SupplyGraph AI A2A Python SDK](https://github.com/SupplyGraphAI/supplygraphai_a2a_sdk)**  
 Directly maintained under the same GitHub organization.
 
+This SDK bridges SupplyGraph AI into the broader Agentic & LLM ecosystem, 
+allowing seamless integration with modern multi-agent stacks.
+
 The SDK includes:
 - Core A2A API client  
 - Multi-round BaseAgent abstraction  
 - Full adapter ecosystem (LangChain, LangGraph, AutoGen, CrewAI, DSPy, Semantic Kernel, Flowise, Haystack, Airflow, BentoML, Google A2A, MCP)  
 - Documentation & integration examples  
 
+
+## 12. Why A2A Matters
+
+Traditional APIs expose static functions.  
+The SupplyGraph AI A2A Protocol exposes **living agents** — capable of reasoning, 
+decision-making, adaptation, and collaboration.
+
+This enables:
+
+- True **Agent-to-Agent collaboration**
+- Cross-platform **agent orchestration**
+- Multi-step autonomous workflows
+- Native integration with AI-native ecosystems
+- Scalable, distributed thinking architectures
+
+In other words, A2A is not just a technical interface — it is the foundation
+of **next-generation autonomous enterprise intelligence**.
