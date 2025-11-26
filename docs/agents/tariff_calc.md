@@ -15,7 +15,7 @@ It supports accurate decision-making, enables tariff optimization, and ensures c
 SupplyGraph AI integrates **real-time global tariff databases** with **graph-based reasoning**, producing precise and auditable calculations.  
 Each result is backed by verifiable source data, ensuring full transparency and minimizing compliance risk at scale.
 
----
+
 
 ## API Overview
 This section provides an overview of the A2A API structure and usage.
@@ -31,7 +31,6 @@ This section provides an overview of the A2A API structure and usage.
 - `mode=status` — check task progress (non-streaming)  
 - `mode=results` — retrieve task output (non-streaming)
 
----
 
 ## Manifest
 
@@ -58,7 +57,6 @@ curl -X GET https://agent.supplygraph.ai/api/v1/agents/tariff_calc/manifest
 }
 ```
 
----
 
 ## Run Endpoint
 
@@ -207,7 +205,6 @@ When the response field **`code="WAITING_USER"`** appears, it indicates that the
 To continue a paused task, the client **must** send the follow-up message with the original `task_id`.
 If the continuation request does **not** include the correct `task_id`, the system will treat it as a **new task**, leaving the original task unresolved.
 
----
 
 ## Status Endpoint
 
@@ -262,7 +259,6 @@ curl -X POST https://agent.supplygraph.ai/api/v1/agents/tariff_calc/run
 - If `TASK_FAILED`, review `errors` for details.  
 - Avoid excessive polling to prevent rate limiting.  
 
----
 
 ## Results Endpoint
 
@@ -318,7 +314,6 @@ curl -X POST https://agent.supplygraph.ai/api/v1/agents/tariff_calc/run
 - Parse Markdown in `content` for structured rendering if applicable.  
 - Handle `"TASK_FAILED"` with fallback or retry logic.  
 
----
 
 ## Make Your First A2A Call
 
@@ -327,16 +322,21 @@ Demonstrates the typical three-step workflow:
 2. Check progress with `mode=status`  
 3. Retrieve output with `mode=results`  
 
----
 
 ## Integration Options
+### Protocols
 
-| Mode | Description | Documentation |
-|------|--------------|----------------|
-| A2A (Agent-to-Agent) | Autonomous inter-agent workflow mode. | A2A Protocol |
-| MCP (Multi-Channel Protocol) | Large-scale enterprise orchestration (coming soon). | Coming Soon |
+| Protocol | Description | Docs |
+|------|------|------|
+| **A2A (Agent-to-Agent)** | Native protocol for autonomous agent workflows and communication | [A2A Protocol](../a2a.md) |
+| **MCP (Multi-Channel Protocol)** | Next-generation orchestration protocol for enterprise and multi-system environments | *(Coming Soon)* |
 
----
+### Developer Interfaces
+
+| Interface | Description | Docs |
+|------|------|------|
+| **Python SDK (A2A Client)** | Official Python wrapper built on top of the A2A protocol for rapid integration | [supplygraphai_a2a_sdk](https://github.com/SupplyGraphAI/supplygraphai_a2a_sdk) |
+
 
 ## Error Handling & Rate Limits
 
@@ -368,7 +368,6 @@ cancelled:
   TASK_CANCELLED
 ```
 
----
 
 ## Maintainer & License
 
