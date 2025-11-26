@@ -1,6 +1,6 @@
 # Getting Started
 
-Welcome to the **SupplyGraph AI Developer Platform** — the gateway to accessing autonomous supply-chain intelligence through our API, A2A, and MCP interfaces.
+Welcome to the **SupplyGraph AI Developer Platform** — the gateway to accessing autonomous supply-chain intelligence through our A2A/MCP interfaces.
 
 This guide walks you through the essentials: creating an account, managing credits, generating an API key, and making your first request.
 
