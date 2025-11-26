@@ -9,7 +9,6 @@ Automated exception reporting cuts research time by up to 90%, delivers standard
 ### Why Us
 Our exception reports are powered by real-time data from 100M+ companies, 8,000+ benchmarks, and 1M+ key products—continuously structured and monitored for faster, deeper, always-current insights.
 
----
 
 ## API Overview
 This section provides an overview of the A2A API structure and usage.
@@ -25,7 +24,6 @@ This section provides an overview of the A2A API structure and usage.
 - `mode=status` — check task progress (non-streaming)  
 - `mode=results` — retrieve task output (non-streaming)
 
----
 
 ## Manifest
 
@@ -52,7 +50,6 @@ curl -X GET https://agent.supplygraph.ai/api/v1/agents/corporate_exception_repor
 }
 ```
 
----
 
 ## Run Endpoint
 
@@ -177,7 +174,6 @@ curl -X POST https://agent.supplygraph.ai/api/v1/agents/corporate_exception_repo
 - If `TASK_FAILED`, review `errors` for details.  
 - Avoid excessive polling to prevent rate limiting.  
 
----
 
 ## Results Endpoint
 
@@ -233,7 +229,6 @@ curl -X POST https://agent.supplygraph.ai/api/v1/agents/corporate_exception_repo
 - Parse Markdown in `content` for structured rendering if applicable.  
 - Handle `"TASK_FAILED"` with fallback or retry logic.  
 
----
 
 ## Make Your First A2A Call
 
@@ -243,7 +238,6 @@ Demonstrates the typical workflow:
 3. Check progress with `mode=status`  
 4. Retrieve output with `mode=results`  
 
----
 
 ## Integration Options
 ### Protocols
@@ -259,7 +253,6 @@ Demonstrates the typical workflow:
 |------|------|------|
 | **Python SDK (A2A Client)** | Official Python wrapper built on top of the A2A protocol for rapid integration | [supplygraphai_a2a_sdk](https://github.com/SupplyGraphAI/supplygraphai_a2a_sdk) |
 
----
 
 ## Error Handling & Rate Limits
 
@@ -291,7 +284,6 @@ cancelled:
   TASK_CANCELLED
 ```
 
----
 
 ## Maintainer & License
 
