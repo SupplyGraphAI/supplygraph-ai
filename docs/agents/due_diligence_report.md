@@ -1,70 +1,143 @@
 # Due Diligence Agent
 
-### Pain
-Traditional due diligence is slow, fragmented, and costly—analysts often spend more than 10 hours per company gathering unstructured data that quickly becomes outdated.
 
-### Breakthrough
-Automated due diligence cuts research time by up to 90%, delivers standardized, comparable intelligence, and continuously tracks critical changes.
+## Overview
 
-### Why Us
-Our due diligence is powered by real-time data from 100M+ companies, 8,000+ benchmarks, and 1M+ key products—continuously structured and monitored for faster, deeper, always-current insights.
+The **Due Diligence Agent** generates a comprehensive, structured, and continually updated intelligence report for any company worldwide.
+
+It consolidates fragmented public data — including corporate registration, legal records, subsidiaries, IP assets, compliance, financial disclosures, workforce, and regulatory signals — into a **standardized, enterprise-grade due diligence dossier**.
+
+This agent is designed for:
+
+- M&A screening
+- Supplier onboarding
+- Investment research
+- Risk and compliance reviews
+- Strategic partner evaluation
+
+
+## Pain
+
+Traditional due diligence is slow, fragmented, and expensive.
+
+Analysts often spend **10+ hours per company** collecting unstructured information from dozens of sources — and by the time the report is finished, much of the data is already outdated.
+
+Key challenges include:
+
+- Manual data aggregation
+- Inconsistent formats
+- Incomplete coverage
+- Lack of continuous monitoring
+- High research costs
+
+This creates blind spots in strategic decision-making and risk management.
+
+
+## Breakthrough
+
+The Due Diligence Agent automates a process that previously required multiple teams and tools.
+
+Behind the scenes, it:
+
+- Aggregates data from a global corporate graph
+- Resolves entities and normalizes records
+- Structures information into standardized modules
+- Continuously refreshes and updates changes
+
+For users, the workflow is simple:
+
+1. Provide a company name
+2. Confirm the matched entity
+3. Receive a complete or chapter-specific due diligence report
+
+Results are:
+
+- Structured
+- Auditable
+- Enterprise-ready
+- Continuously updated
+
+
+## Why SupplyGraph AI
+
+Powered by:
+
+- 100M+ global companies
+- 8,000+ industry benchmarks
+- 1M+ key products and entities
+
+SupplyGraph AI delivers **institution-grade due diligence intelligence** without requiring you to upload any proprietary internal data.
+
+Every insight is:
+
+- Evidence-linked
+- Contextualized
+- Continuously monitored
+- Built for compliance and risk teams
 
 
 ## Try the Due Diligence Agent (Live Chatbot)
 
-Before integrating this agent via API, you can experience it directly through our interactive chatbot.
+Before integrating via API, you can experience this agent directly through our interactive chatbot.
 
 This live demo allows you to:
-- Enter a company name
-- Confirm the correct entity
-- Generate a full or chapter-specific due diligence report
-- Preview the exact structure and quality of the output
 
-👉 [**Launch the Due Diligence Chatbot**](https://supplygraph.ai/zk_chat_os/agentic/dialog.html?name=due_diligence_report)
+- Enter a company name
+- Confirm the correct legal entity
+- Generate a full or chapter-specific report
+- Preview the structure and quality of the final output
+
+Launch the Due Diligence Chatbot  
+https://supplygraph.ai/zk_chat_os/agentic/dialog.html?name=due_diligence_report
 
 To use the chatbot, you’ll first need to:
+
 - Create a SupplyGraph AI account
 - Top up your credit balance
 
 The chatbot is powered by the **same Due Diligence Agent and A2A endpoints** described in this documentation.  
-Credits used in the chatbot are deducted in the same way as API/A2A usage.
+Credits consumed in the chatbot are deducted in the same way as API / A2A usage.
 
-Everything you experience in the chatbot can be fully embedded into your own system through A2A integration below.
+Everything you experience here can be fully embedded into your own system through A2A integration.
 
 
 ## API Overview
-This section provides an overview of the A2A API structure and usage.
 
-### Endpoints Summary
+This section provides an overview of the **A2A (Agent-to-Agent)** interface.
+
+
+## Endpoints Summary
+
 | Endpoint | Method | Description |
-|-----------|---------|-------------|
-| `/api/v1/agents/due_diligence_report/manifest` | GET | Retrieve metadata, schema, pricing, and version info. |
-| `/api/v1/agents/due_diligence_report/run` | POST | Execute or manage tasks via `mode`. |
+|---------|--------|-------------|
+| `/api/v1/agents/due_diligence_report/manifest` | GET | Retrieve metadata, schema, pricing, and version information |
+| `/api/v1/agents/due_diligence_report/run` | POST | Execute or manage tasks via `mode` |
 
-**Supported modes:**  
-- `mode=run` (default) — start a new task (non-streaming)  
-- `mode=status` — check task progress (non-streaming)  
-- `mode=results` — retrieve task output (non-streaming)
+
+**Supported modes:**
+
+- `mode=run` — start a new task
+- `mode=status` — check task progress
+- `mode=results` — retrieve completed output
 
 
 ## Manifest
 
-### Purpose
-The Manifest provides metadata about the Agent including version, schema definitions, pricing, and available capabilities.
-
 ### Request
+
 ```bash
-curl -X GET https://agent.supplygraph.ai/api/v1/agents/due_diligence_report/manifest   
+curl -X GET https://agent.supplygraph.ai/api/v1/agents/due_diligence_report/manifest
   -H "Authorization: Bearer <YOUR_API_KEY>"
 ```
 
 ### Example Response
+
 ```json
 {
   "agent_id": "due_diligence_report",
   "name": "Due Diligence Agent",
   "version": "1.0.0",
-  "description": "Performs {{agent_function_description}}",
+  "description": "Generates structured and continuously updated company due diligence intelligence",
   "input_schema": { ... },
   "output_schema": { ... },
   "pricing": { "unit": "credits", "per_run": 10 },
@@ -74,247 +147,203 @@ curl -X GET https://agent.supplygraph.ai/api/v1/agents/due_diligence_report/mani
 
 
 ## Run Endpoint
-### 1. Submit the Initial Request
-#### Purpose
-Start a new task with this Agent.  
-This endpoint supports non-streaming (`stream=false`) modes and allows the use of the `chapter_name` parameter to control the generation of a specific individual chapter in the report.
 
-#### Request
+### Purpose
+
+Start a new due diligence task.  
+Supports **entity resolution + chapter-level control** via `chapter_name`.
+
+### Request
+
 ```bash
 curl -X POST https://agent.supplygraph.ai/api/v1/agents/due_diligence_report/run
   -H "Authorization: Bearer <YOUR_API_KEY>"
   -H "Content-Type: application/json"
-  -d '{"text": "Tesla, Inc. United States", "stream": false}'
-```
-**Example Response 1:**
-```text
-{"success": false, "code": "WAITING_USER", "message": "waiting user", "data": {"task_id": "<system-generated-task-id>", "agent": "due_diligence_report", "stage": "interpreting", "code": "WAITING_USER", "progress": 0, "reasoning": [], "timestamp": "2025-11-14T02:46:44.242486Z", "is_final": true, "content": "Your input must include a valid company name (ideally the full legal name, e.g. Apple Inc.) so that we can provide more accurate and precise service for you."}, "metadata": {"agent": "due_diligence_report", "timestamp": "2025-11-14T02:46:44.242541Z"}, "errors": null}
-```
-
-**Example Response 2:**
-```text
-{"success": false, "code": "WAITING_USER", "message": "waiting user", "data": {"task_id": "<system-generated-task-id>", "agent": "due_diligence_report", "stage": "interpreting", "code": "WAITING_USER", "progress": 0, "reasoning": [], "timestamp": "2025-11-07T01:44:57.409211+00:00", "is_final": true, "content": "Here are the companies we’ve identified.\nPlease review the information below to confirm accuracy.\nCompany Name: Tesla, Inc.\nCountry: United States\nIf everything looks correct, type [Yes] or [Y] to proceed.\nIf this isn’t the intended company, type [No] or [N]."}, "metadata": {"agent": "due_diligence_report", "timestamp": "2025-11-07T01:44:57.409256+00:00"}, "errors": null}
+  -d '{
+        "text": "Tesla, Inc. United States",
+        "stream": false
+      }'
 ```
 
-### 2. Confirm the Execution
-#### Purpose
-Respond with `Yes` to confirm and proceed with task execution, ensuring the `chapter_name` parameter is kept consistent with the initial task creation.
-
-#### Request
-```bash
-curl -N -X POST https://agent.supplygraph.ai/api/v1/agents/due_diligence_report/run \
-     -H "Content-Type: application/json" \
-     -H "Authorization: Bearer <YOUR_API_KEY>" \
-     -d '{"text": "Yes", "stream": false, "task_id": "<system-generated-task-id>"}'
-```
-
-**Example Response:**
-```text
-data: {"success": true, "code": "TASK_ACCEPTED", "message": "Task accepted and queued for execution.", "data": {"task_id": "<system-generated-task-id>", "agent": "due_diligence_report", "stage": "executing", "code": "TASK_ACCEPTED", "progress": 0, "reasoning": [], "timestamp": "2025-11-07T01:44:57.409211+00:00", "is_final": true, "content": "Task accepted and queued for execution."}, "metadata": {"agent": "due_diligence_report", "timestamp": "2025-11-07T01:44:57.409256+00:00"}, "errors": null}
-```
-
-### chapter_name Parameter
-
-The `chapter_name` parameter specifies the chapter of the report to generate. It can be set to "ALL" to include all chapters or one of the specific chapter names listed below.
-
-**Schema Definition:**
+### Example Response (WAITING_USER)
 
 ```json
 {
-    "type": "string",
-    "enum": [
-        "ALL",
-        "Company Registration Information",
-        "Branch Offices",
-        "Corporate Brand Initiatives",
-        "Administrative Sanctions",
-        "Software Copyright Details",
-        "Outbound Investments",
-        "Financing Activities",
-        "Competitor Analysis",
-        "Subsidiary Companies",
-        "Trademark Portfolio",
-        "Patent Holdings",
-        "Website Registrations",
-        "Court Judgments",
-        "Shareholder Structure",
-        "Senior Management Team",
-        "Administrative Permits",
-        "Court Hearing Notices",
-        "Court Notices",
-        "Equity Pledges",
-        "Mobile Applications",
-        "Copyrighted Works",
-        "Equity Freezes",
-        "Chattel Mortgages",
-        "WeChat Official Accounts",
-        "Tendering and Bidding Activities",
-        "Qualification Certificates",
-        "Engineering Irregularities",
-        "Major Regulatory Violations",
-        "Compensation and Benefits",
-        "Enforcement Targets",
-        "Supplier Network",
-        "Credit Ratings",
-        "Tax Offenses",
-        "Regulatory Spot Checks",
-        "Import-Export Credit Records",
-        "Regulatory Actions",
-        "Granted Government Subsidies",
-        "Eligible Government Subsidies",
-        "Consolidated Statements of Operations",
-        "Income Statement",
-        "Statement of Cash Flows",
-        "Consolidated Balance Sheets"
-    ],
-    "default": "ALL"
+  "success": false,
+  "code": "WAITING_USER",
+  "data": {
+    "task_id": "<task-id>",
+    "agent": "due_diligence_report",
+    "stage": "interpreting",
+    "content": "Here are the companies we’ve identified.\nCompany Name: Tesla, Inc.\nCountry: United States\nPlease reply [Yes] or [No] to confirm."
+  }
 }
 ```
 
+
+## chapter_name Parameter
+
+The `chapter_name` parameter allows you to generate **specific sections** of the report instead of the full report.
+
+```json
+{
+  "type": "string",
+  "enum": [
+    "ALL",
+    "Company Registration Information",
+    "Branch Offices",
+    "Corporate Brand Initiatives",
+    "Administrative Sanctions",
+    "Software Copyright Details",
+    "Outbound Investments",
+    "Financing Activities",
+    "Competitor Analysis",
+    "Subsidiary Companies",
+    "Trademark Portfolio",
+    "Patent Holdings",
+    "Website Registrations",
+    "Court Judgments",
+    "Shareholder Structure",
+    "Senior Management Team",
+    "Administrative Permits",
+    "Court Hearing Notices",
+    "Court Notices",
+    "Equity Pledges",
+    "Mobile Applications",
+    "Copyrighted Works",
+    "Equity Freezes",
+    "Chattel Mortgages",
+    "WeChat Official Accounts",
+    "Tendering and Bidding Activities",
+    "Qualification Certificates",
+    "Engineering Irregularities",
+    "Major Regulatory Violations",
+    "Compensation and Benefits",
+    "Enforcement Targets",
+    "Supplier Network",
+    "Credit Ratings",
+    "Tax Offenses",
+    "Regulatory Spot Checks",
+    "Import-Export Credit Records",
+    "Regulatory Actions",
+    "Granted Government Subsidies",
+    "Eligible Government Subsidies",
+    "Consolidated Statements of Operations",
+    "Income Statement",
+    "Statement of Cash Flows",
+    "Consolidated Balance Sheets"
+  ],
+  "default": "ALL"
+}
+```
+
+
 ## Status Endpoint
 
-### Purpose
-Check the current progress or completion state of a previously submitted task.
-
 ### Request
+
 ```bash
-curl -X POST https://agent.supplygraph.ai/api/v1/agents/due_diligence_report/run   
-  -H "Authorization: Bearer <YOUR_API_KEY>"   
-  -H "Content-Type: application/json"   
-  -d '{"mode": "status", "task_id": "<task-id>"}'
+curl -X POST https://agent.supplygraph.ai/api/v1/agents/due_diligence_report/run
+  -H "Authorization: Bearer <YOUR_API_KEY>"
+  -H "Content-Type: application/json"
+  -d '{
+        "mode": "status",
+        "task_id": "<task-id>"
+      }'
 ```
 
 ### Example Response
+
 ```json
 {
   "success": true,
   "code": "TASK_RUNNING",
-  "message": "Task is still running.",
   "data": {
     "task_id": "<task-id>",
     "agent": "due_diligence_report",
     "stage": "running",
-    "code": "TASK_RUNNING",
-    "progress": 65.5,
-    "timestamp": "2025-11-12T09:05:00Z",
-    "is_final": false
-  },
-  "metadata": {
-    "agent": "due_diligence_report",
-    "timestamp": "2025-11-12T09:05:00Z"
-  },
-  "errors": null
+    "progress": 65.5
+  }
 }
 ```
-
-### Response Structure Explained
-- This endpoint returns a **single JSON object** (non-streaming).  
-- Common codes: `TASK_RUNNING`, `TASK_COMPLETED`, `TASK_FAILED`.
-
-### Fields Reference
-| Field | Type | Required | Description |
-|--------|------|-----------|--------------|
-| `task_id` | string | ☑ | Task identifier |
-| `progress` | number | optional | Current completion percentage |
-| `stage` | string | ☑ | Current stage (`running`, `completed`) |
-| `code` | string | ☑ | State code (e.g., `TASK_RUNNING`) |
-
-### Parameters & Best Practices
-- Poll periodically (e.g., every 5–10 seconds) until `TASK_COMPLETED`.  
-- If `TASK_FAILED`, review `errors` for details.  
-- Avoid excessive polling to prevent rate limiting.  
 
 
 ## Results Endpoint
 
-### Purpose
-Retrieve the final output of a completed task.
-
 ### Request
+
 ```bash
 curl -X POST https://agent.supplygraph.ai/api/v1/agents/due_diligence_report/run
   -H "Authorization: Bearer <YOUR_API_KEY>"
   -H "Content-Type: application/json"
-  -d '{"mode": "results", "task_id": "<task-id>"}'
+  -d '{
+        "mode": "results",
+        "task_id": "<task-id>"
+      }'
 ```
 
 ### Example Response
+
 ```json
 {
   "success": true,
   "code": "TASK_COMPLETED",
-  "message": "Task completed successfully.",
   "data": {
     "task_id": "<task-id>",
     "agent": "due_diligence_report",
-    "stage": "completed",
-    "code": "TASK_COMPLETED",
     "progress": 100,
-    "timestamp": "2025-11-12T09:10:00Z",
-    "is_final": true,
-    "content": "## Example final output text"
+    "content": "## Due Diligence Analysis..."
   },
   "metadata": {
-    "agent": "due_diligence_report",
-    "timestamp": "2025-11-12T09:10:00Z",
     "credits_used": 10
-  },
-  "errors": null
+  }
 }
 ```
-
-### Response Structure Explained
-- Finalized data including computed `content` and credit usage.  
-- Common codes: `TASK_COMPLETED`, `TASK_FAILED`.
-
-### Fields Reference
-| Field | Type | Required | Description |
-|--------|------|-----------|--------------|
-| `content` | string | ☑ | Final output text or structured data |
-| `credits_used` | number | optional | Credits consumed |
-| `errors` | object | optional | Error information if failed |
-
-### Parameters & Best Practices
-- Always ensure `code` is `TASK_COMPLETED` before using content.  
-- Parse Markdown in `content` for structured rendering if applicable.  
-- Handle `"TASK_FAILED"` with fallback or retry logic.  
 
 
 ## Make Your First A2A Call
 
-Demonstrates the typical workflow:  
-1. Submit initial request with `mode=run`  
-2. Confirm execution (if prompted) with `mode=run`  
-3. Check progress with `mode=status`  
-4. Retrieve output with `mode=results`  
+Typical workflow:
+
+1. Start the task with `mode=run`
+2. Confirm company (if prompted)
+3. Poll using `mode=status`
+4. Retrieve the report via `mode=results`
 
 
 ## Integration Options
+
+
 ### Protocols
 
 | Protocol | Description | Docs |
 |------|------|------|
-| **A2A (Agent-to-Agent)** | Native protocol for autonomous agent workflows and communication | [A2A Protocol](../a2a.md) |
-| **MCP (Multi-Channel Protocol)** | Next-generation orchestration protocol for enterprise and multi-system environments | *(Coming Soon)* |
+| **A2A (Agent-to-Agent)** | Autonomous workflow integration standard | [A2A Protocol](../a2a.md) |
+| **MCP (Multi-Channel Protocol)** | Enterprise orchestration layer | *(Coming Soon)* |
+
 
 ### Developer Interfaces
 
 | Interface | Description | Docs |
 |------|------|------|
-| **Python SDK (A2A Client)** | Official Python wrapper built on top of the A2A protocol for rapid integration | [supplygraphai_a2a_sdk](https://github.com/SupplyGraphAI/supplygraphai_a2a_sdk) |
+| **Python SDK (A2A Client)** | Official wrapper for rapid integration | https://github.com/SupplyGraphAI/supplygraphai_a2a_sdk |
 
 
 ## Error Handling & Rate Limits
 
+
 ### Common Error Codes
+
 | Code | Description |
 |------|--------------|
 | UNAUTHORIZED | Missing or expired API key |
 | INSUFFICIENT_CREDITS | Not enough credits |
 | RATE_LIMITED | Too many requests |
-| INVALID_REQUEST | Input outside agent’s task scope |
+| INVALID_REQUEST | Input outside agent’s scope |
+
 
 ### Stage-Specific Codes
+
 ```
 interpreting:
   INTERPRETING
@@ -335,8 +364,6 @@ cancelled:
 ```
 
 
-## Maintainer & License
-
 Maintainer: info@supplygraph.ai  
 License: Proprietary / Internal  
-© 2025 SupplyGraph AI
+© 2025 SupplyGraph AI. All rights reserved.
