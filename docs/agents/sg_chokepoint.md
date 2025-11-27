@@ -1,8 +1,5 @@
 # Geographic Concentration Analysis Agent
 
-Internal ID: sg_chokepoint
-
-
 ## Overview
 
 The **Geographic Concentration Analysis Agent** performs a quantitative, multi-tier evaluation of an enterprise’s global supply chain to identify **country-level and regional over-concentration risks**.
