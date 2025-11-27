@@ -1,78 +1,129 @@
 # U.S. Tariff Calculation Agent
 
-### Overview
-Automatically calculates U.S. duty rates and applicable additional tariffs based on the product’s HTS code and country of origin.
 
-### Pain
-For customs and trade compliance specialists, determining an item’s duty rate and applicable tariffs usually means manually searching through thousands of pages of tariff schedules.  
-This process is not only time-consuming but also error-prone, leading to inconsistent or incomplete results.
+## Overview
 
-### Breakthrough
-**AutoTariff** automates the calculation of duty rates and applicable additional tariffs, cutting analysis time from **hours to seconds**.  
-It supports accurate decision-making, enables tariff optimization, and ensures compliance with evolving customs regulations.
+The **U.S. Tariff Calculation Agent** automatically calculates **U.S. import duty rates** and all **applicable additional tariffs** based on:
 
-### Why Us
-SupplyGraph AI integrates **real-time global tariff databases** with **graph-based reasoning**, producing precise and auditable calculations.  
-Each result is backed by verifiable source data, ensuring full transparency and minimizing compliance risk at scale.
+- Product description or HTS code
+- Country of origin
+- Applicable trade measures (e.g. Chapter 99, Section 301 / 232 / 201)
+
+It delivers **accurate, auditable, regulation-aware duty calculations** in seconds — enabling instant compliance validation, cost modeling, and sourcing optimization.
+
+
+## Pain
+
+For customs brokers, procurement teams, and trade compliance specialists, determining a product’s duty burden usually requires:
+
+- Manually searching the HTSUS
+- Parsing Chapter 99 notes
+- Tracking trade measures and exemptions
+- Interpreting complex legal classification rules
+- Verifying country-of-origin impacts
+
+This process can take **hours per product**, is highly **error-prone**, and often produces **inconsistent or incomplete results** — exposing companies to penalties, misclassification risks, and unexpected landed costs.
+
+
+## Breakthrough
+
+SupplyGraph AI transforms this process.
+
+The U.S. Tariff Calculation Agent:
+
+- Automatically determines the correct HS / HTS classification (if not provided)
+- Applies real-time base duty rates
+- Checks and applies all relevant Chapter 99 & special tariff measures
+- Evaluates country-of-origin impacts
+- Generates a clear, transparent duty analysis
+
+Manual work drops from **hours to seconds**.
+
+The result is not just a number — it is a **traceable, explainable, policy-backed tariff decision**.
+
+
+## Why SupplyGraph AI
+
+Powered by:
+
+- Real-time global tariff & trade datasets
+- HTS + Chapter 99 rule intelligence
+- Graph-based product and country reasoning
+- Continuously updated regulatory tracking
+
+Every tariff result delivered by SupplyGraph AI is:
+
+- Explainable
+- Evidence-backed
+- Policy-aware
+- Enterprise-grade
+
+This dramatically reduces compliance risk while enabling smarter sourcing and pricing decisions at scale.
 
 
 ## Try the U.S. Tariff Calculation Agent (Live Chatbot)
 
-Before integrating this agent via API, you can experience it instantly through our interactive tariff analysis chatbot.
+Before integrating via API, you can experience this agent through our interactive tariff analysis chatbot.
 
 This live demo allows you to:
+
 - Describe your product in natural language
 - Identify the most relevant HTS codes
 - Apply the correct country of origin
 - Calculate U.S. base duties and applicable additional tariffs (including Chapter 99)
-- See how tariffs impact your landed cost in real time
-- Compare alternative classification or sourcing scenarios
+- See how duties impact landed cost in real time
+- Compare alternative sourcing or classification scenarios
 
-👉 [**Launch the U.S. Tariff Calculation Chatbot**](https://supplygraph.ai/zk_chat_os/agentic/dialog.html?name=tariff_calc)
+Launch the U.S. Tariff Calculation Chatbot  
+https://supplygraph.ai/zk_chat_os/agentic/dialog.html?name=tariff_calc
 
-To use the chatbot, you’ll first need to:
+To use the chatbot, you’ll need to:
+
 - Create a SupplyGraph AI account
 - Top up your credit balance
 
-This chatbot is powered by the **same U.S. Tariff Calculation Agent and A2A endpoints** described in this documentation.  
-Credits used in the chatbot are deducted in the same way as API/A2A usage.
+This chatbot is powered by the **same U.S. Tariff Calculation Agent and A2A endpoints** described below.  
+Credits are deducted in the same way as API / A2A usage.
 
-Everything you experience in the chatbot can be fully embedded into your own system through A2A integration below.
+Everything you experience here can be embedded into your own system.
 
 
 ## API Overview
-This section provides an overview of the A2A API structure and usage.
 
-### Endpoints Summary
+This section provides an overview of the **A2A (Agent-to-Agent)** interface used by this agent.
+
+
+## Endpoints Summary
+
 | Endpoint | Method | Description |
-|-----------|---------|-------------|
-| `/api/v1/agents/tariff_calc/manifest` | GET | Retrieve metadata, schema, pricing, and version info. |
-| `/api/v1/agents/tariff_calc/run` | POST | Execute or manage tasks via `mode`. |
+|---------|--------|-------------|
+| `/api/v1/agents/tariff_calc/manifest` | GET | Retrieve metadata, schema, pricing, and version info |
+| `/api/v1/agents/tariff_calc/run` | POST | Execute or manage tasks via `mode` |
 
-**Supported modes:**  
-- `mode=run` (default) — start a new task (supports streaming)  
-- `mode=status` — check task progress (non-streaming)  
-- `mode=results` — retrieve task output (non-streaming)
+**Supported modes:**
+
+- `mode=run` — start a new task (supports streaming)
+- `mode=status` — check task progress
+- `mode=results` — retrieve completed output
 
 
 ## Manifest
 
-### Purpose
-The Manifest provides metadata about the Agent including version, schema definitions, pricing, and available capabilities.
-
 ### Request
+
 ```bash
-curl -X GET https://agent.supplygraph.ai/api/v1/agents/tariff_calc/manifest   
+curl -X GET https://agent.supplygraph.ai/api/v1/agents/tariff_calc/manifest
   -H "Authorization: Bearer <YOUR_API_KEY>"
 ```
 
 ### Example Response
+
 ```json
 {
   "agent_id": "tariff_calc",
   "name": "U.S. Tariff Calculation Agent",
   "version": "1.0.0",
-  "description": "Calculates U.S. customs duties by combining HTS base rates with applicable Chapter 99 measures, providing transparent, rule-based tariff outcomes.",
+  "description": "Calculates U.S. customs duties by combining HTS base rates with applicable Chapter 99 measures, providing transparent, regulation-aware tariff outcomes.",
   "input_schema": { ... },
   "output_schema": { ... },
   "pricing": { "unit": "credits", "per_run": 10 },
@@ -83,51 +134,66 @@ curl -X GET https://agent.supplygraph.ai/api/v1/agents/tariff_calc/manifest
 
 ## Run Endpoint
 
+
 ### Purpose
-Start a new task with this Agent.  
-This endpoint supports both streaming (`stream=true`) and non-streaming (`stream=false`) modes.
+
+Start a new tariff calculation task.
+
+This endpoint supports both:
+
+- Streaming (`stream=true`)
+- Non-streaming (`stream=false`)
+
 
 ### Request
+
 ```bash
 curl -X POST https://agent.supplygraph.ai/api/v1/agents/tariff_calc/run
   -H "Authorization: Bearer <YOUR_API_KEY>"
   -H "Content-Type: application/json"
-  -d '{"text": "Cotton T-shirts for women, 100%cotton, made in Mexico", "stream": true}'
+  -d '{
+        "text": "Cotton T-shirts for women, 100% cotton, made in Mexico",
+        "stream": true
+      }'
 ```
 
-### Text Input Requirements
 
-The `text` field contains the natural-language instructions or query used to initiate a tariff or duty calculation task.
+## Text Input Requirements
 
-**Input guidelines:**
+The `text` field contains the natural-language instructions that define the tariff calculation.
 
-* The text **must** include either:
+**Minimum required information:**
 
-  * a **10-digit HTS code** (e.g., `5601.21.0010`), **or**
-  * a **product description** from which the Agent will determine the appropriate HS/HTS classification.
-* The **country of origin** must also be specified.
-* Optional details may include:
+- Either:
+  - a **10-digit HTS code** (e.g. `5601.21.0010`)  
+  **or**
+  - a detailed **product description**
+- A **country of origin** must be included
 
-  * product weight
-  * quantity
-  * merchandise value
-* If optional values are omitted, the Agent will automatically apply system defaults to perform a mock-up or estimated duty calculation.
+**Optional parameters:**
+
+- Product weight
+- Quantity
+- Declared customs value
+
+If optional fields are omitted, the Agent applies standardized defaults for estimation purposes.
 
 **Example:**
 
 > “Calculate import duties for 5601.21.0010, country of origin China, shipment value 200 USD, 50 kg.”
 
-### Example Response (Streaming)
 
-The example below demonstrates a typical streaming sequence with intermediate reasoning and task acceptance events.
+## Example Response (Streaming)
 
 | Event | Stage | Code | Description |
-|--------|--------|------|-------------|
-| stream | interpreting | THINKING | Agent is analyzing input and generating reasoning. |
-| stream | executing | TASK_ACCEPTED | Task accepted and queued for processing. |
-| end | — | — | Stream completed. |
+|------|------|------|-------------|
+| stream | interpreting | THINKING | Agent is analyzing product and policy context |
+| stream | executing | TASK_ACCEPTED | Task accepted and queued for execution |
+| end | — | — | Stream completed |
 
-#### Event 1 — Interpreting (THINKING)
+
+### Event 1 — Interpreting (THINKING)
+
 ```json
 {
   "event": "stream",
@@ -136,14 +202,16 @@ The example below demonstrates a typical streaming sequence with intermediate re
     "agent": "tariff_calc",
     "stage": "interpreting",
     "code": "THINKING",
-    "reasoning": ["Analyzing input..."],
+    "reasoning": ["Analyzing product and country of origin..."],
     "timestamp": "2025-11-12T09:00:00Z",
     "is_final": false
   }
 }
 ```
 
-#### Event 2 — Task Accepted
+
+### Event 2 — Task Accepted
+
 ```json
 {
   "success": true,
@@ -156,214 +224,141 @@ The example below demonstrates a typical streaming sequence with intermediate re
     "code": "TASK_ACCEPTED",
     "timestamp": "2025-11-12T09:00:10Z",
     "is_final": true
-  },
-  "metadata": {
-    "timestamp": "2025-11-12T09:00:10Z"
-  },
-  "errors": null
+  }
 }
 ```
 
-#### Stream End
+
+### Stream End
+
 ```
 event: end
 data: [DONE]
 ```
 
-### Example Response (Non-Streaming)
-```json
-{
-  "success": true,
-  "code": "TASK_ACCEPTED",
-  "message": "Task accepted and queued for execution.",
-  "data": {
-    "task_id": "<task-id>",
-    "agent": "tariff_calc",
-    "stage": "executing",
-    "code": "TASK_ACCEPTED",
-    "progress": 0,
-    "timestamp": "2025-11-12T09:00:10Z",
-    "is_final": true
-  },
-  "metadata": {
-    "agent": "tariff_calc",
-    "timestamp": "2025-11-12T09:00:10Z"
-  },
-  "errors": null
-}
-```
 
-### Response Structure Explained
-- **Envelope:** `{ success, code, message, data, metadata, errors }`
-- **Data Fields:**
-  - `task_id`: unique identifier for the task
-  - `stage`: current execution stage (`interpreting`, `executing`, etc.)
-  - `code`: task state code (see Error Handling)
-  - `progress`: percentage (0–100)
-  - `reasoning`: reasoning messages (streaming only)
-  - `is_final`: whether this is the last message for this stage
+## Handling WAITING_USER
 
-### Fields Reference
-| Field | Type | Required | Description |
-|--------|------|-----------|--------------|
-| `text` | string | ☑ | User query or task description |
-| `stream` | boolean | optional | Enable SSE streaming |
-| `mode` | string | optional | Default is `run` |
-| `task_id` | string | optional | Returned if asynchronous |
-| `reasoning` | array | optional | Returned only in streaming mode |
-| `is_final` | boolean | ☑ | Marks final output of this stage |
+If the response includes `code = "WAITING_USER"`, the agent needs additional information or confirmation.
 
-### Parameters & Best Practices
-- Use `stream=true` for long-running analysis to observe reasoning updates.  
-- Always store the returned `task_id` if task is asynchronous.  
-- Handle `"WAITING_USER"` to collect additional user input.  
-- Use UTC timestamps (`YYYY-MM-DDTHH:MM:SSZ`).  
+To continue execution, you **must**:
 
-### Handling `"WAITING_USER"`
+- Send the follow-up message
+- Include the original `task_id`
 
-When the response field **`code="WAITING_USER"`** appears, it indicates that the Agent requires **additional user confirmation or missing information** before the task can continue. The task is temporarily **paused**, and the Agent will not resume execution until the client provides the requested input.
-
-#### Mandatory: Include `task_id` When Continuing
-
-To continue a paused task, the client **must** send the follow-up message with the original `task_id`.
-If the continuation request does **not** include the correct `task_id`, the system will treat it as a **new task**, leaving the original task unresolved.
+Without the correct `task_id`, the message will be treated as a **new request** and the original task will remain paused.
 
 
 ## Status Endpoint
 
-### Purpose
-Check the current progress or completion state of a previously submitted task.
 
 ### Request
-```bash
-curl -X POST https://agent.supplygraph.ai/api/v1/agents/tariff_calc/run   
-  -H "Authorization: Bearer <YOUR_API_KEY>"   
-  -H "Content-Type: application/json"   
-  -d '{"mode": "status", "task_id": "<task-id>"}'
-```
 
-### Example Response
-```json
-{
-  "success": true,
-  "code": "TASK_RUNNING",
-  "message": "Task is still running.",
-  "data": {
-    "task_id": "<task-id>",
-    "agent": "tariff_calc",
-    "stage": "running",
-    "code": "TASK_RUNNING",
-    "progress": 65.5,
-    "timestamp": "2025-11-12T09:05:00Z",
-    "is_final": false
-  },
-  "metadata": {
-    "agent": "tariff_calc",
-    "timestamp": "2025-11-12T09:05:00Z"
-  },
-  "errors": null
-}
-```
-
-### Response Structure Explained
-- This endpoint returns a **single JSON object** (non-streaming).  
-- Common codes: `TASK_RUNNING`, `TASK_COMPLETED`, `TASK_FAILED`.
-
-### Fields Reference
-| Field | Type | Required | Description |
-|--------|------|-----------|--------------|
-| `task_id` | string | ☑ | Task identifier |
-| `progress` | number | optional | Current completion percentage |
-| `stage` | string | ☑ | Current stage (`running`, `completed`) |
-| `code` | string | ☑ | State code (e.g., `TASK_RUNNING`) |
-
-### Parameters & Best Practices
-- Poll periodically (e.g., every 5–10 seconds) until `TASK_COMPLETED`.  
-- If `TASK_FAILED`, review `errors` for details.  
-- Avoid excessive polling to prevent rate limiting.  
-
-
-## Results Endpoint
-
-### Purpose
-Retrieve the final output of a completed task.
-
-### Request
 ```bash
 curl -X POST https://agent.supplygraph.ai/api/v1/agents/tariff_calc/run
   -H "Authorization: Bearer <YOUR_API_KEY>"
   -H "Content-Type: application/json"
-  -d '{"mode": "results", "task_id": "<task-id>"}'
+  -d '{
+        "mode": "status",
+        "task_id": "<task-id>"
+      }'
 ```
 
+
 ### Example Response
+
+```json
+{
+  "success": true,
+  "code": "TASK_RUNNING",
+  "data": {
+    "task_id": "<task-id>",
+    "agent": "tariff_calc",
+    "stage": "running",
+    "progress": 65.5
+  }
+}
+```
+
+
+## Results Endpoint
+
+
+### Request
+
+```bash
+curl -X POST https://agent.supplygraph.ai/api/v1/agents/tariff_calc/run
+  -H "Authorization: Bearer <YOUR_API_KEY>"
+  -H "Content-Type: application/json"
+  -d '{
+        "mode": "results",
+        "task_id": "<task-id>"
+      }'
+```
+
+
+### Example Response
+
 ```json
 {
   "success": true,
   "code": "TASK_COMPLETED",
-  "message": "Task completed successfully.",
   "data": {
     "task_id": "<task-id>",
     "agent": "tariff_calc",
-    "stage": "completed",
-    "code": "TASK_COMPLETED",
-    "progress": 100,
-    "timestamp": "2025-11-12T09:10:00Z",
-    "is_final": true,
-    "content": {"type": "result", "data": {"calculation_result": "### Summary of Input Information\n- **HTS Code:** 8415.90.80.25 (Air conditioning evaporator coils)\n- **Country of Origin:** Japan (JP) ..."}} 
+    "content": {
+      "type": "tariff_analysis",
+      "data": {
+        "hts_code": "8415.90.80.25",
+        "product": "Air conditioning evaporator coils",
+        "country_of_origin": "Japan",
+        "base_duty_rate": "X%",
+        "additional_measures": ["Chapter 99"],
+        "total_effective_duty": "X.XX%",
+        "explanation": "..."
+      }
+    }
   },
   "metadata": {
-    "agent": "tariff_calc",
-    "timestamp": "2025-11-12T09:10:00Z",
     "credits_used": 10
-  },
-  "errors": null
+  }
 }
 ```
-
-### Response Structure Explained
-- Finalized data including computed `content` and credit usage.  
-- Common codes: `TASK_COMPLETED`, `TASK_FAILED`.
-
-### Fields Reference
-| Field | Type | Required | Description |
-|--------|------|-----------|--------------|
-| `content` | string | ☑ | Final output text or structured data |
-| `credits_used` | number | optional | Credits consumed |
-| `errors` | object | optional | Error information if failed |
-
-### Parameters & Best Practices
-- Always ensure `code` is `TASK_COMPLETED` before using content.  
-- Parse Markdown in `content` for structured rendering if applicable.  
-- Handle `"TASK_FAILED"` with fallback or retry logic.  
 
 
 ## Make Your First A2A Call
 
-Demonstrates the typical three-step workflow:  
-1. Start task with `mode=run`  
-2. Check progress with `mode=status`  
-3. Retrieve output with `mode=results`  
+Typical workflow:
+
+1. Start the task with `mode=run`
+2. (Optional) receive live reasoning via streaming
+3. Poll using `mode=status`
+4. Retrieve the final result using `mode=results`
 
 
 ## Integration Options
+
+
 ### Protocols
 
 | Protocol | Description | Docs |
 |------|------|------|
-| **A2A (Agent-to-Agent)** | Native protocol for autonomous agent workflows and communication | [A2A Protocol](../a2a.md) |
-| **MCP (Multi-Channel Protocol)** | Next-generation orchestration protocol for enterprise and multi-system environments | *(Coming Soon)* |
+| **A2A (Agent-to-Agent)** | Native communication protocol for autonomous agent workflows | [A2A Protocol](../a2a.md) |
+| **MCP (Multi-Channel Protocol)** | Next-generation orchestration protocol for complex environments | *(Coming Soon)* |
+
 
 ### Developer Interfaces
 
 | Interface | Description | Docs |
 |------|------|------|
-| **Python SDK (A2A Client)** | Official Python wrapper built on top of the A2A protocol for rapid integration | [supplygraphai_a2a_sdk](https://github.com/SupplyGraphAI/supplygraphai_a2a_sdk) |
+| **Python SDK (A2A Client)** | Official wrapper for rapid integration | https://github.com/SupplyGraphAI/supplygraphai_a2a_sdk |
 
 
 ## Error Handling & Rate Limits
 
+
 ### Common Error Codes
+
 | Code | Description |
 |------|--------------|
 | UNAUTHORIZED | Missing or expired API key |
@@ -371,7 +366,9 @@ Demonstrates the typical three-step workflow:
 | RATE_LIMITED | Too many requests |
 | INVALID_REQUEST | Input outside agent’s task scope |
 
+
 ### Stage-Specific Codes
+
 ```
 interpreting:
   INTERPRETING
@@ -392,8 +389,6 @@ cancelled:
 ```
 
 
-## Maintainer & License
-
 Maintainer: info@supplygraph.ai  
 License: Proprietary / Internal  
-© 2025 SupplyGraph AI
+© 2025 SupplyGraph AI. All rights reserved.
