@@ -1,48 +1,143 @@
-# Corporate Exception Report
+# Corporate Exception Report Agent
 
-### Pain
-Traditional corporate monitoring is slow, fragmented, and costly—analysts often spend more than 10 hours per company gathering unstructured data that quickly becomes outdated.
 
-### Breakthrough
-Automated exception reporting cuts research time by up to 90%, delivers standardized, comparable intelligence, and continuously tracks critical changes.
+## Overview
 
-### Why Us
-Our exception reports are powered by real-time data from 100M+ companies, 8,000+ benchmarks, and 1M+ key products—continuously structured and monitored for faster, deeper, always-current insights.
+The **Corporate Exception Report Agent** continuously monitors and analyzes companies to detect **critical exceptions, risk signals, regulatory events, and abnormal changes** that can impact operational stability, compliance posture, or reputation.
+
+It transforms fragmented, unstructured external information into a **structured, verified, and continuously updated intelligence report**, enabling organizations to respond to corporate risks in near real-time.
+
+
+## Pain
+
+Traditional corporate monitoring is slow, fragmented, and resource-intensive.
+
+Analysts frequently spend **10+ hours per company** gathering information from scattered public sources — and by the time a report is completed, much of the data is already outdated.
+
+Even worse, most organizations lack:
+
+- Continuous monitoring capability  
+- Automated exception detection  
+- Centralized, standardized reporting  
+
+This creates blind spots in:
+
+- Compliance
+- Governance
+- Financial exposure
+- Supply chain risk
+- Reputation management
+
+
+## Breakthrough
+
+The Corporate Exception Report Agent automates what previously required multiple teams and systems.
+
+Behind the scenes, it:
+
+- Monitors millions of enterprise signals in real time
+- Detects abnormal events and exceptions
+- Structures findings into standardized intelligence modules
+- Continuously refreshes risk status
+
+For the user, it’s simple:
+
+- Provide a company name
+- Confirm the matched entity
+- Receive a detailed, structured exception analysis report
+
+Typical insights include:
+
+- Regulatory and compliance risks
+- Legal or administrative issues
+- Reputation and media exposure
+- Operational anomalies
+- Governance concerns
+
+
+## Why SupplyGraph AI
+
+Powered by:
+
+- 100M+ global companies
+- 8,000+ industry benchmarks
+- 1M+ key products and entities
+
+SupplyGraph AI delivers a **continuously updated corporate risk intelligence layer** without requiring users to upload proprietary data.
+
+All findings are **auditable, traceable, and evidence-linked**, making this agent suitable for:
+
+- Compliance teams
+- Risk & governance functions
+- Investors and analysts
+- Procurement and sourcing teams
+- Enterprise decision-makers
+
+
+## Try the Corporate Exception Report Agent (Live Chatbot)
+
+Before integrating via API, you can experience this agent directly through our interactive chatbot.
+
+This live demo allows you to:
+
+- Enter a company name
+- Confirm the correct legal entity
+- Generate a full exception report
+- Identify hidden risks and abnormalities
+- Preview the exact structure of enterprise-grade outputs
+
+Launch the Corporate Exception Report Chatbot  
+https://supplygraph.ai/zk_chat_os/agentic/dialog.html?name=corporate_exception
+
+To use the chatbot, you’ll first need to:
+
+- Create a SupplyGraph AI account
+- Top up your credit balance
+
+The chatbot is powered by the **same Corporate Exception Report Agent and A2A endpoints** described in this documentation.  
+Credits consumed in the chatbot are deducted in the same way as API / A2A usage.
+
+Everything you experience here can be fully embedded into your own systems through A2A integration.
 
 
 ## API Overview
-This section provides an overview of the A2A API structure and usage.
 
-### Endpoints Summary
+This section provides an overview of the **A2A (Agent-to-Agent)** interface used to integrate this agent into other systems.
+
+
+## Endpoints Summary
+
 | Endpoint | Method | Description |
-|-----------|---------|-------------|
-| `/api/v1/agents/corporate_exception_report/manifest` | GET | Retrieve metadata, schema, pricing, and version info. |
-| `/api/v1/agents/corporate_exception_report/run` | POST | Execute or manage tasks via `mode`. |
+|---------|--------|-------------|
+| `/api/v1/agents/corporate_exception_report/manifest` | GET | Retrieve metadata, schema, pricing, and version info |
+| `/api/v1/agents/corporate_exception_report/run` | POST | Execute or manage tasks via `mode` |
 
-**Supported modes:**  
-- `mode=run` (default) — start a new task (non-streaming)  
-- `mode=status` — check task progress (non-streaming)  
-- `mode=results` — retrieve task output (non-streaming)
+
+**Supported modes:**
+
+- `mode=run` (default) — start a new task
+- `mode=status` — check task progress
+- `mode=results` — retrieve task output
 
 
 ## Manifest
 
-### Purpose
-The Manifest provides metadata about the Agent including version, schema definitions, pricing, and available capabilities.
-
 ### Request
+
 ```bash
-curl -X GET https://agent.supplygraph.ai/api/v1/agents/corporate_exception_report/manifest   
+curl -X GET https://agent.supplygraph.ai/api/v1/agents/corporate_exception_report/manifest
   -H "Authorization: Bearer <YOUR_API_KEY>"
 ```
 
+
 ### Example Response
+
 ```json
 {
   "agent_id": "corporate_exception_report",
-  "name": "Corporate Exception Report",
+  "name": "Corporate Exception Report Agent",
   "version": "1.0.0",
-  "description": "Performs {{agent_function_description}}",
+  "description": "Detects and analyzes corporate anomalies and exception signals",
   "input_schema": { ... },
   "output_schema": { ... },
   "pricing": { "unit": "credits", "per_run": 10 },
@@ -53,218 +148,174 @@ curl -X GET https://agent.supplygraph.ai/api/v1/agents/corporate_exception_repor
 
 ## Run Endpoint
 
-### 1. Submit the Initial Request
-#### Purpose
-Start a new task with this Agent.  
-This endpoint supports non-streaming (`stream=false`) modes and allows the use of the `chapter_name` parameter to control the generation of a specific individual chapter in the report.
+### Purpose
 
-#### Request
+Start a new task with this agent.  
+Supports structured chapter control via the `chapter_name` parameter.
+
+### Request
+
 ```bash
 curl -X POST https://agent.supplygraph.ai/api/v1/agents/corporate_exception_report/run
   -H "Authorization: Bearer <YOUR_API_KEY>"
   -H "Content-Type: application/json"
-  -d '{"text": "Tesla, Inc. United States", , "chapter_name": "ALL", "stream": false}'
-```
-**Example Response 1:**
-```text
-{"success": false, "code": "WAITING_USER", "message": "waiting user", "data": {"task_id": "<system-generated-task-id>", "agent": "corporate_exception_report", "stage": "interpreting", "code": "WAITING_USER", "progress": 0, "reasoning": [], "timestamp": "2025-11-14T02:46:44.242486Z", "is_final": true, "content": "Your input must include a valid company name (ideally the full legal name, e.g. Apple Inc.) so that we can provide more accurate and precise service for you."}, "metadata": {"agent": "corporate_exception_report", "timestamp": "2025-11-14T02:46:44.242541Z"}, "errors": null}
-```
-
-**Example Response 2:**
-```text
-{"success": false, "code": "WAITING_USER", "message": "waiting user", "data": {"task_id": "<system-generated-task-id>", "agent": "corporate_exception_report", "stage": "interpreting", "code": "WAITING_USER", "progress": 0, "reasoning": [], "timestamp": "2025-11-07T01:44:57.409211+00:00", "is_final": true, "content": "Here are the companies we’ve identified.\nPlease review the information below to confirm accuracy.\nCompany Name: Tesla, Inc.\nCountry: United States\nIf everything looks correct, type [Yes] or [Y] to proceed.\nIf this isn’t the intended company, type [No] or [N]."}, "metadata": {"agent": "corporate_exception_report", "timestamp": "2025-11-07T01:44:57.409256+00:00"}, "errors": null}
+  -d '{
+        "text": "Tesla, Inc. United States",
+        "chapter_name": "ALL",
+        "stream": false
+      }'
 ```
 
-### 2. Confirm the Execution
-#### Purpose
-Respond with `Yes` to confirm and proceed with task execution, ensuring the `chapter_name` parameter is kept consistent with the initial task creation.
-
-#### Request
-```bash
-curl -N -X POST https://agent.supplygraph.ai/api/v1/agents/corporate_exception_report/run \
-     -H "Content-Type: application/json" \
-     -H "Authorization: Bearer <YOUR_API_KEY>" \
-     -d '{"text": "Yes", , "chapter_name": "ALL", "stream": false, "task_id": "<system-generated-task-id>"}'
-```
-
-**Example Response:**
-```text
-data: {"success": true, "code": "TASK_ACCEPTED", "message": "Task accepted and queued for execution.", "data": {"task_id": "<system-generated-task-id>", "agent": "corporate_exception_report", "stage": "executing", "code": "TASK_ACCEPTED", "progress": 0, "reasoning": [], "timestamp": "2025-11-07T01:44:57.409211+00:00", "is_final": true, "content": "Task accepted and queued for execution."}, "metadata": {"agent": "corporate_exception_report", "timestamp": "2025-11-07T01:44:57.409256+00:00"}, "errors": null}
-```
-
-
-### chapter_name Parameter
-
-The `chapter_name` parameter specifies the chapter of the report to generate. It can be set to "ALL" to include all chapters or one of the specific chapter names listed below.
-
-**Schema Definition:**
+### Example Response (WAITING_USER)
 
 ```json
 {
-    "type": "string",
-    "enum": [
-        "ALL",
-        "Profile",
-        "License",
-        "GovRel",
-        "R&D",
-        "Reputation",
-        "Ops",
-        "GeneralRisks",
-        "Cost",
-        "Compliance",
-        "Competition",
-        "Brand",
-        "HR"
-    ],
-    "default": "ALL"
+  "success": false,
+  "code": "WAITING_USER",
+  "data": {
+    "task_id": "<task-id>",
+    "agent": "corporate_exception_report",
+    "stage": "interpreting",
+    "content": "Here are the companies we’ve identified.\nCompany Name: Tesla, Inc.\nCountry: United States\nPlease reply [Yes] or [No] to confirm."
+  }
 }
 ```
 
-## Status Endpoint
 
-### Purpose
-Check the current progress or completion state of a previously submitted task.
+## chapter_name Parameter
 
-### Request
-```bash
-curl -X POST https://agent.supplygraph.ai/api/v1/agents/corporate_exception_report/run   
-  -H "Authorization: Bearer <YOUR_API_KEY>"   
-  -H "Content-Type: application/json"   
-  -d '{"mode": "status", "task_id": "<task-id>"}'
+The `chapter_name` field controls which types of exception domains are generated.
+
+```json
+{
+  "type": "string",
+  "enum": [
+    "ALL",
+    "Profile",
+    "License",
+    "GovRel",
+    "R&D",
+    "Reputation",
+    "Ops",
+    "GeneralRisks",
+    "Cost",
+    "Compliance",
+    "Competition",
+    "Brand",
+    "HR"
+  ],
+  "default": "ALL"
+}
 ```
 
+
+## Status Endpoint
+
+### Request
+
+```bash
+curl -X POST https://agent.supplygraph.ai/api/v1/agents/corporate_exception_report/run
+  -H "Authorization: Bearer <YOUR_API_KEY>"
+  -H "Content-Type: application/json"
+  -d '{
+        "mode": "status",
+        "task_id": "<task-id>"
+      }'
+```
+
+
 ### Example Response
+
 ```json
 {
   "success": true,
   "code": "TASK_RUNNING",
-  "message": "Task is still running.",
   "data": {
     "task_id": "<task-id>",
     "agent": "corporate_exception_report",
     "stage": "running",
-    "code": "TASK_RUNNING",
-    "progress": 65.5,
-    "timestamp": "2025-11-12T09:05:00Z",
-    "is_final": false
-  },
-  "metadata": {
-    "agent": "corporate_exception_report",
-    "timestamp": "2025-11-12T09:05:00Z"
-  },
-  "errors": null
+    "progress": 65.5
+  }
 }
 ```
-
-### Response Structure Explained
-- This endpoint returns a **single JSON object** (non-streaming).  
-- Common codes: `TASK_RUNNING`, `TASK_COMPLETED`, `TASK_FAILED`.
-
-### Fields Reference
-| Field | Type | Required | Description |
-|--------|------|-----------|--------------|
-| `task_id` | string | ☑ | Task identifier |
-| `progress` | number | optional | Current completion percentage |
-| `stage` | string | ☑ | Current stage (`running`, `completed`) |
-| `code` | string | ☑ | State code (e.g., `TASK_RUNNING`) |
-
-### Parameters & Best Practices
-- Poll periodically (e.g., every 5–10 seconds) until `TASK_COMPLETED`.  
-- If `TASK_FAILED`, review `errors` for details.  
-- Avoid excessive polling to prevent rate limiting.  
 
 
 ## Results Endpoint
 
-### Purpose
-Retrieve the final output of a completed task.
-
 ### Request
+
 ```bash
 curl -X POST https://agent.supplygraph.ai/api/v1/agents/corporate_exception_report/run
   -H "Authorization: Bearer <YOUR_API_KEY>"
   -H "Content-Type: application/json"
-  -d '{"mode": "results", "task_id": "<task-id>"}'
+  -d '{
+        "mode": "results",
+        "task_id": "<task-id>"
+      }'
 ```
 
+
 ### Example Response
+
 ```json
 {
   "success": true,
   "code": "TASK_COMPLETED",
-  "message": "Task completed successfully.",
   "data": {
     "task_id": "<task-id>",
     "agent": "corporate_exception_report",
-    "stage": "completed",
-    "code": "TASK_COMPLETED",
     "progress": 100,
-    "timestamp": "2025-11-12T09:10:00Z",
-    "is_final": true,
-    "content": "## Example final output text"
+    "content": "## Corporate Exception Analysis..."
   },
   "metadata": {
-    "agent": "corporate_exception_report",
-    "timestamp": "2025-11-12T09:10:00Z",
     "credits_used": 10
-  },
-  "errors": null
+  }
 }
 ```
-
-### Response Structure Explained
-- Finalized data including computed `content` and credit usage.  
-- Common codes: `TASK_COMPLETED`, `TASK_FAILED`.
-
-### Fields Reference
-| Field | Type | Required | Description |
-|--------|------|-----------|--------------|
-| `content` | string | ☑ | Final output text or structured data |
-| `credits_used` | number | optional | Credits consumed |
-| `errors` | object | optional | Error information if failed |
-
-### Parameters & Best Practices
-- Always ensure `code` is `TASK_COMPLETED` before using content.  
-- Parse Markdown in `content` for structured rendering if applicable.  
-- Handle `"TASK_FAILED"` with fallback or retry logic.  
 
 
 ## Make Your First A2A Call
 
-Demonstrates the typical workflow:  
-1. Submit initial request with `mode=run`  
-2. Confirm execution (if prompted) with `mode=run`  
-3. Check progress with `mode=status`  
-4. Retrieve output with `mode=results`  
+Typical workflow:
+
+1. Start with `mode=run`
+2. Confirm company (if prompted)
+3. Poll via `mode=status`
+4. Retrieve report via `mode=results`
 
 
 ## Integration Options
+
+
 ### Protocols
 
 | Protocol | Description | Docs |
 |------|------|------|
-| **A2A (Agent-to-Agent)** | Native protocol for autonomous agent workflows and communication | [A2A Protocol](../a2a.md) |
-| **MCP (Multi-Channel Protocol)** | Next-generation orchestration protocol for enterprise and multi-system environments | *(Coming Soon)* |
+| **A2A (Agent-to-Agent)** | Autonomous workflow integration standard | [A2A Protocol](../a2a.md) |
+| **MCP (Multi-Channel Protocol)** | Enterprise orchestration layer | *(Coming Soon)* |
+
 
 ### Developer Interfaces
 
 | Interface | Description | Docs |
 |------|------|------|
-| **Python SDK (A2A Client)** | Official Python wrapper built on top of the A2A protocol for rapid integration | [supplygraphai_a2a_sdk](https://github.com/SupplyGraphAI/supplygraphai_a2a_sdk) |
+| **Python SDK (A2A Client)** | Official wrapper for rapid integration | https://github.com/SupplyGraphAI/supplygraphai_a2a_sdk |
 
 
 ## Error Handling & Rate Limits
 
 ### Common Error Codes
+
 | Code | Description |
-|------|--------------|
-| UNAUTHORIZED | Missing or expired API key |
-| INSUFFICIENT_CREDITS | Not enough credits |
+|------|-------------|
+| UNAUTHORIZED | Invalid or missing API key |
+| INSUFFICIENT_CREDITS | Not enough balance |
 | RATE_LIMITED | Too many requests |
-| INVALID_REQUEST | Input outside agent’s task scope |
+| INVALID_REQUEST | Input outside agent scope |
+
 
 ### Stage-Specific Codes
+
 ```
 interpreting:
   INTERPRETING
@@ -285,8 +336,6 @@ cancelled:
 ```
 
 
-## Maintainer & License
-
 Maintainer: info@supplygraph.ai  
 License: Proprietary / Internal  
-© 2025 SupplyGraph AI
+© 2025 SupplyGraph AI. All rights reserved.
