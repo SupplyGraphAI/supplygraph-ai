@@ -53,6 +53,7 @@ Before integrating via API or A2A, you can experience the agents directly throug
 |------|------|
 | **Due Diligence Agent** | https://supplygraph.ai/zk_chat_os/agentic/dialog.html?name=sg_due_diligence |
 | **Supply Graph Agent** | https://supplygraph.ai/zk_chat_os/agentic/dialog.html?name=sg_visualization |
+| **Geographic Concentration Analysis Agent** | Detects country- & region-level dependency exposure and hidden concentration risks |
 | **Tariff Calculation Agent** | https://supplygraph.ai/zk_chat_os/agentic/dialog.html?name=tariff_calc |
 | **Customs Classification Agent** | https://supplygraph.ai/zk_chat_os/agentic/dialog.html?name=tariff_classification |
 
