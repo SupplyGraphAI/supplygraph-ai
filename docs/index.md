@@ -38,9 +38,10 @@ This site serves as the **official documentation portal** for:
 | Agent | Description |
 |------|------|
 | **Enterprise Supply Graph Agent** | Multi-tier supply chain and product dependency mapping |
+| **Geographic Concentration Analysis Agent** | Detects country- & region-level dependency exposure and hidden concentration risks |
+| **Due Diligence Agent** | Company & country risk, ownership and exposure analysis |
 | **Tariff Calculation Agent** | U.S. & global duties including Chapter 99 measures |
 | **Customs Classification Agent** | Accurate HS / HTS mapping for compliance and optimization |
-| **Due Diligence Agent** | Company & country risk, ownership and exposure analysis |
 
 Explore all agents here → **`./agents`**
 
@@ -51,9 +52,9 @@ Before integrating via API or A2A, you can experience the agents directly throug
 
 | Agent | Live Demo |
 |------|------|
-| **Due Diligence Agent** | https://supplygraph.ai/zk_chat_os/agentic/dialog.html?name=sg_due_diligence |
 | **Supply Graph Agent** | https://supplygraph.ai/zk_chat_os/agentic/dialog.html?name=sg_visualization |
-| **Geographic Concentration Analysis Agent** | Detects country- & region-level dependency exposure and hidden concentration risks |
+| **Geographic Concentration Analysis Agent** | https://supplygraph.ai/zk_chat_os/agentic/dialog.html?name=sg_chokepoint |
+| **Due Diligence Agent** | https://supplygraph.ai/zk_chat_os/agentic/dialog.html?name=sg_due_diligence |
 | **Tariff Calculation Agent** | https://supplygraph.ai/zk_chat_os/agentic/dialog.html?name=tariff_calc |
 | **Customs Classification Agent** | https://supplygraph.ai/zk_chat_os/agentic/dialog.html?name=tariff_classification |
 
