@@ -1,16 +1,68 @@
 # Enterprise Supply Graph Agent
 
-### Overview
-Automatically generates a multi-tiered, company-centric global supply-chain product dependency map for any enterprise in the world.
 
-### Pain
-Companies struggle with limited data to visualize their worldwide supply networks. Without this infrastructure, they are unable to assess single-region concentration risks, identify alternative sources for critical components, or respond to thousands of daily incidents that could trigger disruptions.
+## Overview
 
-### Breakthrough
-Visualizes a company-centered global supply product graph that maps dependencies from Tier-1 suppliers to raw materials, linking components to supply, demand, and channels entities. The data graph also lays the infrastructure to quantify regional concentration, evaluate alternatives sourcing, and identify high-impact incidents before they trigger costly disruptions.
+The **Enterprise Supply Graph Agent** generates a multi-tier, company-centric global supply chain graph for any enterprise in the world.
 
-### Why Us
-Powered by data on 100M+ companies, 1M+ key products, and 8,000+ industry benchmarks, continuously monitored 24/7, SupplyGraph.AI delivers the world’s first intelligent platform that allows any enterprise to visualize, monitor, and analyze its global supply graph in real time — transforming hidden dependencies into actionable resilience.
+It automatically maps relationships across:
+
+- Tier-1 suppliers
+- Tier-N upstream entities
+- Products and sub-components
+- Regions and countries
+- Raw materials and critical inputs
+
+This agent transforms fragmented supply networks into a **living, explorable, and actionable graph** — enabling organizations to see, understand, and manage their real dependencies for the first time.
+
+
+## Pain
+
+Most companies operate with **severely limited visibility** into their true supply networks.
+
+Without deep-tier transparency:
+
+- Hidden single-country dependencies go undetected  
+- Alternatives remain invisible  
+- Regional concentration risks accumulate silently  
+- Geopolitical or regulatory shocks cause sudden disruption  
+- Incident response is reactive instead of strategic  
+
+Traditional tools only reveal Tier-1 suppliers at best — leaving 80–90% of the real risk surface invisible.
+
+
+## Breakthrough
+
+The Enterprise Supply Graph Agent solves this by:
+
+- Expanding a company-centered graph node-by-node
+- Linking suppliers, products, regions, and materials across multiple tiers
+- Structuring dependencies into analyzable paths and clusters
+- Creating the foundation for:
+  - Concentration risk analysis
+  - Alternative supplier discovery
+  - Impact simulation
+  - Disruption forecasting
+
+For the user, the experience is simple:
+
+1. Enter a company name
+2. Confirm the correct entity
+3. Instantly visualize an interactive, multi-tier supply network
+
+What was once invisible becomes navigable, measurable, and actionable.
+
+
+## Why SupplyGraph AI
+
+Powered by:
+
+- 100M+ global companies
+- 1M+ key products and components
+- 8,000+ industry benchmarks
+- Continuous monitoring, 24/7
+
+SupplyGraph AI delivers the **first truly intelligent, real-time, multi-tier enterprise supply graph** in the world — turning hidden dependency structures into strategic advantage.
 
 
 ## Try the Enterprise Supply Graph Agent (Live Chatbot)
@@ -18,58 +70,65 @@ Powered by data on 100M+ companies, 1M+ key products, and 8,000+ industry benchm
 Before integrating this agent via API, you can experience it directly through our interactive visualization chatbot.
 
 This live demo allows you to:
+
 - Enter a company name
 - Automatically generate a multi-tier supply graph (Tier-1 to deep-tier)
 - Visualize product, supplier, and regional dependencies
-- Identify concentration risks and hidden exposure
+- Identify potential concentration and exposure risks
 - Explore alternative sourcing pathways
-- Experience the structure and depth of the intelligence graph
+- Experience the depth and structure of the intelligence graph
 
-👉 [**Launch the Enterprise Supply Graph Chatbot**](https://supplygraph.ai/zk_chat_os/agentic/dialog.html?name=sg_visualization)
+Launch the Enterprise Supply Graph Chatbot  
+https://supplygraph.ai/zk_chat_os/agentic/dialog.html?name=sg_visualization
 
 To use the chatbot, you’ll first need to:
+
 - Create a SupplyGraph AI account
 - Top up your credit balance
 
 This chatbot is powered by the **same Enterprise Supply Graph Agent and A2A endpoints** described in this documentation.  
-Credits used in the chatbot are deducted in the same way as API/A2A usage.
+Credits used in the chatbot are deducted in the same way as API / A2A usage.
 
-Everything you experience in the chatbot can be fully embedded into your own system through A2A integration below.
+Everything you experience here can be fully embedded into your own system through A2A integration.
 
 
 ## API Overview
-This section provides an overview of the A2A API structure and usage.
 
-### Endpoints Summary
+This section provides an overview of the **A2A (Agent-to-Agent)** interface for this agent.
+
+
+## Endpoints Summary
+
 | Endpoint | Method | Description |
-|-----------|---------|-------------|
-| `/api/v1/agents/sg_visualization/manifest` | GET | Retrieve metadata, schema, pricing, and version info. |
-| `/api/v1/agents/sg_visualization/run` | POST | Execute or manage tasks via `mode`. |
+|---------|--------|-------------|
+| `/api/v1/agents/sg_visualization/manifest` | GET | Retrieve metadata, schema, pricing, and version information |
+| `/api/v1/agents/sg_visualization/run` | POST | Execute or manage tasks via `mode` |
 
-**Supported modes:**  
-- `mode=run` (default) — start a new task (supports streaming)  
-- `mode=status` — check task progress (non-streaming)  
-- `mode=results` — retrieve task output (non-streaming)
+
+**Supported modes:**
+
+- `mode=run` — start a new task (supports streaming)
+- `mode=status` — check task progress
+- `mode=results` — retrieve completed output
 
 
 ## Manifest
 
-### Purpose
-The Manifest provides metadata about the Agent including version, schema definitions, pricing, and available capabilities.
-
 ### Request
+
 ```bash
-curl -X GET https://agent.supplygraph.ai/api/v1/agents/sg_visualization/manifest   
+curl -X GET https://agent.supplygraph.ai/api/v1/agents/sg_visualization/manifest
   -H "Authorization: Bearer <YOUR_API_KEY>"
 ```
 
 ### Example Response
+
 ```json
 {
   "agent_id": "sg_visualization",
   "name": "Enterprise Supply Graph Agent",
   "version": "1.0.0",
-  "description": "Performs {{agent_function_description}}",
+  "description": "Generates a multi-tier enterprise supply chain dependency graph",
   "input_schema": { ... },
   "output_schema": { ... },
   "pricing": { "unit": "credits", "per_run": 10 },
@@ -80,29 +139,37 @@ curl -X GET https://agent.supplygraph.ai/api/v1/agents/sg_visualization/manifest
 
 ## Run Endpoint
 
+
 ### Purpose
-Start a new task with this Agent.  
-This endpoint supports both streaming (`stream=true`) and non-streaming (`stream=false`) modes.
+
+Start a new task with this agent.  
+Supports both **streaming (`stream=true`)** and **non-streaming (`stream=false`)** modes.
+
 
 ### Request
+
 ```bash
 curl -X POST https://agent.supplygraph.ai/api/v1/agents/sg_visualization/run
   -H "Authorization: Bearer <YOUR_API_KEY>"
   -H "Content-Type: application/json"
-  -d '{"text": "{{example_text}}", "stream": true}'
+  -d '{
+        "text": "{{example_company_name}}",
+        "stream": true
+      }'
 ```
+
 
 ### Example Response (Streaming)
 
-The example below demonstrates a typical streaming sequence with intermediate reasoning and task acceptance events.
-
 | Event | Stage | Code | Description |
-|--------|--------|------|-------------|
-| stream | interpreting | THINKING | Agent is analyzing input and generating reasoning. |
-| stream | executing | TASK_ACCEPTED | Task accepted and queued for processing. |
-| end | — | — | Stream completed. |
+|------|------|------|-------------|
+| stream | interpreting | THINKING | Agent is analyzing input and expanding the graph |
+| stream | executing | TASK_ACCEPTED | Task accepted and queued for processing |
+| end | — | — | Stream completed |
+
 
 #### Event 1 — Interpreting (THINKING)
+
 ```json
 {
   "event": "stream",
@@ -111,14 +178,16 @@ The example below demonstrates a typical streaming sequence with intermediate re
     "agent": "sg_visualization",
     "stage": "interpreting",
     "code": "THINKING",
-    "reasoning": ["Analyzing input..."],
+    "reasoning": ["Analyzing input and identifying target entity..."],
     "timestamp": "2025-11-12T09:00:00Z",
     "is_final": false
   }
 }
 ```
 
+
 #### Event 2 — Task Accepted
+
 ```json
 {
   "success": true,
@@ -139,13 +208,17 @@ The example below demonstrates a typical streaming sequence with intermediate re
 }
 ```
 
+
 #### Stream End
+
 ```
 event: end
 data: [DONE]
 ```
 
+
 ### Example Response (Non-Streaming)
+
 ```json
 {
   "success": true,
@@ -168,176 +241,117 @@ data: [DONE]
 }
 ```
 
-### Response Structure Explained
-- **Envelope:** `{ success, code, message, data, metadata, errors }`
-- **Data Fields:**
-  - `task_id`: unique identifier for the task
-  - `stage`: current execution stage (`interpreting`, `executing`, etc.)
-  - `code`: task state code (see Error Handling)
-  - `progress`: percentage (0–100)
-  - `reasoning`: reasoning messages (streaming only)
-  - `is_final`: whether this is the last message for this stage
-
-### Fields Reference
-| Field | Type | Required | Description |
-|--------|------|-----------|--------------|
-| `text` | string | ☑ | User query or task description |
-| `stream` | boolean | optional | Enable SSE streaming |
-| `mode` | string | optional | Default is `run` |
-| `task_id` | string | optional | Returned if asynchronous |
-| `reasoning` | array | optional | Returned only in streaming mode |
-| `is_final` | boolean | ☑ | Marks final output of this stage |
-
-### Parameters & Best Practices
-- Use `stream=true` for long-running analysis to observe reasoning updates.  
-- Always store the returned `task_id` if task is asynchronous.  
-- Handle `"WAITING_USER"` to collect additional user input.  
-- Use UTC timestamps (`YYYY-MM-DDTHH:MM:SSZ`).  
-
 
 ## Status Endpoint
 
-### Purpose
-Check the current progress or completion state of a previously submitted task.
 
 ### Request
-```bash
-curl -X POST https://agent.supplygraph.ai/api/v1/agents/sg_visualization/run   
-  -H "Authorization: Bearer <YOUR_API_KEY>"   
-  -H "Content-Type: application/json"   
-  -d '{"mode": "status", "task_id": "<task-id>"}'
-```
 
-### Example Response
-```json
-{
-  "success": true,
-  "code": "TASK_RUNNING",
-  "message": "Task is still running.",
-  "data": {
-    "task_id": "<task-id>",
-    "agent": "sg_visualization",
-    "stage": "running",
-    "code": "TASK_RUNNING",
-    "progress": 65.5,
-    "timestamp": "2025-11-12T09:05:00Z",
-    "is_final": false
-  },
-  "metadata": {
-    "agent": "sg_visualization",
-    "timestamp": "2025-11-12T09:05:00Z"
-  },
-  "errors": null
-}
-```
-
-### Response Structure Explained
-- This endpoint returns a **single JSON object** (non-streaming).  
-- Common codes: `TASK_RUNNING`, `TASK_COMPLETED`, `TASK_FAILED`.
-
-### Fields Reference
-| Field | Type | Required | Description |
-|--------|------|-----------|--------------|
-| `task_id` | string | ☑ | Task identifier |
-| `progress` | number | optional | Current completion percentage |
-| `stage` | string | ☑ | Current stage (`running`, `completed`) |
-| `code` | string | ☑ | State code (e.g., `TASK_RUNNING`) |
-
-### Parameters & Best Practices
-- Poll periodically (e.g., every 5–10 seconds) until `TASK_COMPLETED`.  
-- If `TASK_FAILED`, review `errors` for details.  
-- Avoid excessive polling to prevent rate limiting.  
-
-
-## Results Endpoint
-
-### Purpose
-Retrieve the final output of a completed task.
-
-### Request
 ```bash
 curl -X POST https://agent.supplygraph.ai/api/v1/agents/sg_visualization/run
   -H "Authorization: Bearer <YOUR_API_KEY>"
   -H "Content-Type: application/json"
-  -d '{"mode": "results", "task_id": "<task-id>"}'
+  -d '{
+        "mode": "status",
+        "task_id": "<task-id>"
+      }'
 ```
 
+
 ### Example Response
+
+```json
+{
+  "success": true,
+  "code": "TASK_RUNNING",
+  "data": {
+    "task_id": "<task-id>",
+    "agent": "sg_visualization",
+    "stage": "running",
+    "progress": 65.5
+  }
+}
+```
+
+
+## Results Endpoint
+
+
+### Request
+
+```bash
+curl -X POST https://agent.supplygraph.ai/api/v1/agents/sg_visualization/run
+  -H "Authorization: Bearer <YOUR_API_KEY>"
+  -H "Content-Type: application/json"
+  -d '{
+        "mode": "results",
+        "task_id": "<task-id>"
+      }'
+```
+
+
+### Example Response
+
 ```json
 {
   "success": true,
   "code": "TASK_COMPLETED",
-  "message": "Task completed successfully.",
   "data": {
     "task_id": "<task-id>",
     "agent": "sg_visualization",
-    "stage": "completed",
-    "code": "TASK_COMPLETED",
     "progress": 100,
-    "timestamp": "2025-11-12T09:10:00Z",
-    "is_final": true,
-    "content": "## Example final output text"
+    "content": "## Generated multi-tier supply graph output"
   },
   "metadata": {
-    "agent": "sg_visualization",
-    "timestamp": "2025-11-12T09:10:00Z",
     "credits_used": 10
-  },
-  "errors": null
+  }
 }
 ```
-
-### Response Structure Explained
-- Finalized data including computed `content` and credit usage.  
-- Common codes: `TASK_COMPLETED`, `TASK_FAILED`.
-
-### Fields Reference
-| Field | Type | Required | Description |
-|--------|------|-----------|--------------|
-| `content` | string | ☑ | Final output text or structured data |
-| `credits_used` | number | optional | Credits consumed |
-| `errors` | object | optional | Error information if failed |
-
-### Parameters & Best Practices
-- Always ensure `code` is `TASK_COMPLETED` before using content.  
-- Parse Markdown in `content` for structured rendering if applicable.  
-- Handle `"TASK_FAILED"` with fallback or retry logic.  
 
 
 ## Make Your First A2A Call
 
-Demonstrates the typical three-step workflow:  
-1. Start task with `mode=run`  
-2. Check progress with `mode=status`  
-3. Retrieve output with `mode=results`  
+Typical workflow:
+
+1. Start the task with `mode=run`
+2. Follow reasoning (if streaming is enabled)
+3. Poll using `mode=status`
+4. Retrieve the final output via `mode=results`
 
 
 ## Integration Options
+
+
 ### Protocols
 
 | Protocol | Description | Docs |
 |------|------|------|
-| **A2A (Agent-to-Agent)** | Native protocol for autonomous agent workflows and communication | [A2A Protocol](../a2a.md) |
-| **MCP (Multi-Channel Protocol)** | Next-generation orchestration protocol for enterprise and multi-system environments | *(Coming Soon)* |
+| **A2A (Agent-to-Agent)** | Autonomous workflow integration standard | [A2A Protocol](../a2a.md) |
+| **MCP (Multi-Channel Protocol)** | Enterprise orchestration layer | *(Coming Soon)* |
+
 
 ### Developer Interfaces
 
 | Interface | Description | Docs |
 |------|------|------|
-| **Python SDK (A2A Client)** | Official Python wrapper built on top of the A2A protocol for rapid integration | [supplygraphai_a2a_sdk](https://github.com/SupplyGraphAI/supplygraphai_a2a_sdk) |
+| **Python SDK (A2A Client)** | Official wrapper for rapid integration | https://github.com/SupplyGraphAI/supplygraphai_a2a_sdk |
 
 
 ## Error Handling & Rate Limits
 
+
 ### Common Error Codes
+
 | Code | Description |
 |------|--------------|
 | UNAUTHORIZED | Missing or expired API key |
 | INSUFFICIENT_CREDITS | Not enough credits |
 | RATE_LIMITED | Too many requests |
-| INVALID_REQUEST | Input outside agent’s task scope |
+| INVALID_REQUEST | Input outside agent’s scope |
+
 
 ### Stage-Specific Codes
+
 ```
 interpreting:
   INTERPRETING
@@ -358,8 +372,6 @@ cancelled:
 ```
 
 
-## Maintainer & License
-
 Maintainer: info@supplygraph.ai  
 License: Proprietary / Internal  
-© 2025 SupplyGraph AI
+© 2025 SupplyGraph AI. All rights reserved.
