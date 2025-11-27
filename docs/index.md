@@ -15,9 +15,9 @@ This site serves as the **official documentation portal** for:
 
 ## 🚀 Quick Links
 
-- 🔹 **Getting Started** → `./getting-started.md`  
-- 🔹 **A2A Protocol** → `./a2a.md`  
-- 🔹 **Agent Library** → `./agents`  
+- 🔹 **Getting Started** → [getting-started.md](./getting-started.md)  
+- 🔹 **A2A Protocol** → [a2a.md](./a2a.md)  
+- 🔹 **Agent Library & Live Demos** → https://supplygraphai.github.io/supplygraph-ai/agents/  
 - 🔹 **Python SDK** → https://github.com/SupplyGraphAI/supplygraphai_a2a_sdk  
 - 🔹 **Official Website** → https://www.supplygraph.ai  
 
