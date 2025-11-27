@@ -14,6 +14,10 @@
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-Proprietary-lightgrey?style=flat-square" alt="License"/></a>
 </p>
 
+<p align="center">
+📢 <a href="https://github.com/SupplyGraphAI/supplygraph-ai/issues/4">Launch, Roadmap & Live Agent Demos</a>
+</p>
+
 
 <p align="center">
 Autonomous, auditable, and real-time supply-chain intelligence that maps how companies, products, and geographies connect across the global economy — enabling visibility, resilience, and efficiency <b>without requiring any customer-provided data</b>.
