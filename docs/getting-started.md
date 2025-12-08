@@ -42,6 +42,35 @@ All A2A and MCP integrations require authentication via an API key.
 - Never expose them in client-side code or public repositories.  
 - Rotate them regularly through the dashboard.
 
+### 3.1 Sandbox API Keys (For Testing & Development)
+
+SupplyGraph AI provides **Sandbox API keys** to help developers test integrations safely and quickly **without consuming credits**.
+
+**What is a Sandbox Key?**  
+A **Sandbox Key** behaves exactly like a Production key in terms of request format and agent behavior, **but it does not execute real agent logic**.  
+Instead, it returns **deterministic mock responses** designed to match each agent’s official output schema.
+
+This makes Sandbox Keys ideal for:
+- SDK development  
+- CI/CD automated tests  
+- Front-end integration  
+- Validating A2A request formats  
+- Ensuring your system handles task lifecycle (`run → status → results`) correctly  
+
+**Important Notes**  
+- Sandbox Keys **never deduct credits**  
+- Sandbox responses are **not based on real data or reasoning**  
+- To run real agent workflows, switch to a **Production Key**  
+- Sandbox and Production keys are managed in the **same dashboard page**  
+
+**How to Create One**  
+1. Go to **Developer Settings → A2A/MCP Keys**  
+2. Click **Create Sandbox Key**  
+3. Provide a name such as `local-dev`, `ci-test`, or `mock-agent-env`  
+
+**We recommend using:**  
+- Sandbox Keys during development
+- Production Keys in staging or production
 
 
 ## 4. Make Your First A2A Call
