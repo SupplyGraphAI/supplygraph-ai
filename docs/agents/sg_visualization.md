@@ -91,6 +91,24 @@ Credits used in the chatbot are deducted in the same way as API / A2A usage.
 
 Everything you experience here can be fully embedded into your own system through A2A integration.
 
+## Sandbox Key Support (for Development)
+
+This agent fully supports **Sandbox API Keys**, which allow developers to test integrations without consuming credits.
+
+When using a Sandbox Key:
+- No credits are deducted  
+- The agent returns **mocked sample output** that follows the final response schema  
+- Long-running processing is skipped, and results are returned instantly  
+- Only input validation and structural checks are executed  
+
+Sandbox Keys are recommended for:
+- Local development  
+- SDK integration testing  
+- CI/CD automated tests  
+
+⚠️ Sandbox Keys do **not** produce real analytical results and must not be used in production systems.
+
+For a detailed comparison between Production Keys and Sandbox Keys, see the [Getting Started Guide → API Keys](https://github.com/SupplyGraphAI/supplygraph-ai/blob/main/docs/getting-started.md#3-generate-an-a2amcp-key) section.
 
 ## API Overview
 
