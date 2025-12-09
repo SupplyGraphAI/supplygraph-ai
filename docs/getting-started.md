@@ -44,33 +44,61 @@ All A2A and MCP integrations require authentication via an API key.
 
 ### 3.1 Sandbox API Keys (For Testing & Development)
 
-SupplyGraph AI provides **Sandbox API keys** to help developers test integrations safely and quickly **without consuming credits**.
+SupplyGraph AI provides **Sandbox API Keys** that allow developers to test integrations safely — **without consuming credits** — while still returning valid, schema-compliant responses.
 
-**What is a Sandbox Key?**  
-A **Sandbox Key** behaves exactly like a Production key in terms of request format and agent behavior, **but it does not execute real agent logic**.  
-Instead, it returns **deterministic mock responses** designed to match each agent’s official output schema.
+A Sandbox Key behaves like a Production Key in terms of request format, authentication, and task lifecycle (`run → status → results`).  
+However, **the returned data does not come from real-time agent computation**. Instead, each agent returns preconfigured **mock data** or **sample real data**, depending on the agent type.
 
-This makes Sandbox Keys ideal for:
-- SDK development  
-- CI/CD automated tests  
-- Front-end integration  
-- Validating A2A request formats  
-- Ensuring your system handles task lifecycle (`run → status → results`) correctly  
+#### What Does a Sandbox Key Return?
 
-**Important Notes**  
-- Sandbox Keys **never deduct credits**  
-- Sandbox responses are **not based on real data or reasoning**  
-- To run real agent workflows, switch to a **Production Key**  
-- Sandbox and Production keys are managed in the **same dashboard page**  
+Sandbox responses fall into two categories depending on the agent:
 
-**How to Create One**  
-1. Go to **Developer Settings → A2A/MCP Keys**  
+**A. Agents Returning Mock Data**  
+These agents return **fully simulated outputs**, designed to match the official output schema but **not based on real data**:
+- **HTS Code Classification Agent**
+- **Tariff Calculation Agent**
+
+These responses allow developers to validate:
+- Request/response structure
+- Task status polling logic
+- Rendering logic on the client side
+
+**B. Agents Returning Predefined *Real* Sample Data**  
+These agents return **fixed, realistic outputs** derived from **preset sample companies** (e.g., Tesla or BYD).  
+These are not user-specific and do not reflect real-time queries, but they are **authentic examples of actual agent outputs**.
+
+Agents using predefined real sample data:
+- **Corporate Due Diligence Report Agent** → returns a preset **BYD or Tesla** due-diligence report
+- **Corporate Exception Report Agent** → returns a preset **BYD or Tesla** exception report
+- **Supply Chain Graph Visualization Agent** → returns a preset **Tesla supply-chain graph**
+- **Geographic Concentration Analysis Agent** → returns a preset **Tesla regional concentration dataset**
+
+These allow developers to:
+- Preview the real structure of enterprise-level reports  
+- Test integration with full-severity risk outputs  
+- Validate UI rendering for complex, nested datasets  
+
+
+#### Key Properties of Sandbox Keys
+
+- **No credit consumption**  
+- **No real agent computation is performed**  
+- Responses are **deterministic**, ensuring consistent integration testing  
+- Predefined real-data samples reflect **true report formats**, not synthetic hallucinations  
+- Switching to a Production Key enables full, real-time agent capabilities
+
+
+#### How to Create a Sandbox Key
+
+1. Navigate to **Developer Settings → A2A/MCP Keys**  
 2. Click **Create Sandbox Key**  
-3. Provide a name such as `local-dev`, `ci-test`, or `mock-agent-env`  
+3. Give it a name such as `local-dev`, `ci-test`, or `mock-environment`  
 
-**We recommend using:**  
-- Sandbox Keys during development
-- Production Keys in staging or production
+**Recommended Usage**
+- **Sandbox Key** → local development, CI/CD pipelines, front-end integration  
+- **Production Key** → staging environments, production workloads  
+
+
 
 
 ## 4. Make Your First A2A Call
