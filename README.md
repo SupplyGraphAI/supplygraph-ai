@@ -42,7 +42,7 @@ This repository contains the official documentation of **SupplyGraph AI** and is
 🤝 **A2A / MCP Protocol** – Agent-to-Agent interface & interoperability  
 👉 [`docs/a2a.md`](./docs/a2a.md)
 
-🤖 **Agent Library Overview – SEO Hub**  
+🤖 **Agent Library Overview**  
 👉 https://github.com/SupplyGraphAI/supplygraph-ai/blob/main/agents/index.md
 
 📦 **Developer SDK** – Programmatic access for integration  
@@ -95,23 +95,20 @@ Each relationship is tied to live signals and an auditable evidence chain.
 
 ### Group 1: Automation & Efficiency Agents
 
-- **Customs Classification Agent** – Maps products to correct HS/HTS codes  
-- **Tariff Calculation Agent** – Calculates U.S. duty rates and additional tariffs  
-- **Tariff Monitoring Agent** – Detects tariff changes and sends alerts  
-- **Due Diligence Agent** – Generates structured company intelligence  
-- **Corporate Exception Agent** – Real-time automated corporate exception monitoring  
+- **[Customs Classification Agent](https://github.com/SupplyGraphAI/supplygraph-ai/blob/main/docs/agents/tariff_classification.md)** – Maps products to correct HS/HTS codes  
+- **[U.S. Tariff Calculation Agent](https://github.com/SupplyGraphAI/supplygraph-ai/blob/main/docs/agents/tariff_calc.md)** – Calculates U.S. duty rates and additional tariffs  
+- **[Due Diligence Agent](https://github.com/SupplyGraphAI/supplygraph-ai/blob/main/docs/agents/due_diligence_report.md)** – Generates structured company intelligence  
+- **[Corporate Exception Agent](https://github.com/SupplyGraphAI/supplygraph-ai/blob/main/docs/agents/corporate_exception_report.md)** – Real-time automated corporate exception monitoring  
 
 👉 Full agent descriptions here:  
 https://github.com/SupplyGraphAI/supplygraph-ai/blob/main/agents/index.md
 
 ### Group 2: Data Intelligence & Supply Graph Agents
 
-- **Global Supply Dependency Visualization Agent**  
-- **Single-Country Concentration Risk Agent**  
-- **Tier-1 Supplier Discovery Agent**  
-- **Regional Substitution Recommendation Agent**  
+- **[Global Supply Dependency Visualization Agent](https://github.com/SupplyGraphAI/supplygraph-ai/blob/main/docs/agents/sg_visualization.md)**  
+- **[Geographic Concentration Analysis Agent](https://github.com/SupplyGraphAI/supplygraph-ai/blob/main/docs/agents/sg_chokepoint.md)**  
 
-👉 Details & demos available in the Agent Hub:
+👉 Details & demos available in the Agent Hub:  
 https://github.com/SupplyGraphAI/supplygraph-ai/blob/main/agents/index.md
 
 ## Integration & Developer Experience
