@@ -7,7 +7,7 @@ This guide walks you through the essentials: creating an account, managing credi
 
 
 ## 1. Create an Account
-1. Visit [https://ey.supplygraph.ai](https://ey.supplygraph.ai)
+1. Visit [https://www.supplygraph.ai](https://www.supplygraph.ai)
 2. Click **Sign Up** and complete registration.  
    If an invitation code is required, please contact us at info@supplygraph.ai.
 3. Verify your email address and sign in to the dashboard to begin.
