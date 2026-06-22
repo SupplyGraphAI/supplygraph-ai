@@ -103,7 +103,7 @@ https://supplygraph.ai/zk_chat_os/agentic/dialog.html?name=risk_propagation_deta
 Open the Supply Chain Risk Prediction Chatbot for Supply Chain Risk Professionals
 https://supplygraph.ai/zk_chat_os/agentic/dialog.html?name=risk_propagation_detail_riskexpert
 
-To use the chatbot, you’ll first need to:
+To use the chatbot or API, you’ll first need to:
 
 * Create a SupplyGraph AI account
 * Top up your credit balance
@@ -163,15 +163,58 @@ After activation:
 * Each `result` request returns the latest available assessment data
 * Status becomes completed after the initial setup and assessment process is finished
 
+## Analysis Mode
+
+The agent supports two assessment modes through the `analysis_mode` parameter:
+
+* `normal` — Standard live supply chain risk assessment mode
+* `backtest` — Historical risk case evaluation mode
+
+If `analysis_mode` is not provided, the agent uses `normal` mode by default.
+
+### Normal Mode
+
+In `normal` mode, the agent performs a standard company-level supply chain risk assessment based on the provided target company and event-related context.
+
+This mode is intended for live or current risk monitoring, enterprise warning generation, and continuously updated result retrieval.
+
+Normal mode follows the standard pricing and billing model described below.
+
+### Backtest Mode
+
+In `backtest` mode, the agent evaluates historical or predefined risk cases for validation, benchmarking, research, model testing, or retrospective analysis.
+
+Backtest mode is suitable for:
+
+* Testing historical risk propagation scenarios
+* Validating whether past supply chain events would have affected a target company
+* Comparing historical risk signals with known outcomes
+* Demonstrating risk propagation logic using prior cases
+* Internal evaluation, benchmarking, and model validation
+
+Backtest mode uses the same `run → status → result` workflow as normal mode.
+
+### Backtest Pricing
+
+Backtest mode is priced at **30% of the standard assessment fee**.
+
+The first **10 risk cases** in backtest mode are provided free of charge.
+
+After the first 10 free backtest risk cases are used, additional backtest assessments are charged at the discounted backtest rate.
+
+Backtest mode is intended for historical analysis and validation. It should not be used as a substitute for live enterprise risk monitoring when current or continuously updated risk intelligence is required.
+
 ## Pricing & Billing Model
 
-Pricing is based on the activated supply chain risk assessment task.
+Pricing is based on the activated supply chain risk assessment task and the selected `analysis_mode`.
 
 * Company matching and task preparation may be performed before confirmation
 * The assessment fee is charged only after the user confirms the matched company and task setup
 * Each activated task is associated with a `task_id`
 * Result retrieval uses the same activated task
-* The current price is **$4,999 per event per target company**
+* In `normal` mode, the current price is **$4,9999 per event per target company**
+* In `backtest` mode, the assessment is charged at **30% of the normal mode price**
+* The first **10 backtest risk cases** are free of charge
 * This is a **one-time fee**, not a subscription
 
 The fee covers:
