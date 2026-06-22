@@ -333,6 +333,13 @@ curl -X GET https://agent.supplygraph.ai/api/v1/agents/supply_chain_risk_predict
 
 The `run` endpoint is used to submit an event analysis task for a target company.
 
+The endpoint supports two analysis modes:
+
+| Analysis Mode | Description                                                                  |
+| ------------- | ---------------------------------------------------------------------------- |
+| `normal`      | Run normal forward-looking or current event impact analysis                  |
+| `backtest`    | Run backtest analysis based on historical event or historical market context |
+
 This endpoint currently supports three event types:
 
 | Event Type        | Description                                                              |
@@ -393,6 +400,22 @@ The `event_type` field is required and must be one of:
 news, policy, commodity_price
 ```
 
+The `analysis_mode` field is required and must be one of:
+
+```text
+normal, backtest
+```
+
+### Common Required Fields
+
+The following fields are required for all event types:
+
+| Field           | Type   | Required | Format / Description                                                 |
+| --------------- | ------ | -------: | -------------------------------------------------------------------- |
+| `event_type`    | string |      Yes | Must be one of `news`, `policy`, or `commodity_price`                |
+| `analysis_mode` | string |      Yes | Must be one of `normal` or `backtest`                                |
+| `company_name`  | string |      Yes | Target company name. Used to analyze the event impact on the company |
+
 ---
 
 ## Event Type: `news` or `policy`
@@ -401,13 +424,14 @@ When `event_type` is `news` or `policy`, the input should use the following sche
 
 ### Required Fields
 
-| Field          | Type   | Required | Format / Description                                                       |
-| -------------- | ------ | -------: | -------------------------------------------------------------------------- |
-| `event_type`   | string |      Yes | Must be `news` or `policy`                                                 |
-| `title`        | string |      Yes | Title of the event                                                         |
-| `content`      | string |      Yes | Full event content or detailed description                                 |
-| `pub_date`     | string |      Yes | Publication time. Must be RFC 3339 date-time with required timezone offset |
-| `company_name` | string |      Yes | Target company name. Used to analyze the event impact on this company      |
+| Field           | Type   | Required | Format / Description                                                       |
+| --------------- | ------ | -------: | -------------------------------------------------------------------------- |
+| `event_type`    | string |      Yes | Must be `news` or `policy`                                                 |
+| `analysis_mode` | string |      Yes | Must be `normal` or `backtest`                                             |
+| `title`         | string |      Yes | Title of the event                                                         |
+| `content`       | string |      Yes | Full event content or detailed description                                 |
+| `pub_date`      | string |      Yes | Publication time. Must be RFC 3339 date-time with required timezone offset |
+| `company_name`  | string |      Yes | Target company name. Used to analyze the event impact on this company      |
 
 ### `pub_date` Format Requirement
 
@@ -432,6 +456,7 @@ import json
 
 event_info = {
     "event_type": "news",
+    "analysis_mode": "normal",
     "title": "U.S. Government Confirms Tesla and LG Energy Solution's $4.3 Billion LFP Battery Deal",
     "content": (
         "In March 2026, the U.S. government confirmed a $4.3 billion agreement between Tesla "
@@ -453,7 +478,7 @@ payload = {
     "text": json.dumps({
         "event_info": event_info
     }),
-    "stream": false
+    "stream": False
 }
 ```
 
@@ -468,14 +493,13 @@ When `event_type` is `commodity_price`, the input should use the following schem
 | Field                    | Type   | Required | Format / Description                                                            |
 | ------------------------ | ------ | -------: | ------------------------------------------------------------------------------- |
 | `event_type`             | string |      Yes | Must be `commodity_price`                                                       |
+| `analysis_mode`          | string |      Yes | Must be `normal` or `backtest`                                                  |
 | `company_name`           | string |      Yes | Target company name. Used to analyze the commodity price impact on this company |
 | `commodity_name`         | string |      Yes | Name of the commodity                                                           |
 | `commodity_unit`         | string |      Yes | Unit of the commodity price                                                     |
 | `target_date`            | string |      Yes | Target analysis date. Format: `YYYY-MM-DD`                                      |
 | `target_price`           | number |      Yes | Commodity price on `target_date`                                                |
 | `commodity_price_series` | array  |      Yes | Historical commodity price time series used for analysis                        |
-
----
 
 ### `commodity_price_series` Requirements
 
@@ -514,6 +538,7 @@ import json
 
 event_info = {
     "event_type": "commodity_price",
+    "analysis_mode": "normal",
     "company_name": "Tesla, Inc.",
     "commodity_name": "Crude Oil",
     "commodity_unit": "USD/Bbl",
@@ -541,7 +566,7 @@ payload = {
     "text": json.dumps({
         "event_info": event_info
     }),
-    "stream": false
+    "stream": False
 }
 ```
 
