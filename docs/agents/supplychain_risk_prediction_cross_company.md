@@ -1,4 +1,4 @@
-# Supply Chain Risk Prediction – Cross-Company Agent
+# Procurement & Inventory Risk – Key Supplier Focus
 
 ## Overview
 
