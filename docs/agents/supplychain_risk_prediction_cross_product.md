@@ -1,8 +1,8 @@
-# Procurement & Inventory Risk – Cross-Product Agent
+# Procurement & Inventory Risk – Key component Focus
 
 ## Overview
 
-The **Supply Chain Risk Prediction – Cross-Product Agent** continuously monitors and analyzes upstream product or service risk events to determine whether, how, and to what extent the impact may propagate to a target company.
+The **Procurement & Inventory Risk – Key component Focus** continuously monitors and analyzes upstream product or service risk events to determine whether, how, and to what extent the impact may propagate to a target company.
 
 It transforms fragmented global supply chain signals into **structured, auditable, and continuously updated product-driven risk warnings**, enabling organizations to monitor upstream product exposure in near real-time.
 
