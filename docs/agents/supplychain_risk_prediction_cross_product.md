@@ -1,4 +1,4 @@
-# Supply Chain Risk Prediction – Cross-Product Agent
+# Procurement & Inventory Risk – Cross-Product Agent
 
 ## Overview
 
