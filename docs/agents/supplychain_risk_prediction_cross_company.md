@@ -2,7 +2,7 @@
 
 ## Overview
 
-The **Supply Chain Risk Prediction – Cross-Company Agent** continuously monitors and analyzes upstream supplier risk events to determine whether, how, and to what extent the impact may propagate to a target company.
+The **Procurement & Inventory Risk – Key Supplier Focus** continuously monitors and analyzes upstream supplier risk events to determine whether, how, and to what extent the impact may propagate to a target company.
 
 It transforms fragmented global supply chain signals into **structured, auditable, and continuously updated company-to-company risk warnings**, enabling organizations to monitor upstream supplier exposure in near real-time.
 
