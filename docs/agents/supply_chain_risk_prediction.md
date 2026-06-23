@@ -170,8 +170,6 @@ The agent supports two assessment modes through the `analysis_mode` parameter:
 * `normal` — Standard live supply chain risk assessment mode
 * `backtest` — Historical risk case evaluation mode
 
-If `analysis_mode` is not provided, the agent uses `normal` mode by default.
-
 ### Normal Mode
 
 In `normal` mode, the agent performs a standard company-level supply chain risk assessment based on the provided target company and event-related context.
@@ -339,6 +337,12 @@ The endpoint supports two analysis modes:
 | ------------- | ---------------------------------------------------------------------------- |
 | `normal`      | Run normal forward-looking or current event impact analysis                  |
 | `backtest`    | Run backtest analysis based on historical event or historical market context |
+
+Important: `mode` and `analysis_mode` are different fields.
+
+`mode` is a top-level request field used to control endpoint behavior: `run`, `status`, or `result`.
+
+`analysis_mode` is inside `event_info` and controls the assessment type: `normal` or `backtest`.
 
 This endpoint currently supports three event types:
 
