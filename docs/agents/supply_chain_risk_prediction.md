@@ -265,7 +265,7 @@ Supported `role` values:
 * `hedgefund` — Returns an investor-oriented interpretation focused on company-level operational impact, risk transmission logic, potential financial relevance, market signals, and investment-facing implications.
 * `riskexpert` — Returns a professional supply chain risk interpretation focused on impacted nodes, propagation paths, key paths, key nodes, risk mechanisms, and mitigation actions.
 
-If `role` is not provided, the agent returns the default enterprise risk assessment result.
+If `role` is not provided, the agent returns the default enterprise risk assessment result without any role-specific interpretation.
 
 The `result` response include:
 
@@ -695,7 +695,7 @@ Supported `role` values:
 * `hedgefund` — For hedge fund managers. Focuses on company-level operational impact, financial relevance, market signals, and investment-facing implications.
 * `riskexpert` — For supply chain risk professionals. Focuses on impacted nodes, propagation paths, key nodes, key paths, risk mechanisms, and mitigation actions.
 
-If `role` is not provided, the agent returns the default enterprise risk assessment result.
+If `role` is not provided, the agent returns the default enterprise risk assessment result without any role-specific interpretation.
 
 ### Request
 
