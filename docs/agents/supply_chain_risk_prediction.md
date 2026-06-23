@@ -451,12 +451,17 @@ Valid examples:
 
 ---
 
-### Example: News / Policy Event
+### Request Example: News / Policy Event
 
 #### Python Input
 
 ```python
 import json
+import requests
+
+YOUR_API_KEY = "YOUR_API_KEY"
+
+url = "https://agent.supplygraph.ai/api/v1/agents/supply_chain_risk_prediction/run"
 
 event_info = {
     "event_type": "news",
@@ -484,6 +489,18 @@ payload = {
     }),
     "stream": False
 }
+
+headers = {
+    "Authorization": f"Bearer {YOUR_API_KEY}",
+    "Content-Type": "application/json"
+}
+
+response = requests.post(
+    url,
+    headers=headers,
+    json=payload,
+    timeout=60
+)
 ```
 
 ---
@@ -533,12 +550,17 @@ Example:
 
 ---
 
-### Example: Commodity Price Event
+### Request Example: Commodity Price Event
 
 #### Python Input
 
 ```python
 import json
+import requests
+
+YOUR_API_KEY = "YOUR_API_KEY"
+
+url = "https://agent.supplygraph.ai/api/v1/agents/supply_chain_risk_prediction/run"
 
 event_info = {
     "event_type": "commodity_price",
@@ -572,6 +594,18 @@ payload = {
     }),
     "stream": False
 }
+
+headers = {
+    "Authorization": f"Bearer {YOUR_API_KEY}",
+    "Content-Type": "application/json"
+}
+
+response = requests.post(
+    url,
+    headers=headers,
+    json=payload,
+    timeout=60
+)
 ```
 
 ---
@@ -642,6 +676,58 @@ The `text` field must still be a JSON string generated from the following struct
     "confirm_company_name": "Yes"
   }
 }
+```
+
+#### Python Input
+
+```python
+import json
+import requests
+
+YOUR_API_KEY = "YOUR_API_KEY"
+
+url = "https://agent.supplygraph.ai/api/v1/agents/supply_chain_risk_prediction/run"
+
+event_info = {
+    "event_type": "news",
+    "analysis_mode": "normal",
+    "title": "U.S. Government Confirms Tesla and LG Energy Solution's $4.3 Billion LFP Battery Deal",
+    "content": (
+        "In March 2026, the U.S. government confirmed a $4.3 billion agreement between Tesla "
+        "and South Korea's LG Energy Solution to support lithium iron phosphate (LFP) battery "
+        "cell production in Lansing, Michigan. The facility is expected to begin production in "
+        "2027 and supply batteries for Tesla's Megapack 3 energy storage systems manufactured "
+        "near Houston. The deal could strengthen Tesla's domestic battery supply chain, reduce "
+        "its reliance on Chinese battery imports amid tariff pressure, and support growth in its "
+        "energy storage business. However, the financial impact will depend on execution at the "
+        "Michigan plant, battery cost competitiveness, demand for Megapack systems, and whether "
+        "U.S.-based LFP production can scale efficiently."
+    ),
+    "pub_date": "2026-03-17T00:00:00-04:00",
+    "company_name": "Tesla, Inc.",
+    "confirm_company_name": "Yes"
+}
+
+payload = {
+    "mode": "run",
+    "task_id": "<task-id>",
+    "text": json.dumps({
+        "event_info": event_info
+    }),
+    "stream": False
+}
+
+headers = {
+    "Authorization": f"Bearer {YOUR_API_KEY}",
+    "Content-Type": "application/json"
+}
+
+response = requests.post(
+    url,
+    headers=headers,
+    json=payload,
+    timeout=60
+)
 ```
 
 ## Status Endpoint
