@@ -587,7 +587,54 @@ payload = {
 }
 ```
 
-After the user replies “Yes,” the event analysis service will be activated, and the one-time fee will be charged.
+---
+
+### Continuing After `WAITING_USER`
+
+When the initial `run` request returns `code=WAITING_USER`, the analysis task is paused and waiting for user confirmation.
+
+The client application should display the returned `content` to the user and ask the user to confirm whether the identified company information is correct.
+
+After the user replies with `Yes` or `No`, the client application should submit another request to the same `run` endpoint to continue the existing task.
+
+In this follow-up request:
+
+* `task_id` must be provided in the top-level request body, using the `task_id` returned in the previous `WAITING_USER` response.
+* `confirm_company_name` must be added inside the `event_info` object.
+* `confirm_company_name` must contain the user's confirmation result.
+
+Valid values:
+
+| Value | Description                                                     |
+| ----- | --------------------------------------------------------------- |
+| `Yes` | The user confirms the identified company information is correct |
+| `No`  | The user rejects the identified company information             |
+
+This field is only required when continuing a task from a `WAITING_USER` response.
+
+After the user replies “Yes”, the event analysis service will be activated, and the one-time fee will be charged.
+
+---
+
+### Request Body When Continuing From `WAITING_USER`
+
+| Field     | Type    | Required | Description                                                     |
+| --------- | ------- | -------: | --------------------------------------------------------------- |
+| `mode`    | string  |       No | Execution mode. Defaults to `run` if omitted                    |
+| `task_id` | string  |      Yes | Task ID returned by the previous `WAITING_USER` response        |
+| `text`    | string  |      Yes | A JSON-dumped string containing the updated `event_info` object |
+| `stream`  | boolean |       No | Whether to enable streaming response                            |
+
+The `text` field must still be a JSON string generated from the following structure:
+
+```json
+{
+  "event_info": {
+    "...": "...",
+    "confirm_company_name": "Yes"
+  }
+}
+```
 
 ## Status Endpoint
 
