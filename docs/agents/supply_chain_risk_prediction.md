@@ -296,9 +296,9 @@ This section provides an overview of the **A2A (Agent-to-Agent)** interface used
 
 Supported modes:
 
-- `run` — start a new supplier monitoring customization task
+- `run` — create or continue a company-level supply chain risk assessment task
 - `status` — check task status
-- `result` — retrieve the latest warning data
+- `result` — retrieve the latest available risk assessment result
 
 ## Manifest
 
