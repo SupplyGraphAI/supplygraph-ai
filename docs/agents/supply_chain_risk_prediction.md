@@ -614,6 +614,8 @@ This field is only required when continuing a task from a `WAITING_USER` respons
 
 After the user replies “Yes”, the event analysis service will be activated, and the one-time fee will be charged.
 
+If the user replies “No”, the current task will not proceed to activation and no fee will be charged. The user may initiate a new `/run` request with more accurate company information, which will create a new assessment task.
+
 ---
 
 ### Request Body When Continuing From `WAITING_USER`
