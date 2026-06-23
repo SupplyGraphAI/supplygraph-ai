@@ -210,7 +210,7 @@ Pricing is based on the activated supply chain risk assessment task and the sele
 * The assessment fee is charged only after the user confirms the matched company and task setup
 * Each activated task is associated with a `task_id`
 * Result retrieval uses the same activated task
-* In `normal` mode, the current price is **$4,9999 per event per target company**
+* In `normal` mode, the current price is **$49,999 per event per target company**
 * In `backtest` mode, the assessment is charged at **30% of the normal mode price**
 * The first **10 backtest risk cases** are free of charge
 * This is a **one-time fee**, not a subscription
@@ -314,12 +314,12 @@ curl -X GET https://agent.supplygraph.ai/api/v1/agents/supply_chain_risk_predict
   "agent_id": "supply_chain_risk_prediction",
   "name": "Supply Chain Risk Prediction Agent",
   "version": "1.0.0",
-  "description": "Monitors supplier events and quantifies supply chain risk propagation to a target company",
+  "description": "Evaluates how a supply chain risk event may affect a target company through multi-tier supply chain propagation analysis",
   "input_schema": { ... },
   "output_schema": { ... },
   "pricing": {
     "unit": "USD",
-    "one_time_fee_per_supplier_per_target": 4999
+    "one_time_fee_per_event_per_target_company": 49999
   },
   "status": "active"
 }
@@ -418,7 +418,7 @@ The following fields are required for all event types:
 | --------------- | ------ | -------: | -------------------------------------------------------------------- |
 | `event_type`    | string |      Yes | Must be one of `news`, `policy`, or `commodity_price`                |
 | `analysis_mode` | string |      Yes | Must be one of `normal` or `backtest`                                |
-| `company_name`  | string |      Yes | Target company name. Used to analyze the event impact on the company |
+| `company_name`  | string |      Yes | Target company name to be assessed. Provide the most specific legal or commonly recognized company name. To improve matching accuracy, include country, region, ticker, exchange, or other identifying information when available, for example: `Tesla, Inc. (United States, NASDAQ: TSLA)` or `BYD Company Limited (China, HKEX: 1211)`. |
 
 ---
 
@@ -435,7 +435,7 @@ When `event_type` is `news` or `policy`, the input should use the following sche
 | `title`         | string |      Yes | Title of the event                                                         |
 | `content`       | string |      Yes | Full event content or detailed description                                 |
 | `pub_date`      | string |      Yes | Publication time. Must be RFC 3339 date-time with required timezone offset |
-| `company_name`  | string |      Yes | Target company name. Used to analyze the event impact on this company      |
+| `company_name`  | string |      Yes | Target company name to be assessed. Provide the most specific legal or commonly recognized company name. To improve matching accuracy, include country, region, ticker, exchange, or other identifying information when available, for example: `Tesla, Inc. (United States, NASDAQ: TSLA)` or `BYD Company Limited (China, HKEX: 1211)`.      |
 
 ### `pub_date` Format Requirement
 
@@ -498,7 +498,7 @@ When `event_type` is `commodity_price`, the input should use the following schem
 | ------------------------ | ------ | -------: | ------------------------------------------------------------------------------- |
 | `event_type`             | string |      Yes | Must be `commodity_price`                                                       |
 | `analysis_mode`          | string |      Yes | Must be `normal` or `backtest`                                                  |
-| `company_name`           | string |      Yes | Target company name. Used to analyze the commodity price impact on this company |
+| `company_name`           | string |      Yes | Target company name to be assessed. Provide the most specific legal or commonly recognized company name. To improve matching accuracy, include country, region, ticker, exchange, or other identifying information when available, for example: `Tesla, Inc. (United States, NASDAQ: TSLA)` or `BYD Company Limited (China, HKEX: 1211)`. |
 | `commodity_name`         | string |      Yes | Name of the commodity                                                           |
 | `commodity_unit`         | string |      Yes | Unit of the commodity price                                                     |
 | `target_date`            | string |      Yes | Target analysis date. Format: `YYYY-MM-DD`                                      |
@@ -615,6 +615,8 @@ Valid values:
 | `No`  | The user rejects the identified company information             |
 
 This field is only required when continuing a task from a `WAITING_USER` response.
+
+The client application must resend the full original `event_info` and add `confirm_company_name`.
 
 After the user replies “Yes”, the event analysis service will be activated, and the one-time fee will be charged.
 
@@ -815,9 +817,9 @@ This field is useful for structured display, section-level retrieval, citation, 
 Typical workflow:
 
 1. Start with `mode=run`
-2. Provide target company and supplier company information
+2. Provide the target company and event information
 3. Confirm matched companies if prompted
-4. Retrieve latest warning data with `mode=result`
+4. Retrieve the latest available risk assessment result with `mode=result`
 5. Use `mode=status` only when checking setup completion
 
 ## Integration Options
