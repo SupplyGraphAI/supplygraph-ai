@@ -28,6 +28,7 @@ Through this protocol, developers can:
 - **Send messages** with `POST .../message:send`
 - **Stream** real-time updates with `POST .../message:stream` (SSE)
 - **Query tasks** with `GET .../tasks/{task_id}` (`tasks/get`)
+- **Receive completion webhooks** by registering `pushNotificationConfig` on the first message request (see §6)
 - **Retrieve extended metadata** (when enabled) via `GET .../extendedAgentCard`
 
 ### Agent Base URL
@@ -228,7 +229,12 @@ Authorization: Bearer {api_key}
   "configuration": {
     "acceptedOutputModes": ["text/plain", "application/json"],
     "historyLength": 10,
-    "blocking": false
+    "blocking": false,
+    "pushNotificationConfig": {
+      "id": "webhook-config-uuid",
+      "url": "https://client.example.com/webhook/a2a",
+      "token": "optional-client-verification-token"
+    }
   },
   "metadata": {}
 }
@@ -242,6 +248,7 @@ Authorization: Bearer {api_key}
 | `message.contextId` | No | Session ID for multi-turn dialogue |
 | `message.taskId` | No | Existing task ID to continue a conversation |
 | `configuration.blocking` | No | `true` blocks until complete; default `false` |
+| `configuration.pushNotificationConfig` | No | Webhook to notify when the task reaches a terminal state (see §6). **Only accepted on the first request** for a new task (when `message.taskId` is omitted) |
 
 **Response (Task):**
 
@@ -346,15 +353,109 @@ Authorization: Bearer {api_key}
 | `tasks/get` | Query a task |
 | `tasks/cancel` | Cancel a task |
 | `tasks/resubscribe` | Re-subscribe to task SSE stream |
-| `tasks/pushNotificationConfig/set` | Configure push notifications |
-| `tasks/pushNotificationConfig/get` | Get push notification config |
-| `tasks/pushNotificationConfig/list` | List push notification configs |
-| `tasks/pushNotificationConfig/delete` | Delete push notification config |
 | `agent/getAuthenticatedExtendedCard` | Get authenticated extended Agent Card |
+
+> Push notification webhooks are registered inline via `configuration.pushNotificationConfig` on the initial `message/send` or `message/stream` request (see §6). Separate `tasks/pushNotificationConfig/*` management endpoints are not used.
 
 ---
 
-## 6. Multi-Turn Interaction
+## 6. Push Notifications (Webhook)
+
+SupplyGraph AI supports A2A push notifications for **task completion callbacks**. When an agent declares `capabilities.pushNotifications = true`, clients may register a webhook that receives a single notification after the task reaches a **terminal state**.
+
+### 6.1 Register a webhook (first request only)
+
+Provide `pushNotificationConfig` inside `configuration` on the **initial** `message:send` or `message:stream` request — i.e. when starting a **new** task and **`message.taskId` is not set**.
+
+```json
+{
+  "message": {
+    "messageId": "msg-uuid",
+    "role": "user",
+    "parts": [{ "kind": "text", "text": "Analyze supply chain risk for Tesla" }]
+  },
+  "configuration": {
+    "blocking": false,
+    "pushNotificationConfig": {
+      "id": "webhook-config-uuid",
+      "url": "https://client.example.com/webhook/a2a",
+      "token": "optional-client-verification-token"
+    }
+  }
+}
+```
+
+| Field | Required | Description |
+|-------|----------|-------------|
+| `pushNotificationConfig.url` | Yes | HTTPS endpoint that accepts the completion POST |
+| `pushNotificationConfig.id` | No | Client-defined config identifier |
+| `pushNotificationConfig.token` | No | Optional shared secret; returned in `X-A2A-Notification-Token` on delivery |
+
+**Rules:**
+
+- Webhook registration is accepted **only on the first execution request** for a task (no `message.taskId`).
+- Follow-up messages in a multi-turn flow (with an existing `message.taskId`) **do not** update or replace the webhook.
+- One webhook registration applies to the entire task lifecycle until a terminal state is reached.
+
+### 6.2 Webhook delivery (on task completion)
+
+When the task reaches a terminal state (`completed`, `failed`, or `canceled`), SupplyGraph AI sends **one POST** to the registered `url`.
+
+**Request:**
+
+```http
+POST https://client.example.com/webhook/a2a
+Content-Type: application/a2a+json
+A2A-Version: 1.0
+Authorization: Bearer {platform_jwt}
+X-A2A-Notification-Token: optional-client-verification-token
+```
+
+**Body:**
+
+```json
+{
+  "statusUpdate": {
+    "taskId": "task-uuid",
+    "status": {
+      "state": "completed",
+      "timestamp": "2026-06-29T12:05:00Z"
+    }
+  }
+}
+```
+
+| Field | Description |
+|-------|-------------|
+| `statusUpdate.taskId` | The task that has finished |
+| `statusUpdate.status.state` | Terminal state: `completed`, `failed`, or `canceled` |
+| `statusUpdate.status.timestamp` | UTC ISO 8601 timestamp of the notification |
+
+After receiving the webhook, clients SHOULD call `tasks/get` to retrieve the full Task (including `artifacts`).
+
+> Webhooks notify **completion only**. Intermediate states (`working`, `input-required`) are not pushed; use `message/stream` or poll `tasks/get` for in-progress updates.
+
+### 6.3 Verify webhook authenticity
+
+The `Authorization` header carries a platform-issued JWT. Verify it using the public keys published at:
+
+```
+GET https://agent.supplygraph.ai/.well-known/jwks.json
+```
+
+JWT claims:
+
+| Claim | Description |
+|-------|-------------|
+| `iss` | Platform issuer (`https://agent.supplygraph.ai/a2a`) |
+| `aud` | Must match your webhook URL |
+| `sub` / `taskId` | The task ID being notified |
+
+If you supplied `pushNotificationConfig.token`, also verify the `X-A2A-Notification-Token` header matches your token.
+
+---
+
+## 7. Multi-Turn Interaction
 
 When a Task reaches `input-required`, send another message with the same `contextId` and `taskId`:
 
@@ -374,9 +475,11 @@ When a Task reaches `input-required`, send another message with the same `contex
 
 Continue until the Task reaches a terminal state (`completed`, `failed`, `canceled`, or `rejected`).
 
+> `pushNotificationConfig` is **not** re-read on follow-up messages. Register it only on the first request.
+
 ---
 
-## 7. Error Handling
+## 8. Error Handling
 
 A2A errors follow a standard envelope:
 
@@ -406,7 +509,7 @@ A2A errors follow a standard envelope:
 
 ---
 
-## 8. Streaming Events (SSE)
+## 9. Streaming Events (SSE)
 
 When using `message/stream`, each SSE `data` payload is a JSON-RPC 2.0 response.
 
@@ -445,22 +548,18 @@ Stream or poll until `status.state` reaches a terminal value, or handle `input-r
 
 ---
 
-## 9. Security & Access Control
+## 10. Security & Access Control
 
 - All execution and task requests require `Authorization: Bearer {api_key}`
 - Agents that require authentication declare it in their Agent Card
 - Use TLS 1.2 or later for all HTTPS connections
-- Push notification webhooks are signed with platform JWT; verify using:
-
-  ```
-  GET https://agent.supplygraph.ai/.well-known/jwks.json
-  ```
+- Push notification webhooks are authenticated with a platform JWT (see §6.3); verify via `/.well-known/jwks.json`
 
 - Use `contextId` and `taskId` for tracing multi-step workflows
 
 ---
 
-## 10. Versioning
+## 11. Versioning
 
 | Layer | Version | Notes |
 |-------|---------|-------|
@@ -477,7 +576,7 @@ Incompatible version requests are rejected with error code `-32009` (`VERSION_NO
 
 ---
 
-## 11. Related Documentation
+## 12. Related Documentation
 
 📘 **Getting Started**  
 https://github.com/SupplyGraphAI/supplygraph-ai/blob/main/docs/getting-started.md
@@ -496,7 +595,7 @@ https://www.supplygraph.ai
 
 ---
 
-## 12. SupplyGraph AI A2A SDK (Python)
+## 13. SupplyGraph AI A2A SDK (Python)
 
 ➡️ **[SupplyGraph AI A2A Python SDK](https://github.com/SupplyGraphAI/supplygraphai_a2a_sdk)**
 
@@ -505,11 +604,12 @@ The SDK provides:
 - Agent discovery (Well-Known URI, Registry, Agent Card)
 - `message/send` and `message/stream`
 - Task management (`tasks/get`)
+- Push notification webhooks (§6)
 - Adapters for LangChain, LangGraph, AutoGen, CrewAI, Google A2A, MCP, and more
 
 ---
 
-## 13. Why A2A Matters
+## 14. Why A2A Matters
 
 Traditional APIs expose static functions.  
 The SupplyGraph AI A2A Protocol exposes **interoperable agents** — discoverable via standard Agent Cards, invokable by any A2A-compliant client, and composable in multi-agent orchestration stacks.
