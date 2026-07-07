@@ -39,8 +39,9 @@ This repository contains the official documentation of **SupplyGraph AI** and is
 📘 **Getting Started** – Setup, authentication and first request  
 👉 [`docs/getting-started.md`](./docs/getting-started.md)
 
-🤝 **A2A / MCP Protocol** – Agent-to-Agent interface & interoperability  
-👉 [`docs/a2a.md`](./docs/a2a.md)
+🤝 **A2A / MCP Protocol** – Standard interfaces for agent discovery, invocation, and interoperability  
+👉 **A2A** (Agent-to-Agent): [`docs/a2a.md`](./docs/a2a.md)  
+👉 **MCP** (Model Context Protocol): [`docs/mcp.md`](./docs/mcp.md)
 
 🤖 **Agent Library Overview**  
 👉 https://github.com/SupplyGraphAI/supplygraph-ai/blob/main/agents/index.md
@@ -93,22 +94,21 @@ Each relationship is tied to live signals and an auditable evidence chain.
 
 ## Two Groups of AI Agents
 
-### Group 1: Automation & Efficiency Agents
+### Group 1: Supply Chain Risk Prediction Data Engine
 
-- **[Customs Classification Agent](https://github.com/SupplyGraphAI/supplygraph-ai/blob/main/docs/agents/tariff_classification.md)** – Maps products to correct HS/HTS codes  
-- **[U.S. Tariff Calculation Agent](https://github.com/SupplyGraphAI/supplygraph-ai/blob/main/docs/agents/tariff_calc.md)** – Calculates U.S. duty rates and additional tariffs  
-- **[Due Diligence Agent](https://github.com/SupplyGraphAI/supplygraph-ai/blob/main/docs/agents/due_diligence_report.md)** – Generates structured company intelligence  
-- **[Corporate Exception Agent](https://github.com/SupplyGraphAI/supplygraph-ai/blob/main/docs/agents/corporate_exception_report.md)** – Real-time automated corporate exception monitoring  
-
-👉 Full agent descriptions here:  
-https://github.com/SupplyGraphAI/supplygraph-ai/blob/main/agents/index.md
-
-### Group 2: Data Intelligence & Supply Graph Agents
-
+- **[Supply Chain Risk Prediction Agent](https://github.com/SupplyGraphAI/supplygraph-ai/blob/main/docs/agents/supply_chain_risk_prediction.md)**
+- **[Procurement & Inventory Risk Agent](https://github.com/SupplyGraphAI/supplygraph-ai/blob/main/docs/agents/procurement_inventor.md)**
 - **[Global Supply Dependency Visualization Agent](https://github.com/SupplyGraphAI/supplygraph-ai/blob/main/docs/agents/sg_visualization.md)**  
 - **[Geographic Concentration Analysis Agent](https://github.com/SupplyGraphAI/supplygraph-ai/blob/main/docs/agents/sg_chokepoint.md)**  
 
-👉 Details & demos available in the Agent Hub:  
+### Group 2: Supply Chain Management Kits
+
+- **[Customs Classification Agent](https://github.com/SupplyGraphAI/supplygraph-ai/blob/main/docs/agents/tariff_classification.md)**
+- **[U.S. Tariff Calculation Agent](https://github.com/SupplyGraphAI/supplygraph-ai/blob/main/docs/agents/tariff_calc.md)**  
+- **[Due Diligence Agent](https://github.com/SupplyGraphAI/supplygraph-ai/blob/main/docs/agents/due_diligence_report.md)**
+- **[Corporate Exception Agent](https://github.com/SupplyGraphAI/supplygraph-ai/blob/main/docs/agents/corporate_exception_report.md)**
+
+### Full agent descriptions here:  
 https://github.com/SupplyGraphAI/supplygraph-ai/blob/main/agents/index.md
 
 ## Integration & Developer Experience
@@ -117,39 +117,122 @@ Designed for **fast, standards-based integration** using A2A and MCP.
 
 ### Quick Example (Python SDK — A2A Pattern)
 
+Requires the official [A2A Python SDK](https://pypi.org/project/a2a-sdk/) (`pip install a2a-sdk httpx`, Python 3.10+).
+
 ```python
-from supplygraphai_a2a_sdk import AgentClient
-import time
+import asyncio
 
-client = AgentClient(api_key="YOUR_API_KEY")
+import httpx
+from a2a.client import ClientConfig, create_client
+from a2a.helpers import new_text_message
+from a2a.types.a2a_pb2 import GetTaskRequest, Role, SendMessageRequest, TaskState
 
-run_response = client.run(
-    agent_id="tariff_calc",
-    text="Lithium-ion batteries for electric vehicles manufactured in China"
+API_KEY = "YOUR_API_KEY"
+AGENT_BASE = "https://agent.supplygraph.ai/a2a/agents/tariff_calc"
+TEXT = (
+    "Lithium-ion batteries for electric vehicles "
+    "manufactured in China"
 )
 
-task_id = run_response.get("task_id")
-print(f"Task submitted: {task_id}")
+TERMINAL = {
+    TaskState.TASK_STATE_COMPLETED,
+    TaskState.TASK_STATE_FAILED,
+    TaskState.TASK_STATE_CANCELED,
+    TaskState.TASK_STATE_REJECTED,
+}
 
-status = "PENDING"
-while status not in ("COMPLETED", "FAILED"):
-    time.sleep(3)
-    status_response = client.status(
-        agent_id="tariff_calc",
-        task_id=task_id
-    )
-    status = status_response.get("status")
-    print("Current status:", status)
 
-if status == "COMPLETED":
-    result = client.results(
-        agent_id="tariff_calc",
-        task_id=task_id
-    )
-    print("Final result:")
-    print(result)
-else:
-    print("Task failed or cancelled.")
+async def main() -> None:
+    headers = {"Authorization": f"Bearer {API_KEY}"}
+    async with httpx.AsyncClient(headers=headers, timeout=60.0) as http:
+        client = await create_client(
+            AGENT_BASE,
+            client_config=ClientConfig(streaming=False, httpx_client=http),
+            resolver_http_kwargs={"headers": headers},
+            relative_card_path="/",
+        )
+        try:
+            request = SendMessageRequest(
+                message=new_text_message(TEXT, role=Role.ROLE_USER),
+            )
+            task = None
+            async for chunk in client.send_message(request):
+                if chunk.HasField("task"):
+                    task = chunk.task
+
+            if task is None:
+                print("No task returned.")
+                return
+
+            print(f"Task submitted: {task.id}")
+
+            while task.status.state not in TERMINAL:
+                await asyncio.sleep(3)
+                task = await client.get_task(GetTaskRequest(id=task.id))
+                print("Current status:", TaskState.Name(task.status.state))
+
+            if task.status.state == TaskState.TASK_STATE_COMPLETED:
+                print("Final result:")
+                print(task.artifacts)
+            else:
+                print("Task failed or cancelled.")
+        finally:
+            await client.close()
+
+
+asyncio.run(main())
+```
+
+### Quick Example (Python SDK — MCP Pattern)
+
+```python
+import asyncio
+
+from mcp import ClientSession
+from mcp.client.streamable_http import streamable_http_client
+from mcp.shared.experimental.tasks.helpers import is_terminal
+from mcp.types import CallToolResult
+
+API_KEY = "YOUR_API_KEY"
+MCP_URL = "https://mcp.supplygraph.ai/mcp"
+
+
+async def main() -> None:
+    headers = {"Authorization": f"Bearer {API_KEY}"}
+
+    async with streamable_http_client(MCP_URL, headers=headers) as (read, write, _):
+        async with ClientSession(read, write) as session:
+            await session.initialize()
+
+            create = await session.experimental.call_tool_as_task(
+                "tariff_calc",
+                {
+                    "text": (
+                        "Lithium-ion batteries for electric vehicles "
+                        "manufactured in China"
+                    ),
+                },
+            )
+            task_id = create.task.taskId
+            print(f"Task submitted: {task_id}")
+
+            async for status in session.experimental.poll_task(task_id):
+                print("Current status:", status.status)
+                if is_terminal(status.status):
+                    break
+
+            result = await session.experimental.get_task_result(
+                task_id,
+                CallToolResult,
+            )
+            if result.isError:
+                print("Task failed or cancelled.")
+            else:
+                print("Final result:")
+                print(result.content)
+
+
+asyncio.run(main())
 ```
 
 ## Who Uses SupplyGraph AI
