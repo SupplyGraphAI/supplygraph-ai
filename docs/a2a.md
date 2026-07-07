@@ -1,56 +1,54 @@
 # Agent-to-Agent (A2A) Protocol
 
-The **SupplyGraph AI A2A Protocol** exposes SupplyGraph agents through the **[Agent2Agent (A2A) Protocol v1.0](https://a2a-protocol.org)** — a standardized, public-facing interface for discovery, messaging, streaming, and task management.
+The **SupplyGraph AI A2A Protocol** defines how external developers and systems discover, authenticate, and interact with SupplyGraph AI Agents using the **[Agent2Agent (A2A) Protocol v1.0](https://a2a-protocol.org)**.
 
-**Public gateway (production):**
+**Service base URL (production):**
 
 ```
 https://agent.supplygraph.ai/a2a
 ```
 
-Each agent — such as **Tariff Calculation** (`tariff_calc`), **Customs Classification** (`tariff_classification`), **Due Diligence** (`due_diligence_report`), or **Supply Chain Risk Sentinel** (`risk_propagation_summary`) — is published as an independent A2A Agent with its own **Agent Card** and **Agent Base URL**.
+Each agent — such as **Tariff Calculation** (`tariff_calc`), **Customs Classification** (`tariff_classification`), **Due Diligence** (`due_diligence_report`), or **Supply Chain Risk Sentinel** (`risk_propagation_summary`) — is an independent A2A Agent with its own **Agent Card** and **Agent Base URL**.
 
-> **Architecture note**  
-> 31190 is the **A2A-compliant gateway**. It adapts A2A `message/send`, `message/stream`, and `tasks/get` to SupplyGraph's internal agent runtime.  
-> The legacy HTTP interface (`/api/v1/agents/{agent_id}/manifest`, `/run` with `mode=run|status|results`) remains the **internal backend contract** and is **not** the public A2A surface.
-
-Broader resource discovery (agents + MCP + docs) is also published via ARD at:
+SupplyGraph also publishes a broader **Agentic Resource Discovery (ARD)** catalog at:
 
 ```
 https://supplygraph.ai/.well-known/ai-catalog.json
 ```
 
+> All timestamps use UTC ISO 8601 format, e.g. `2026-06-29T12:00:00Z`.
+
 ---
 
 ## 1. Overview
 
-Through the A2A gateway, developers can:
+Through this protocol, developers can:
 
 - **Discover** agents via Well-Known URI, Registry, and per-agent **Agent Cards**
-- **Send messages** with `POST .../message:send` (sync or async Task)
+- **Send messages** with `POST .../message:send`
 - **Stream** real-time updates with `POST .../message:stream` (SSE)
-- **Poll tasks** with `GET .../tasks/{task_id}` (`tasks/get`)
+- **Query tasks** with `GET .../tasks/{task_id}` (`tasks/get`)
 - **Retrieve extended metadata** (when enabled) via `GET .../extendedAgentCard`
 
 ### Agent Base URL
 
-Every business agent has an **Agent Base URL** (also the `url` field in its Agent Card):
+Every business agent has an **Agent Base URL** — the `url` field in its Agent Card:
 
 ```
 {agent_base} = https://agent.supplygraph.ai/a2a/agents/{agent_id}
 ```
 
-All execution and task endpoints are resolved **relative to `{agent_base}`**, per A2A HTTP/REST Binding.
+All execution and task endpoints are resolved **relative to `{agent_base}`**, per the A2A HTTP/REST Binding.
 
 ### Discovery flow
 
-**Full discovery (recommended for generic A2A SDKs):**
+**Recommended (generic A2A clients):**
 
 ```
 GET /.well-known/agent-card.json
   → metadata.registryUrl
   → GET /a2a/agents
-  → GET /a2a/agents/{agent_id}          (Agent Card)
+  → GET /a2a/agents/{agent_id}     (Agent Card)
   → use Card.url as {agent_base}
   → POST {agent_base}/message:send | message:stream
 ```
@@ -62,9 +60,7 @@ GET /a2a/agents/{agent_id}  →  execute against Card.url
 ```
 
 > The platform Well-Known Card (`/.well-known/agent-card.json`) is **discovery-only**.  
-> Do **not** send `message/send` to the platform root URL.
-
-> All timestamps use UTC ISO 8601 format, e.g. `2026-06-29T12:00:00Z`.
+> Do **not** send execution requests to the platform root URL.
 
 ---
 
@@ -77,6 +73,7 @@ GET /a2a/agents/{agent_id}  →  execute against Card.url
 | **Transport** | HTTPS |
 | **REST Content-Type** | `application/a2a+json` (non-SSE) |
 | **Streaming Content-Type** | `text/event-stream` (SSE) |
+| **JSON-RPC Content-Type** | `application/json` |
 | **JSON field naming** | camelCase |
 | **Authentication** | `Authorization: Bearer {api_key}` |
 | **Encoding** | UTF-8 JSON |
@@ -87,7 +84,7 @@ Obtain API keys from the SupplyGraph Console:
 https://supplygraph.ai/zk_chat_os/dashboard/dashboard.html
 ```
 
-> Unauthorized requests return HTTP `401` with an A2A error envelope (see §6).
+Unauthorized or malformed requests return an A2A error envelope with HTTP `401` or `400` (see §7).
 
 ---
 
@@ -97,11 +94,11 @@ https://supplygraph.ai/zk_chat_os/dashboard/dashboard.html
 
 | Endpoint | Method | Purpose |
 |----------|--------|---------|
-| `/.well-known/agent-card.json` | GET | Platform entry Agent Card (A2A v1.0, RFC 8615) |
-| `/.well-known/agent.json` | GET | Legacy alias (A2A v0.2.x compatibility) |
+| `/.well-known/agent-card.json` | GET | Platform entry Agent Card (RFC 8615) |
+| `/.well-known/agent.json` | GET | Legacy Well-Known alias (A2A v0.2.x clients) |
 | `/.well-known/jwks.json` | GET | JWKS for webhook JWT verification |
-| `/a2a/agents` | GET | Agent Registry list (platform extension) |
-| `/a2a/agents/{agent_id}` | GET | Full Agent Card for a business agent |
+| `/a2a/agents` | GET | Agent Registry list |
+| `/a2a/agents/{agent_id}` | GET | Agent Card for a business agent |
 | `/a2a/agents/{agent_id}/extendedAgentCard` | GET | Authenticated extended Agent Card |
 
 ### 3.2 Execution & Tasks (relative to `{agent_base}`)
@@ -111,6 +108,7 @@ https://supplygraph.ai/zk_chat_os/dashboard/dashboard.html
 | `{agent_base}/message:send` | POST | `message/send` | No | Send a user message; returns a **Task** |
 | `{agent_base}/message:stream` | POST | `message/stream` | Yes (SSE) | Send a message and subscribe to live events |
 | `{agent_base}/tasks/{task_id}` | GET | `tasks/get` | No | Get task status, history, and artifacts |
+| `{agent_base}` | POST | JSON-RPC | Varies | Unified JSON-RPC entry (A2A primary binding) |
 
 **Example `{agent_base}`:**
 
@@ -122,42 +120,90 @@ https://agent.supplygraph.ai/a2a/agents/tariff_calc
 
 | Endpoint | Method | Purpose |
 |----------|--------|---------|
-| `/health` | GET | Liveness check |
-
-> **Current implementation scope (31190 v1.0)**  
-> The gateway currently exposes REST bindings for `message/send`, `message/stream`, and `tasks/get`.  
-> Additional A2A methods (`tasks/cancel`, push notification configs, JSON-RPC unified entry) are defined in the A2A spec and may be added in future releases.
+| `/health` | GET | Service liveness check |
 
 ---
 
 ## 4. Agent Card
 
-Each agent publishes a standard **Agent Card** (camelCase JSON):
+Each agent publishes a standard **Agent Card**:
 
-```
+```http
 GET https://agent.supplygraph.ai/a2a/agents/tariff_calc
 ```
 
-Key fields:
+**Example response (abbreviated):**
+
+```json
+{
+  "name": "U.S. Tariff Calculation",
+  "description": "Calculates U.S. tariff rates and duty impacts.",
+  "url": "https://agent.supplygraph.ai/a2a/agents/tariff_calc",
+  "version": "1.0.0",
+  "protocolVersion": "1.0",
+  "capabilities": {
+    "streaming": true,
+    "extendedAgentCard": true,
+    "pushNotifications": true
+  },
+  "defaultInputModes": ["text/plain"],
+  "defaultOutputModes": ["text/plain", "application/json"],
+  "skills": [
+    {
+      "id": "tariff_calc",
+      "name": "U.S. Tariff Calculation",
+      "description": "Calculate import duty for a product description or HS code.",
+      "tags": ["tariff", "trade"],
+      "examples": ["Calculate U.S. import duty for HS 8471 from China"]
+    }
+  ],
+  "supportedInterfaces": [
+    {
+      "protocolBinding": "HTTP+JSON",
+      "url": "https://agent.supplygraph.ai/a2a/agents/tariff_calc",
+      "protocolVersion": "1.0"
+    },
+    {
+      "protocolBinding": "JSONRPC",
+      "url": "https://agent.supplygraph.ai/a2a/agents/tariff_calc",
+      "protocolVersion": "1.0"
+    }
+  ]
+}
+```
 
 | Field | Description |
 |-------|-------------|
 | `name` | Human-readable agent name |
 | `description` | Capability summary |
-| `url` | **Must equal `{agent_base}`** |
+| `url` | Agent Base URL; **must equal `{agent_base}`** |
 | `version` | Agent version |
-| `protocolVersion` | `"1.0"` |
-| `capabilities` | e.g. `streaming`, `extendedAgentCard`, `pushNotifications` |
+| `protocolVersion` | A2A protocol version (`"1.0"`) |
+| `capabilities` | Supported features (`streaming`, `extendedAgentCard`, `pushNotifications`) |
 | `skills` | Skill definitions with tags and examples |
-| `supportedInterfaces` | Protocol bindings (`HTTP+JSON`, `JSONRPC`) |
+| `supportedInterfaces` | Protocol bindings and their URLs |
+
+### Platform entry Agent Card
+
+```http
+GET https://agent.supplygraph.ai/.well-known/agent-card.json
+```
+
+Returns a **discovery-only** platform card. Key metadata fields:
+
+| Field | Description |
+|-------|-------------|
+| `metadata.registryUrl` | Registry list URL |
+| `metadata.agentCardPattern` | URL template for per-agent cards |
+| `metadata.discoveryOnly` | `true` — this card does not accept execution |
 
 ---
 
 ## 5. Message & Task Model
 
-A2A uses a **Message → Task** lifecycle, not a single `/run` endpoint with `mode` switching.
+A2A interaction follows a **Message → Task** lifecycle.
 
-### 5.1 Send message (`message:send`)
+### 5.1 Send message (`message/send`)
 
 **Request:**
 
@@ -192,10 +238,10 @@ Authorization: Bearer {api_key}
 |-------|----------|-------------|
 | `message.messageId` | Yes | Unique message ID |
 | `message.role` | Yes | `"user"` |
-| `message.parts` | Yes | Text / file / data parts |
+| `message.parts` | Yes | Message parts (`text`, `file`, or `data`) |
 | `message.contextId` | No | Session ID for multi-turn dialogue |
 | `message.taskId` | No | Existing task ID to continue a conversation |
-| `configuration.blocking` | No | `true` = block until complete; default `false` |
+| `configuration.blocking` | No | `true` blocks until complete; default `false` |
 
 **Response (Task):**
 
@@ -216,23 +262,28 @@ Authorization: Bearer {api_key}
 
 `submitted` | `working` | `input-required` | `completed` | `failed` | `canceled` | `rejected`
 
-- **`input-required`**: agent needs another user message → send again with the same `contextId` / `taskId`
-- **`completed`**: final output is in `artifacts`
+| State | Meaning |
+|-------|---------|
+| `submitted` | Task accepted, not yet started |
+| `working` | Task in progress |
+| `input-required` | Agent needs another user message; continue with same `contextId` / `taskId` |
+| `completed` | Task finished; output in `artifacts` |
+| `failed` | Task failed |
+| `canceled` | Task canceled |
+| `rejected` | Task rejected |
 
-### 5.2 Stream message (`message:stream`)
+### 5.2 Stream message (`message/stream`)
 
-Same request body as `message:send`.
+Same request body as `message:send`. Requires `capabilities.streaming = true` on the Agent Card.
 
 **Response:** `Content-Type: text/event-stream`
-
-Each SSE event:
 
 ```
 event: message
 data: {"jsonrpc":"2.0","result":{"kind":"task","task":{...}},"id":"1"}
 ```
 
-`result.kind` may be:
+`result.kind` values:
 
 | kind | Description |
 |------|-------------|
@@ -240,8 +291,6 @@ data: {"jsonrpc":"2.0","result":{"kind":"task","task":{...}},"id":"1"}
 | `status-update` | Task state change |
 | `artifact-update` | Partial or final output chunk |
 | `message` | Agent message in the conversation |
-
-Requires `capabilities.streaming = true` on the Agent Card.
 
 ### 5.3 Get task (`tasks/get`)
 
@@ -251,17 +300,85 @@ A2A-Version: 1.0
 Authorization: Bearer {api_key}
 ```
 
-Returns the current Task, including `artifacts` when the task reaches a terminal state.
+Returns the current Task object, including `artifacts` when the task has reached a terminal state.
 
-> **Mapping from legacy API**  
-> Internally, 31190 translates A2A `tasks/get` to backend `mode=status` and, when complete, `mode=results`.  
-> External clients should **only** use A2A endpoints — not the legacy `/run` modes.
+Query parameters:
+
+| Parameter | Description |
+|-----------|-------------|
+| `historyLength` | Number of history messages to include (optional) |
+| `contextId` | Context ID filter (optional) |
+
+### 5.4 JSON-RPC binding
+
+All A2A methods may also be invoked via the JSON-RPC binding at `{agent_base}`:
+
+```http
+POST https://agent.supplygraph.ai/a2a/agents/tariff_calc
+Content-Type: application/json
+A2A-Version: 1.0
+Authorization: Bearer {api_key}
+```
+
+**Example (`message/send`):**
+
+```json
+{
+  "jsonrpc": "2.0",
+  "method": "message/send",
+  "params": {
+    "message": {
+      "messageId": "msg-uuid",
+      "role": "user",
+      "parts": [{ "kind": "text", "text": "Hello" }]
+    }
+  },
+  "id": "1"
+}
+```
+
+**Supported methods:**
+
+| method | Description |
+|--------|-------------|
+| `message/send` | Send a message |
+| `message/stream` | Send a message (SSE response) |
+| `tasks/get` | Query a task |
+| `tasks/cancel` | Cancel a task |
+| `tasks/resubscribe` | Re-subscribe to task SSE stream |
+| `tasks/pushNotificationConfig/set` | Configure push notifications |
+| `tasks/pushNotificationConfig/get` | Get push notification config |
+| `tasks/pushNotificationConfig/list` | List push notification configs |
+| `tasks/pushNotificationConfig/delete` | Delete push notification config |
+| `agent/getAuthenticatedExtendedCard` | Get authenticated extended Agent Card |
 
 ---
 
-## 6. Error Handling
+## 6. Multi-Turn Interaction
 
-A2A errors use a standard envelope:
+When a Task reaches `input-required`, send another message with the same `contextId` and `taskId`:
+
+```json
+{
+  "message": {
+    "messageId": "msg-uuid-2",
+    "role": "user",
+    "parts": [{ "kind": "text", "text": "Yes, proceed with that company." }],
+    "contextId": "ctx-uuid",
+    "taskId": "task-uuid"
+  },
+  "configuration": { "blocking": false },
+  "metadata": {}
+}
+```
+
+Continue until the Task reaches a terminal state (`completed`, `failed`, `canceled`, or `rejected`).
+
+---
+
+## 7. Error Handling
+
+A2A errors follow a standard envelope:
 
 ```json
 {
@@ -276,21 +393,24 @@ A2A errors use a standard envelope:
 }
 ```
 
-| JSON-RPC Code | HTTP | reason (typical) | Description |
-|---------------|------|------------------|-------------|
+| JSON-RPC Code | HTTP Status | reason | Description |
+|---------------|-------------|--------|-------------|
 | `-32001` | 404 | `TASK_NOT_FOUND` | Task does not exist |
-| `-32004` | 400/401/404 | `INVALID_REQUEST`, `UNAUTHORIZED`, `AGENT_NOT_FOUND` | Bad input, auth failure, unknown agent |
-| `-32006` | 502 | `INVALID_AGENT_RESPONSE` | Upstream agent error |
-
-Legacy codes such as `TASK_ACCEPTED`, `THINKING`, `INSUFFICIENT_CREDITS` belong to the **internal `/run` envelope** and are **not** the public A2A error format. The gateway maps backend responses into A2A **Task states** and **SSE events**.
+| `-32002` | 400 | `TASK_NOT_CANCELABLE` | Task cannot be canceled |
+| `-32003` | 400 | `PUSH_NOTIFICATION_NOT_SUPPORTED` | Push notifications not supported |
+| `-32004` | 400/401/404 | `INVALID_REQUEST`, `UNAUTHORIZED`, `AGENT_NOT_FOUND` | Bad input, auth failure, or unknown agent |
+| `-32005` | 400 | `CONTENT_TYPE_NOT_SUPPORTED` | Unsupported content type |
+| `-32006` | 500 | `INVALID_AGENT_RESPONSE` | Agent returned an invalid response |
+| `-32007` | 400 | `EXTENDED_AGENT_CARD_NOT_CONFIGURED` | Extended Agent Card not available |
+| `-32009` | 400 | `VERSION_NOT_SUPPORTED` | Unsupported A2A version |
 
 ---
 
-## 7. Streaming Events (SSE)
+## 8. Streaming Events (SSE)
 
-When using `message:stream`, events follow **A2A JSON-RPC-over-SSE**, not the legacy `{ "event": "stream", "code": "THINKING" }` format.
+When using `message/stream`, each SSE `data` payload is a JSON-RPC 2.0 response.
 
-**Example — status update:**
+**Status update:**
 
 ```json
 {
@@ -306,7 +426,7 @@ When using `message:stream`, events follow **A2A JSON-RPC-over-SSE**, not the le
 }
 ```
 
-**Example — artifact update:**
+**Artifact update:**
 
 ```json
 {
@@ -321,32 +441,31 @@ When using `message:stream`, events follow **A2A JSON-RPC-over-SSE**, not the le
 }
 ```
 
-Poll or stream until `status.state` is terminal (`completed`, `failed`, `canceled`, `rejected`), or handle `input-required` for multi-turn flows.
+Stream or poll until `status.state` reaches a terminal value, or handle `input-required` for multi-turn flows.
 
 ---
 
-## 8. Security & Access Control
+## 9. Security & Access Control
 
-- Authenticate every execution/task request with `Authorization: Bearer {api_key}`
-- Agent Cards declare whether authentication is required (`extendedAgentCard` when sensitive metadata is present)
-- Use TLS 1.2+ for all HTTPS traffic
-- Webhook push notifications (when enabled) use platform JWT; verify with:
+- All execution and task requests require `Authorization: Bearer {api_key}`
+- Agents that require authentication declare it in their Agent Card
+- Use TLS 1.2 or later for all HTTPS connections
+- Push notification webhooks are signed with platform JWT; verify using:
 
   ```
   GET https://agent.supplygraph.ai/.well-known/jwks.json
   ```
 
-- Log and trace cross-agent workflows with `contextId` and `taskId`
+- Use `contextId` and `taskId` for tracing multi-step workflows
 
 ---
 
-## 9. Versioning
+## 10. Versioning
 
 | Layer | Version | Notes |
 |-------|---------|-------|
-| **A2A protocol** | `1.0` | Public gateway contract |
-| **Agent Card** | per-agent `version` field | Independent agent releases |
-| **Legacy ZK API** | `/api/v1/agents/...` | Internal; not for external A2A clients |
+| **A2A protocol** | `1.0` | Negotiated via `A2A-Version` request header |
+| **Agent** | per-agent `version` in Agent Card | Independent agent releases |
 
 Clients SHOULD send:
 
@@ -354,23 +473,7 @@ Clients SHOULD send:
 A2A-Version: 1.0
 ```
 
-Backward-compatible changes stay within A2A 1.0. Breaking changes will bump the major A2A version and be reflected in Agent Cards and release notes.
-
----
-
-## 10. Legacy vs Standard API (Migration Guide)
-
-| Concern | Legacy (internal) | Standard A2A (31190 public) |
-|---------|-------------------|----------------------------|
-| Discovery | `GET .../manifest` | `GET /.well-known/agent-card.json` → `/a2a/agents` → `/a2a/agents/{id}` |
-| Start task | `POST .../run` `mode=run` | `POST {agent_base}/message:send` or `message:stream` |
-| Task status | `POST .../run` `mode=status` | `GET {agent_base}/tasks/{task_id}` |
-| Results | `POST .../run` `mode=results` | Included in Task `artifacts` via `tasks/get` |
-| Request shape | `{ mode, text, stream, task_id }` | `{ message, configuration, metadata }` |
-| Response shape | `{ success, code, data }` | A2A **Task** object or **error** envelope |
-| Streaming | Custom SSE (`event: stream/end`) | A2A SSE (`result.kind`: task / status-update / artifact-update) |
-
-Existing integrations on the legacy API can continue internally; **new public integrations should use the A2A gateway**.
+Incompatible version requests are rejected with error code `-32009` (`VERSION_NOT_SUPPORTED`).
 
 ---
 
@@ -388,8 +491,8 @@ https://supplygraph.ai/.well-known/ai-catalog.json
 📦 **Python A2A SDK**  
 https://github.com/SupplyGraphAI/supplygraphai_a2a_sdk
 
-🧠 **31190 internal reference**  
-Project `server31190.md` (full endpoint matrix)
+🌐 **Official Website**  
+https://www.supplygraph.ai
 
 ---
 
@@ -397,11 +500,11 @@ Project `server31190.md` (full endpoint matrix)
 
 ➡️ **[SupplyGraph AI A2A Python SDK](https://github.com/SupplyGraphAI/supplygraphai_a2a_sdk)**
 
-The SDK targets the **standard A2A gateway** (`agent.supplygraph.ai`), including:
+The SDK provides:
 
-- Agent discovery (Well-Known + Registry + Agent Card)
+- Agent discovery (Well-Known URI, Registry, Agent Card)
 - `message/send` and `message/stream`
-- Task polling (`tasks/get`)
+- Task management (`tasks/get`)
 - Adapters for LangChain, LangGraph, AutoGen, CrewAI, Google A2A, MCP, and more
 
 ---
@@ -416,7 +519,6 @@ This enables:
 - **Standards-based** agent discovery and invocation (A2A 1.0 + ARD)
 - **Cross-platform** agent orchestration
 - Multi-step, multi-turn autonomous workflows
-- Native integration with the broader agentic ecosystem (Google A2A, MCP, ARD registries)
-- A clear separation between **public protocol** (31190) and **internal runtime** (ZK agents)
+- Native integration with the broader agentic ecosystem
 
-A2A is the public contract; SupplyGraph agents are the intelligence behind it.
+A2A is the foundation for next-generation autonomous enterprise intelligence on SupplyGraph AI.
