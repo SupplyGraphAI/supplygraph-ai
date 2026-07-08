@@ -87,21 +87,25 @@ Credits are deducted in the same way as API / A2A usage.
 
 Everything you experience here can be embedded into your own system.
 
+---
+
 ## Sandbox Key Support (for Development)
 
 This agent fully supports **Sandbox API Keys**, which allow developers to test integrations without consuming credits.
 
 When using a Sandbox Key:
-- No credits are deducted  
-- The agent returns **mocked sample output** that follows the final response schema  
-- Returned content is deterministic and does not reflect real-world data  
-- Long-running computation is skipped and results are returned instantly  
-- Only input validation and request-format checks are executed  
+
+- No credits are deducted
+- The agent returns **mocked sample output** that follows the final response schema
+- Returned content is deterministic and does not reflect real-world data
+- Long-running computation is skipped and results are returned instantly
+- Only input validation and request-format checks are executed
 
 Sandbox Keys are recommended for:
-- Local development  
-- SDK / API integration testing  
-- CI/CD automation  
+
+- Local development
+- SDK / API integration testing
+- CI/CD automation
 
 ⚠️ Sandbox Keys do **not** produce real analytical results and must not be used in production systems.
 
@@ -111,15 +115,118 @@ For a full comparison of Production vs. Sandbox keys, see
 
 ## Input Requirements
 
-`agent_id`: `tariff_calc` · MCP tool: `tariff_calc`
+`agent_id`: `tariff_calc` · MCP tool: `tariff_calc` · Pricing: **10 credits / run**
 
 | Field | Required | Description |
 |-------|----------|-------------|
-| `text` | Yes | Product description **or** 10-digit HTS code, plus **country of origin** |
+| `text` | Yes | Natural-language input for tariff calculation. Must include a **10-digit HTS code** (e.g. `5601.21.0010`) **or** a product description (the agent will identify applicable HS/HTS codes), plus the **country of origin**. |
 
-Optional in text: weight, quantity, declared value. Multi-turn via `WAITING_USER` + same `task_id` → [Agent API §8](../agent-api/agent-api.md#8-multi-turn-waiting_user).
+**Optional details in `text`:** product weight, quantity, declared merchandise value. If omitted, the agent uses reasonable defaults for a mock-up or scenario-based calculation.
 
-**Example:** "Calculate import duties for 5601.21.0010, country of origin China, shipment value 200 USD, 50 kg."
+**Example:** `"Calculate import duties for 5601.21.0010, country of origin China, shipment value 200 USD, 50 kg."`
+
+Full machine-readable `input_schema` / `output_schema` → `GET /api/v1/agents/tariff_calc/manifest` (see [Agent API §3](../agent-api/agent-api.md#3-manifest)).
+
+
+## Output Format
+
+Primary output lives in `data.content` (Agent API) or task artifacts (A2A / MCP). The payload is a **oneOf**:
+
+| State | `content` type | Description |
+|-------|----------------|-------------|
+| In progress, failed, cancelled, or **waiting for user input** | `string` | Text or Markdown — validation prompts, error messages, or clarification requests |
+| **Task completed successfully** | `object` | Structured tariff result (see below) |
+
+**Structured success object:**
+
+```json
+{
+  "type": "result",
+  "data": {
+    "calculation_result": "<Markdown string>"
+  }
+}
+```
+
+| Field | Description |
+|-------|-------------|
+| `type` | Always `"result"` when the calculation completed successfully |
+| `data.calculation_result` | Detailed tariff and duty analysis — duty rates, Chapter 99 measures, scenario comparisons, and estimated costs (Markdown) |
+
+Estimated task duration: **1–3 minutes** (Production). Sandbox returns instantly.
+
+Designed for direct consumption after [Customs Classification](./tariff_classification.md), or as a standalone calculation when HTS and origin are already known.
+
+
+## Sample Response (Sandbox)
+
+> Sandbox returns deterministic mock data with the **same structure** as Production. Content below is abbreviated.
+
+**Success (`TASK_COMPLETED`) — Agent API `results`:**
+
+```json
+{
+  "success": true,
+  "code": "TASK_COMPLETED",
+  "message": "Task completed successfully.",
+  "data": {
+    "task_id": "<task-id>",
+    "agent": "tariff_calc",
+    "stage": "completed",
+    "progress": 100,
+    "content": {
+      "type": "result",
+      "data": {
+        "calculation_result": "### Summary of Input Information\n\n- **HTS Code:** 0803.90.00.35 (Bananas, fresh, other)\n- **Country of Origin:** Vietnam (VN)\n...\n\n### Scenario-Based Tariff Calculations\n\n| Scenario | Total Effective Rate | Estimated Total Duty (USD) |\n| Standard Import | 20% | $2,000 |\n| Donation / Humanitarian Aid | 0% | $0 |"
+      }
+    }
+  },
+  "metadata": { "credits_used": 0 },
+  "errors": null
+}
+```
+
+The full Sandbox `calculation_result` includes input summary, applicable tariff components (base MFN + Chapter 99), scenario tables, and compliance notes.
+
+
+## Multi-turn Example
+
+When required information is missing (e.g. **country of origin** or a resolvable **HTS code / product description**), the agent returns `WAITING_USER` with a Markdown prompt in `content` (string). Continue the **same task** with follow-up `text`.
+
+**Turn 1 — missing country of origin:**
+
+```bash
+curl -X POST "https://agent.supplygraph.ai/api/v1/agents/tariff_calc/run" \
+  -H "Authorization: Bearer <YOUR_API_KEY>" \
+  -H "Content-Type: application/json" \
+  -d '{"text": "Calculate import duties for 5601.21.0010, shipment value 200 USD, 50 kg.", "stream": false}'
+```
+
+Poll `status` until `code` is `WAITING_USER`. Example `results` content:
+
+```json
+{
+  "success": true,
+  "code": "WAITING_USER",
+  "data": {
+    "task_id": "<task-id>",
+    "content": "Sorry, we are unable to calculate the tariff. Please provide the **country of origin** of the product."
+  }
+}
+```
+
+**Turn 2 — supply missing information (same `task_id`):**
+
+```bash
+curl -X POST "https://agent.supplygraph.ai/api/v1/agents/tariff_calc/run" \
+  -H "Authorization: Bearer <YOUR_API_KEY>" \
+  -H "Content-Type: application/json" \
+  -d '{"text": "Country of origin is China.", "task_id": "<task-id>", "stream": false}'
+```
+
+Poll `status` → `results` until `TASK_COMPLETED`. The agent merges prior context with the follow-up and returns the structured `calculation_result`.
+
+Same `task_id` behavior applies to **A2A** and **MCP** — see [Agent API §8](../agent-api/agent-api.md#8-multi-turn-waiting_user) and [A2A / MCP Quick Example](../a2a_mcp/quick_example.md) (uses `tariff_calc`).
 
 
 ## Integration
@@ -130,11 +237,21 @@ Optional in text: weight, quantity, declared value. Multi-turn via `WAITING_USER
 | **MCP** | `tariff_calc` | [mcp.md](../a2a_mcp/mcp.md) |
 | **Agent API** | `tariff_calc` | [agent-api.md](../agent-api/agent-api.md) |
 
+Call pattern is identical across agents — only `agent_id` / tool name and input `text` differ.
+
 Quick examples: [A2A / MCP](../a2a_mcp/quick_example.md) · [Agent API](../agent-api/quick_example.md)
+
 
 ## Errors
 
-Common codes → [Agent API §10](../agent-api/agent-api.md#10-error--status-codes). This agent may return `WAITING_USER` when input is incomplete.
+Common codes → [Agent API §10](../agent-api/agent-api.md#10-error--status-codes).
+
+| Situation | Code | Agent behavior |
+|-----------|------|----------------|
+| Missing country of origin | `WAITING_USER` | Prompts user to provide origin; resume with same `task_id` |
+| Unresolvable HTS / vague product description | `WAITING_USER` | Prompts for 10-digit HTS code or a more detailed product description |
+| Insufficient credits | `INSUFFICIENT_CREDITS` | Top up via [Console](https://supplygraph.ai/zk_chat_os/dashboard/dashboard.html) |
+| Invalid or out-of-scope input | `INVALID_REQUEST` | Returns guidance in `content` (string) |
 
 Maintainer: info@supplygraph.ai  
 License: Proprietary / Internal  
