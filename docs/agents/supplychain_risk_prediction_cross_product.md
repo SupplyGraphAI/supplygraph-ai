@@ -189,79 +189,13 @@ The `result` mode always returns the **latest available warning data** for the a
 - The response may contain one or more active warning events  
 
 
-# API Overview
+## Input Requirements
 
-This section provides an overview of the **A2A (Agent-to-Agent)** interface used to integrate this agent into other systems.
+`agent_id`: `supply_chain_risk_prediction_cross_product` · MCP tool: `supply_chain_risk_prediction_cross_product`
 
-
-## Endpoints Summary
-
-| Endpoint | Method | Description |
-|---------|--------|-------------|
-| `/api/v1/agents/supply_chain_risk_prediction_cross_product/manifest` | GET | Retrieve metadata, schema, pricing, and version info |
-| `/api/v1/agents/supply_chain_risk_prediction_cross_product/run` | POST | Execute or manage tasks via `mode` |
-
-Supported modes:
-
-- `run` — start a new product monitoring customization task  
-- `status` — check task status  
-- `result` — retrieve the latest warning data  
-
-
-## Manifest
-
-### Request
-
-```bash
-curl -X GET https://agent.supplygraph.ai/api/v1/agents/supply_chain_risk_prediction_cross_product/manifest \
-  -H "Authorization: Bearer <YOUR_API_KEY>"
-```
-
-### Example Response
-
-```json
-{
-  "agent_id": "supply_chain_risk_prediction_cross_product",
-  "name": "Supply Chain Risk Prediction – Cross-Product Agent",
-  "version": "1.0.0",
-  "description": "Monitors product-level events and quantifies cross-company supply chain risk propagation to a target company",
-  "input_schema": { ... },
-  "output_schema": { ... },
-  "pricing": {
-    "unit": "USD",
-    "one_time_fee_per_product_per_target": 4999
-  },
-  "status": "active"
-}
-```
-
-## Run Endpoint
-
-### Purpose
-
-Start a new product monitoring customization task for a target company.
-
-If `mode` is omitted, the request is treated as `mode=run`.
-
-### Request
-
-```bash
-curl -X POST https://agent.supplygraph.ai/api/v1/agents/supply_chain_risk_prediction_cross_product/run \
-  -H "Authorization: Bearer <YOUR_API_KEY>" \
-  -H "Content-Type: application/json" \
-  -d '{
-        "text": "target company: Tesla, Inc. United States; upstream product: Lithium Carbonate Albemarle Corporation United States",
-        "stream": false
-      }'
-```
-
-### Request Body
-
-| Field    | Type    | Required | Description                                                |
-| -------- | ------- | -------- | ---------------------------------------------------------- |
-| `mode`   | string  | No       | Execution mode. Defaults to `run`                          |
-| `text`   | string  | Yes      | Target company and upstream product or service information |
-| `stream` | boolean | No       | Whether to enable streaming response                       |
+| Field | Required | Description |
+|-------|----------|-------------|
+| `text` | Yes | Target company and supplier/component information |
 
 ### text Format
 
@@ -296,217 +230,23 @@ target company: Tesla, Inc. United States; upstream product: Lithium Carbonate A
 
 After the user replies `Yes`, the product monitoring customization is activated and the one-time fee is charged.
 
-## Status Endpoint
+Confirm matched entities when prompted (`WAITING_USER`). Uses `mode=result` for latest data.
 
-### Purpose
 
-Check whether the monitoring customization task has completed.
+## Integration
 
-For this agent, once the initial setup is completed, status will remain completed.
+| Method | ID / Tool | Documentation |
+|--------|-----------|---------------|
+| **A2A** | `supply_chain_risk_prediction_cross_product` | [a2a.md](../a2a_mcp/a2a.md) |
+| **MCP** | `supply_chain_risk_prediction_cross_product` | [mcp.md](../a2a_mcp/mcp.md) |
+| **Agent API** | `supply_chain_risk_prediction_cross_product` | [agent-api.md](../agent-api/agent-api.md) |
 
-### Request
+Quick examples: [A2A / MCP](../a2a_mcp/quick_example.md) · [Agent API](../agent-api/quick_example.md)
 
-```bash
-curl -X POST https://agent.supplygraph.ai/api/v1/agents/supply_chain_risk_prediction_cross_product/run \
-  -H "Authorization: Bearer <YOUR_API_KEY>" \
-  -H "Content-Type: application/json" \
-  -d '{
-        "mode": "status",
-        "task_id": "<task-id>"
-      }'
-```
+## Errors
 
-### Example Response
-
-```json
-{
-  "success": true,
-  "code": "TASK_COMPLETED",
-  "data": {
-    "task_id": "<task-id>",
-    "agent": "supply_chain_risk_prediction_cross_product",
-    "stage": "completed",
-    "progress": 100
-  }
-}
-```
-
-## Result Endpoint
-
-### Purpose
-
-Retrieve the latest warning data for the target-product monitoring instance.
-
-The agent runs continuously, and each `result` request returns the latest available data.
-
-### Request
-
-```bash
-curl -X POST https://agent.supplygraph.ai/api/v1/agents/supply_chain_risk_prediction_cross_product/run \
-  -H "Authorization: Bearer <YOUR_API_KEY>" \
-  -H "Content-Type: application/json" \
-  -d '{
-        "mode": "result",
-        "task_id": "<task-id>"
-      }'
-```
-
-### Example Response
-
-```json
-{
-  "success": true,
-  "code": "TASK_COMPLETED",
-  "data": [
-    {
-      "event_id": "EVT_LITHIUM_20260418_001",
-      "event_title": "Chile Lithium Supply Tightening Event",
-      "event_type": "resource_supply",
-      "event_status": "active",
-      "warning_summary": "Upstream lithium supply is tightening, prices have risen, and the risk is expected to reach the enterprise within 6 days. It is recommended to lock in prices and increase inventory. Compared with the previous warning, the risk has increased and confidence has strengthened.",
-      "warning_time": "2026-04-18",
-      "warning_round": 3,
-      "enterprise_risk": {
-        "risk_value": 87,
-        "risk_change": 12,
-        "confidence": 82,
-        "confidence_change": 9,
-        "risk_position": "Risk has propagated to lithium salt processing → cathode materials, approaching the enterprise node",
-        "estimated_arrival_days": 6
-      },
-      "key_prices": [
-        {
-          "product_name": "Battery-grade lithium carbonate",
-          "price": 155000,
-          "price_unit": "CNY/ton",
-          "price_change": 8.4,
-          "price_change_description": "Increased by 8.4% compared with the previous round",
-          "previous_warning_time": "2026-04-11"
-        }
-      ],
-      "reasoning": {
-        "event_change_and_source": {
-          "timeline": [
-            "Late March 2026: Water resource disputes emerged in Chile’s Atacama Salt Flat, increasing expectations of stricter regulation",
-            "Early April 2026: National lithium resource strategy advanced, regulatory policies began to be implemented",
-            "Mid-April 2026: Enterprise expansion restricted, projects slowed, supply expectations tightened"
-          ],
-          "current_judgement": "The event has moved from the policy expectation stage to the stage of actual supply impact, and risk has significantly increased.",
-          "risk_source": "Overseas lithium resource side, Chile, supply constraints"
-        },
-        "transmission_path": {
-          "dominant_path": "Overseas lithium ore → lithium carbonate → cathode materials → battery manufacturing",
-          "current_status": "Risk has propagated from the resource side to lithium salt processing and cathode materials, rapidly approaching the enterprise."
-        },
-        "key_node_impacts": [
-          {
-            "node_name": "Lithium Carbonate",
-            "impacts": [
-              "Price increased by approximately 8.4%",
-              "Upstream quotations tightening, reduced bargaining space",
-              "Supply expectations shifted from loose to tight"
-            ]
-          },
-          {
-            "node_name": "Cathode Materials",
-            "impacts": [
-              "Cost pressure beginning to transmit",
-              "Some enterprises report shortened procurement cycles"
-            ]
-          }
-        ],
-        "data_and_market_signals": {
-          "price_signal": "Battery-grade lithium carbonate spot price is around 155,000 CNY/ton, showing continuous increases.",
-          "supply_signal": "Project approvals slowing, expansion restricted, supply expectations tightening.",
-          "market_signal": "Multiple institutions have raised price expectations, and downstream feedback indicates tighter quotations.",
-          "multi_source_consistency": "Policy, enterprise, and market price signals are consistent, increasing confidence."
-        },
-        "enterprise_impact": {
-          "current_status": "Has not yet fully impacted enterprise procurement costs.",
-          "estimated_arrival": "Expected to impact the enterprise within approximately 6 days.",
-          "impact_type": "Primarily cost increase risk, accompanied by rising supply uncertainty."
-        }
-      },
-      "actionable_recommendations": [
-        {
-          "recommendation_id": 1,
-          "action": "While locking in lithium carbonate procurement prices for the next 1–2 weeks, moderately increase safety stock to cover 7–10 days of production demand.",
-          "reason": "The risk has moved from policy expectation to actual supply impact. Prices are rising and supply uncertainty exists, requiring hedging against both price and supply risks.",
-          "data_support": [
-            "Risk value 87 (high level)",
-            "Risk change +12 (increasing)",
-            "Expected impact in ~6 days",
-            "Lithium carbonate price increased by 8.4%",
-            "A 10% price increase may compress profit margins by ~6%"
-          ]
-        }
-      ]
-    }
-  ],
-  "metadata": {
-    "agent": "supply_chain_risk_prediction_cross_product",
-    "timestamp": "2026-04-18T09:00:00Z"
-  },
-  "errors": null
-}
-```
-
-## Make Your First A2A Call
-
-Typical workflow:
-
-1. Start with `mode=run`
-2. Provide target company and upstream product or service information
-3. Confirm matched entities if prompted
-4. Retrieve latest warning data with `mode=result`
-5. Use `mode=status` only when checking setup completion
-
-## Integration Options
-
-| Protocol | Description                     | Docs                      |
-| -------- | ------------------------------- | ------------------------- |
-| A2A      | Autonomous workflow integration | [A2A Protocol](../a2a.md) |
-| MCP      | Multi-channel orchestration     | *(Coming Soon)*           |
-
-Developer Interfaces:
-
-| Interface  | Description         | Docs                                                                                                             |
-| ---------- | ------------------- | ---------------------------------------------------------------------------------------------------------------- |
-| Python SDK | Official A2A Client | [https://github.com/SupplyGraphAI/supplygraphai_a2a_sdk](https://github.com/SupplyGraphAI/supplygraphai_a2a_sdk) |
-
-## Error Handling & Rate Limits
-
-### Common Error Codes
-
-| Code                 | Description                                     |
-| -------------------- | ----------------------------------------------- |
-| UNAUTHORIZED         | Invalid or missing API key                      |
-| INSUFFICIENT_CREDITS | Not enough balance                              |
-| RATE_LIMITED         | Too many requests                               |
-| INVALID_REQUEST      | Input outside agent scope                       |
-| WAITING_USER         | User confirmation is required before activation |
-
-### Stage-Specific Codes
-
-```text
-interpreting:
-  INTERPRETING
-  INVALID_REQUEST
-  UNAUTHORIZED
-  WAITING_USER
-
-executing:
-  TASK_ACCEPTED
-  TASK_RUNNING
-
-completed:
-  TASK_COMPLETED
-  TASK_FAILED
-
-cancelled:
-  TASK_CANCELLED
-```
+Common codes → [Agent API §10](../agent-api/agent-api.md#10-error--status-codes). Returns `WAITING_USER` for company confirmation. Uses `mode=result`.
 
 Maintainer: [info@supplygraph.ai](mailto:info@supplygraph.ai)
 License: Proprietary / Internal
-© 2025 SupplyGraph AI. All rights reserved.
+© 2025–2026 SupplyGraph AI. All rights reserved.
