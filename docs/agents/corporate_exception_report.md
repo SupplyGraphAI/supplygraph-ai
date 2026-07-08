@@ -241,6 +241,182 @@ Any restart requires a **new subscription**, resulting in a new task_id.
 **Supported modes:** `run`, `status` (initial build only), `results`, `cancel`. See Agent Behavior Model above for subscription lifecycle.
 
 
+## Output Format
+
+Primary output lives in `data.content` (Agent API) or task artifacts (A2A / MCP). The payload is a **oneOf**:
+
+| State | `content` type | Description |
+|-------|----------------|-------------|
+| In progress, failed, cancelled, subscription inactive, or **waiting for user input** | `string` | Text or Markdown — validation prompts, confirmation requests, or error messages |
+| **Task completed successfully** | `object` | Structured corporate exception report (see below) |
+
+**Structured success object:**
+
+```json
+{
+  "type": "results",
+  "data": {
+    "languages": ["en", "zk"],
+    "report_infos": {
+      "en": {
+        "report_date": "2025-11-30",
+        "report_name": "Corporate Exception Report — Tesla, Inc.",
+        "report_type": "enterprise changes report"
+      },
+      "zh": {
+        "report_date": "2025-11-30",
+        "report_name": "企业异常报告 — Tesla, Inc.",
+        "report_type": "enterprise changes report"
+      }
+    },
+    "chapter_infos": [
+      {
+        "en": {
+          "chapter_name": "Compliance",
+          "sub_sections": [],
+          "chapter_texts": ["Markdown paragraph…"]
+        },
+        "zh": {
+          "chapter_name": "合规风险",
+          "sub_sections": [],
+          "chapter_texts": ["Markdown 段落…"]
+        }
+      }
+    ]
+  }
+}
+```
+
+| Field | Description |
+|-------|-------------|
+| `type` | Always `"results"` on success |
+| `data.languages` | Language codes in the response — `en` (English), `zk` (Chinese) |
+| `data.report_infos` | Report metadata keyed by language (`en` required; `zh` when Chinese is included) |
+| `data.chapter_infos[]` | Array of exception-domain chapters, each with `en` / `zh` blocks |
+| `chapter_infos[].en\|zh.chapter_name` | Chapter title (e.g. `Compliance`, `Reputation`, `Ops`) |
+| `chapter_infos[].en\|zh.sub_sections[]` | Nested sub-sections (`section_title`, `sub_sections`, `section_texts`) |
+| `chapter_infos[].en\|zh.chapter_texts[]` | Chapter body paragraphs (Markdown) |
+
+During an **active subscription**, each `results` call returns the **latest snapshot** of the monitored company — not a one-time static export.
+
+Initial baseline build: **~2–3 hours** (Production). Sandbox returns instantly.
+
+
+## Sample Response (Sandbox)
+
+> Sandbox returns Tesla, Inc. or BYD fixture data with the **same structure** as Production. Content below is abbreviated.
+
+**Success (`TASK_COMPLETED`) — Agent API `results`:**
+
+```json
+{
+  "success": true,
+  "code": "TASK_COMPLETED",
+  "message": "Task completed successfully.",
+  "data": {
+    "task_id": "<task-id>",
+    "agent": "corporate_exception_report",
+    "stage": "completed",
+    "progress": 100,
+    "content": {
+      "type": "results",
+      "data": {
+        "languages": ["en", "zk"],
+        "report_infos": {
+          "en": {
+            "report_date": "2025-11-30",
+            "report_name": "Corporate Exception Report — Tesla, Inc.",
+            "report_type": "enterprise changes report"
+          },
+          "zh": {
+            "report_date": "2025-11-30",
+            "report_name": "企业异常报告 — Tesla, Inc.",
+            "report_type": "enterprise changes report"
+          }
+        },
+        "chapter_infos": [
+          {
+            "en": {
+              "chapter_name": "Compliance",
+              "sub_sections": [
+                {
+                  "section_title": "Regulatory Actions",
+                  "sub_sections": [],
+                  "section_texts": ["No material regulatory enforcement actions detected in the monitoring window."]
+                }
+              ],
+              "chapter_texts": ["### Summary\nCompliance posture remains stable with no critical exceptions flagged."]
+            },
+            "zh": {
+              "chapter_name": "合规风险",
+              "sub_sections": [],
+              "chapter_texts": ["### 摘要\n监控周期内未发现重大合规异常信号。"]
+            }
+          },
+          {
+            "en": {
+              "chapter_name": "Reputation",
+              "sub_sections": [],
+              "chapter_texts": ["### Media Exposure\nNegative media sentiment remains within normal baseline levels."]
+            },
+            "zh": {
+              "chapter_name": "声誉风险",
+              "sub_sections": [],
+              "chapter_texts": ["### 媒体曝光\n负面舆情处于正常基线范围内。"]
+            }
+          }
+        ]
+      }
+    }
+  },
+  "metadata": { "credits_used": 0 },
+  "errors": null
+}
+```
+
+
+## Multi-turn Example (A2A)
+
+When the agent cannot unambiguously match a company from `text`, it returns `WAITING_USER` with a Markdown prompt in `content` (string). Continue with the **same `task_id`**.
+
+**Turn 1 — submit company name (optional `chapter_name`):**
+
+```bash
+curl -X POST "https://agent.supplygraph.ai/api/v1/agents/corporate_exception_report/run" \
+  -H "Authorization: Bearer <YOUR_API_KEY>" \
+  -H "Content-Type: application/json" \
+  -d '{"text": "Tesla, Inc. United States", "chapter_name": "ALL", "stream": false}'
+```
+
+Poll until `WAITING_USER`. Example content:
+
+```json
+{
+  "success": true,
+  "code": "WAITING_USER",
+  "data": {
+    "task_id": "<task-id>",
+    "content": "Here are the companies we've identified.\nCompany Name: Tesla, Inc.\nCountry: United States\nPlease reply [Yes] or [No] to confirm."
+  }
+}
+```
+
+**Turn 2 — confirm entity (same `task_id`):**
+
+```bash
+curl -X POST "https://agent.supplygraph.ai/api/v1/agents/corporate_exception_report/run" \
+  -H "Authorization: Bearer <YOUR_API_KEY>" \
+  -H "Content-Type: application/json" \
+  -d '{"text": "yes", "task_id": "<task-id>", "stream": false}'
+```
+
+The agent activates the subscription and begins baseline data preparation. Poll `status` every **~10 seconds** until `TASK_COMPLETED` (initial build **~2–3 h** in Production), then retrieve the report via `results`.
+
+After the initial build completes, use `results` only to fetch the latest snapshot — no further `status` polling is required during the subscription.
+
+See [Agent API §8](../agent-api/agent-api.md#8-multi-turn-waiting_user) for the general multi-turn pattern.
+
+
 ## Integration
 
 | Method | ID / Tool | Documentation |
