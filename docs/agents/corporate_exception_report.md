@@ -227,237 +227,34 @@ If credits cannot be deducted:
 Any restart requires a **new subscription**, resulting in a new task_id.
 
 
-# API Overview
+## Input Requirements
 
-This section provides an overview of the **A2A (Agent-to-Agent)** interface used to integrate this agent into other systems.
+`agent_id`: `corporate_exception_report` · MCP tool: `corporate_exception_report`
 
+| Field | Required | Description |
+|-------|----------|-------------|
+| `text` | Yes | Company name and country |
+| `chapter_name` | No | Exception domain; default `ALL` |
 
-## Endpoints Summary
+**`chapter_name` values:** `ALL`, `Profile`, `License`, `GovRel`, `R&D`, `Reputation`, `Ops`, `GeneralRisks`, `Cost`, `Compliance`, `Competition`, `Brand`, `HR`
 
-| Endpoint | Method | Description |
-|---------|--------|-------------|
-| `/api/v1/agents/corporate_exception_report/manifest` | GET | Retrieve metadata, schema, pricing, and version info |
-| `/api/v1/agents/corporate_exception_report/run` | POST | Execute or manage tasks via `mode` |
-
-
-Supported modes:
-
-- `run` — start a new task / subscription process  
-- `status` — check task status (initial build only)  
-- `results` — retrieve the latest exception report  
-- `cancel` — terminate a subscription  
+**Supported modes:** `run`, `status` (initial build only), `results`, `cancel`. See Agent Behavior Model above for subscription lifecycle.
 
 
-## Manifest
+## Integration
 
-### Request
+| Method | ID / Tool | Documentation |
+|--------|-----------|---------------|
+| **A2A** | `corporate_exception_report` | [a2a.md](../a2a_mcp/a2a.md) |
+| **MCP** | `corporate_exception_report` | [mcp.md](../a2a_mcp/mcp.md) |
+| **Agent API** | `corporate_exception_report` | [agent-api.md](../agent-api/agent-api.md) |
 
-```bash
-curl -X GET https://agent.supplygraph.ai/api/v1/agents/corporate_exception_report/manifest \
-  -H "Authorization: Bearer <YOUR_API_KEY>"
-```
+Quick examples: [A2A / MCP](../a2a_mcp/quick_example.md) · [Agent API](../agent-api/quick_example.md)
 
-### Example Response
+## Errors
 
-```json
-{
-  "agent_id": "corporate_exception_report",
-  "name": "Corporate Exception Report Agent",
-  "version": "1.0.0",
-  "description": "Detects and analyzes corporate anomalies and exception signals",
-  "input_schema": { ... },
-  "output_schema": { ... },
-  "pricing": { "unit": "credits", "per_run": 10 },
-  "status": "active"
-}
-```
-
-
-## Run Endpoint
-
-### Purpose
-
-Start a new monitoring task or manage subscription flows.  
-Supports structured chapter selection via `chapter_name`.
-
-### Request
-
-```bash
-curl -X POST https://agent.supplygraph.ai/api/v1/agents/corporate_exception_report/run \
-  -H "Authorization: Bearer <YOUR_API_KEY>" \
-  -H "Content-Type: application/json" \
-  -d '{
-        "text": "Tesla, Inc. United States",
-        "chapter_name": "ALL",
-        "stream": false
-      }'
-```
-
-### Example Response (WAITING_USER)
-
-```json
-{
-  "success": false,
-  "code": "WAITING_USER",
-  "data": {
-    "task_id": "<task-id>",
-    "agent": "corporate_exception_report",
-    "stage": "interpreting",
-    "content": "Here are the companies we’ve identified.\nCompany Name: Tesla, Inc.\nCountry: United States\nPlease reply [Yes] or [No] to confirm."
-  }
-}
-```
-
-
-## chapter_name Parameter
-
-Controls which exception domains the agent generates.
-
-```json
-{
-  "type": "string",
-  "enum": [
-    "ALL",
-    "Profile",
-    "License",
-    "GovRel",
-    "R&D",
-    "Reputation",
-    "Ops",
-    "GeneralRisks",
-    "Cost",
-    "Compliance",
-    "Competition",
-    "Brand",
-    "HR"
-  ],
-  "default": "ALL"
-}
-```
-
-
-## Status Endpoint
-
-### Request
-
-```bash
-curl -X POST https://agent.supplygraph.ai/api/v1/agents/corporate_exception_report/run \
-  -H "Authorization: Bearer <YOUR_API_KEY>" \
-  -H "Content-Type: application/json" \
-  -d '{
-        "mode": "status",
-        "task_id": "<task-id>"
-      }'
-```
-
-### Example Response
-
-```json
-{
-  "success": true,
-  "code": "TASK_RUNNING",
-  "data": {
-    "task_id": "<task-id>",
-    "agent": "corporate_exception_report",
-    "stage": "running",
-    "progress": 65.5
-  }
-}
-```
-
-
-## Results Endpoint
-
-### Request
-
-```bash
-curl -X POST https://agent.supplygraph.ai/api/v1/agents/corporate_exception_report/run \
-  -H "Authorization: Bearer <YOUR_API_KEY>" \
-  -H "Content-Type: application/json" \
-  -d '{
-        "mode": "results",
-        "task_id": "<task-id>"
-      }'
-```
-
-### Example Response
-
-```json
-{
-  "success": true,
-  "code": "TASK_COMPLETED",
-  "data": {
-    "task_id": "<task-id>",
-    "agent": "corporate_exception_report",
-    "progress": 100,
-    "content": "## Corporate Exception Analysis..."
-  },
-  "metadata": {
-    "credits_used": 10
-  }
-}
-```
-
-
-## Make Your First A2A Call
-
-Typical workflow:
-
-1. Start with `mode=run`  
-2. Confirm company (if prompted)  
-3. Poll with `mode=status` for first-time data build  
-4. Retrieve continuous updates with `mode=results`  
-
-
-## Integration Options
-
-| Protocol | Description | Docs |
-|---------|-------------|------|
-| A2A | Autonomous workflow integration | [A2A Protocol](../a2a.md) |
-| MCP | Multi-channel orchestration | *(Coming Soon)* |
-
-
-Developer Interfaces:
-
-| Interface | Description | Docs |
-|-----------|-------------|------|
-| Python SDK | Official A2A Client | https://github.com/SupplyGraphAI/supplygraphai_a2a_sdk |
-
-
-## Error Handling & Rate Limits
-
-### Common Error Codes
-
-| Code | Description |
-|------|------------|
-| UNAUTHORIZED | Invalid or missing API key |
-| INSUFFICIENT_CREDITS | Not enough balance |
-| RATE_LIMITED | Too many requests |
-| INVALID_REQUEST | Input outside agent scope |
-
-
-### Stage-Specific Codes
-
-```
-interpreting:
-  INTERPRETING
-  INVALID_REQUEST
-  UNAUTHORIZED
-  WAITING_USER
-
-executing:
-  TASK_ACCEPTED
-  TASK_RUNNING
-
-completed:
-  TASK_COMPLETED
-  TASK_FAILED
-
-cancelled:
-  TASK_CANCELLED
-```
-
+Common codes → [Agent API §10](../agent-api/agent-api.md#10-error--status-codes). Supports `mode=cancel` for subscription cancellation. Returns `WAITING_USER` for company confirmation.
 
 Maintainer: info@supplygraph.ai  
 License: Proprietary / Internal  
-© 2025 SupplyGraph AI. All rights reserved.
+© 2025–2026 SupplyGraph AI. All rights reserved.
