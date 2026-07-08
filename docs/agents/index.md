@@ -1,213 +1,99 @@
 # SupplyGraph AI — Agent Index Hub
 
-Welcome to the central hub for all **SupplyGraph AI Agents**.
+Complete overview of every agent on the platform. Each agent is accessible via **A2A**, **MCP**, or **Agent API**, and most have a live chatbot demo.
 
-This page provides a complete, structured overview of every agent currently available on the platform. Each agent is powered by the **A2A (Agent-to-Agent) Protocol** and can be accessed through:
-
-- Automated A2A API  
-- Official Python SDK  
-- Live interactive chatbot interface  
-
-You can start by exploring the documentation, or jump directly into a live demo to experience the capabilities in real time.
-
-
-## What is SupplyGraph AI?
-
-SupplyGraph AI is an enterprise-grade **Agentic AI platform** designed for global trade intelligence, supply-chain risk monitoring, and regulatory compliance automation.
-
-It combines:
-
-- Large Language Models (LLMs)  
-- Knowledge Graphs  
-- Real-time global trade and customs data  
-- Agent-to-Agent (A2A) orchestration  
-
-to deliver **explainable, auditable intelligence** for:
-
-- Customs classification  
-- Tariff and Chapter 99 analysis  
-- Multi-tier supplier risk mapping  
-- Geopolitical and concentration risk detection  
-
-
-## Industry Use Cases
-
-**Automotive & EV**
-- Automatic classification of batteries, components, and sub-assemblies
-- Section 301 / 232 / Chapter 99 impact analysis
-- Multi-tier supplier dependency mapping
-
-**Retail & E-commerce**
-- SKU-level HTS / HS code enrichment at scale
-- Compliance preparation for cross-border sales
-- Cost and margin forecasting
-
-**Manufacturing & Strategic Sourcing**
-- Tier-2 / Tier-3 risk exposure discovery
-- Reshoring vs. friend-shoring scenario modeling
-- Supply diversification strategies
-
-**Compliance, Legal & Risk Teams**
-- Automated classification audit trails
-- Trade regulation and tariff monitoring
-- Evidence-backed compliance reporting
+Integration docs: [A2A](../a2a_mcp/a2a.md) · [MCP](../a2a_mcp/mcp.md) · [Agent API](../agent-api/agent-api.md) · [Quick Examples](../a2a_mcp/quick_example.md)
 
 
 ## Automation & Efficiency Agents
 
-These agents eliminate manual work, improve accuracy, and automate complex workflows in customs, trade compliance, and corporate intelligence operations.
-
-
 ### Customs Classification Agent
 
-Automatically maps product descriptions to the correct **HS / HTS codes**, ensuring compliance, consistency, and tariff optimization.
+Maps product descriptions to accurate **HS / HTS codes** for compliance and tariff optimization.
 
-Use cases:
-- Import/export preparation
-- Compliance automation
-- Tariff scenario comparison
-
-Documentation  
-[Customs Classification Agent →](./tariff_classification.md)
-
-Live Demo  
-https://supplygraph.ai/zk_chat_os/agentic/dialog.html?name=tariff_classification
-
-Integration  
-A2A Protocol: https://supplygraphai.github.io/supplygraph-ai/a2a  
-Python SDK: https://github.com/SupplyGraphAI/supplygraphai_a2a_sdk
-
+[Documentation →](./tariff_classification.md) · [Live Demo](https://supplygraph.ai/zk_chat_os/agentic/dialog.html?name=tariff_classification)
 
 ### U.S. Tariff Calculation Agent
 
-Automatically calculates **U.S. import duty rates, additional tariffs, and Chapter 99 measures** based on HTS code and country of origin.
+Calculates **U.S. import duty rates, additional tariffs, and Chapter 99 measures** from HTS code and country of origin.
 
-Ideal for:
-- Cost modeling
-- Trade compliance analysis
-- Tariff optimization planning
-
-Documentation  
-[Tariff Calculation Agent →](./tariff_calc.md)
-
-Live Demo  
-https://supplygraph.ai/zk_chat_os/agentic/dialog.html?name=tariff_calc
-
-Integration  
-A2A Protocol: https://supplygraphai.github.io/supplygraph-ai/a2a  
-Python SDK: https://github.com/SupplyGraphAI/supplygraphai_a2a_sdk
-
+[Documentation →](./tariff_calc.md) · [Live Demo](https://supplygraph.ai/zk_chat_os/agentic/dialog.html?name=tariff_calc)
 
 ### Due Diligence Agent
 
-Generates a **structured, standardized, and continuously updated intelligence report** for any company in the world.
+Generates a **structured intelligence report** for any company — supplier evaluation, risk screening, investment research.
 
-Supports:
-- Supplier evaluation
-- Risk screening
-- Investment research
+[Documentation →](./due_diligence_report.md) · [Live Demo](https://supplygraph.ai/zk_chat_os/agentic/dialog.html?name=sg_due_diligence)
 
-Documentation  
-[Due Diligence Agent →](./due_diligence_report.md)
+### Corporate Exception Report Agent
 
-Live Demo  
-https://supplygraph.ai/zk_chat_os/agentic/dialog.html?name=sg_due_diligence
+Detects and reports **corporate anomalies and exception events** for continuous monitoring.
 
-Integration  
-A2A Protocol: https://supplygraphai.github.io/supplygraph-ai/a2a  
-Python SDK: https://github.com/SupplyGraphAI/supplygraphai_a2a_sdk
+[Documentation →](./corporate_exception_report.md)
 
 
 ## Supply Graph & Risk Intelligence Agents
 
-These agents perform **deep network analysis, dependency modeling, and systemic risk detection** across multi-tier global supply networks.
+### Supply Chain Risk Prediction Agent
 
+Core **multi-tier risk prediction engine** — impact propagation, dependency scoring, and scenario analysis.
+
+[Documentation →](./supply_chain_risk_prediction.md)
 
 ### Enterprise Supply Graph Visualization Agent
 
-Builds a multi-tier, company-centric supply chain graph from Tier-1 suppliers all the way to upstream raw materials.
+Builds a multi-tier, company-centric supply chain graph from Tier-1 suppliers to upstream raw materials.
 
-Best for:
-- Supply chain mapping
-- Multi-tier dependency analysis
-- Strategic risk visualization
-
-Documentation  
-[Supply Graph Visualization Agent →](./sg_visualization.md)
-
-Live Demo  
-https://supplygraph.ai/zk_chat_os/agentic/dialog.html?name=sg_visualization
-
-Integration  
-A2A Protocol: https://supplygraphai.github.io/supplygraph-ai/a2a  
-Python SDK: https://github.com/SupplyGraphAI/supplygraphai_a2a_sdk
-
+[Documentation →](./sg_visualization.md) · [Live Demo](https://supplygraph.ai/zk_chat_os/agentic/dialog.html?name=sg_visualization)
 
 ### Geographic Concentration Analysis Agent
 
-Detects **hidden country-level and regional over-concentration risks** in global supply networks, identifying single-point-of-failure exposure.
+Detects **country-level and regional over-concentration risks** and single-point-of-failure exposure.
 
-Use cases:
-- Geopolitical risk assessment
-- Reshoring / friend-shoring decisions
-- Supply diversification strategy
+[Documentation →](./sg_chokepoint.md) · [Live Demo](https://supplygraph.ai/zk_chat_os/agentic/dialog.html?name=sg_chokepoint)
 
-Documentation  
-[Geographic Concentration Analysis Agent →](./sg_chokepoint.md)
+### Procurement & Inventory Risk — Key Supplier Focus
 
-Live Demo  
-https://supplygraph.ai/zk_chat_os/agentic/dialog.html?name=sg_chokepoint
+Cross-company procurement risk analysis focused on **key supplier dependencies**.
 
-Integration  
-A2A Protocol: https://supplygraphai.github.io/supplygraph-ai/a2a  
-Python SDK: https://github.com/SupplyGraphAI/supplygraphai_a2a_sdk
+[Documentation →](./supplychain_risk_prediction_cross_company.md)
+
+### Procurement & Inventory Risk — Key Component Focus
+
+Cross-product procurement risk analysis focused on **key component dependencies**.
+
+[Documentation →](./supplychain_risk_prediction_cross_product.md)
 
 
-## Frequently Asked Questions (FAQ)
+## Frequently Asked Questions
 
 **Q: Can SupplyGraph AI automatically assign HTS / HS codes?**  
-A: Yes. The Customs Classification Agent uses semantic matching, knowledge-graph reasoning, and regulatory datasets to deliver highly accurate, explainable classifications.
+A: Yes. The Customs Classification Agent uses semantic matching, knowledge-graph reasoning, and regulatory datasets.
 
 **Q: Does it support U.S. Chapter 99, Section 301, 232, and 201 tariffs?**  
-A: Yes. The Tariff Calculation Agent supports standard HTS duties, additional tariffs, and complex Chapter 99 measures.
+A: Yes. The Tariff Calculation Agent supports standard HTS duties, additional tariffs, and Chapter 99 measures.
 
-**Q: Can I integrate SupplyGraph AI with my existing systems?**  
-A: Yes. All agents are available through an A2A-compliant API and the official Python SDK.
+**Q: Can I integrate with my existing systems?**  
+A: Yes. All agents support **A2A**, **MCP**, and **Agent API** (traditional REST).
 
 **Q: Is there an interactive demo?**  
-A: Yes. Each agent listed above is available through a live chatbot demo.
+A: Yes. Most agents listed above have live chatbot demos.
 
 
 ## How to Get Started
 
-To integrate any SupplyGraph AI agent into your own platform or workflow:
-
-1) Read the A2A protocol specification  
-   https://supplygraphai.github.io/supplygraph-ai/a2a
-
-2) Follow the setup guide  
-   https://supplygraphai.github.io/supplygraph-ai/getting-started
-
-3) Install the official Python SDK  
-   https://github.com/SupplyGraphAI/supplygraphai_a2a_sdk
-
-4) Or test the agents instantly using the live demos above
+1. Create an API key → [getting-started.md](../getting-started.md)
+2. Choose your integration → [integration.md](../a2a_mcp/integration.md)
+3. Run a quick example → [quick_example.md](../a2a_mcp/quick_example.md) or [Agent API quick example](../agent-api/quick_example.md)
+4. Or try a live demo above
 
 
-## Contact & Collaboration
+## Contact
 
-If you're interested in:
-
-- Enterprise integration  
-- Design partnerships  
-- Early access programs  
-- Research collaboration  
-
-Contact:  
-info@supplygraph.ai  
-https://www.supplygraph.ai
+Enterprise integration, partnerships, and research collaboration:  
+info@supplygraph.ai · https://www.supplygraph.ai
 
 
-[← Back to SupplyGraph AI Main Documentation & Platform Overview](../index.md)
+[← Back to Main Documentation](../../README.md)
 
-© 2025 SupplyGraph AI. All rights reserved.
+© 2025–2026 SupplyGraph AI. All rights reserved.
