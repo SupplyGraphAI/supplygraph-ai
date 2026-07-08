@@ -6,8 +6,6 @@
 <h1 align="center">SupplyGraph AI</h1>
 <h3 align="center">AI-Native Supply Graph Intelligence Platform</h3>
 
-An Agentic AI platform for **customs classification, tariff calculation, trade compliance, and deep-tier supply chain risk intelligence**.
-
 <p align="center">
   <a href="https://www.supplygraph.ai"><img src="https://img.shields.io/badge/Website-supplygraph.ai-blue?style=flat-square" alt="Website"/></a>
   <a href="https://supplygraphai.github.io/supplygraph-ai/"><img src="https://img.shields.io/badge/GitHub%20Pages-Live-brightgreen?style=flat-square" alt="GitHub Pages"/></a>
@@ -20,275 +18,87 @@ An Agentic AI platform for **customs classification, tariff calculation, trade c
 <p align="center">
 📢 <a href="https://github.com/SupplyGraphAI/supplygraph-ai/issues/4">Launch, Roadmap & Live Agent Demos</a>
 </p>
-<p align="center">
-👉 <a href="https://github.com/SupplyGraphAI/supplygraph-ai/blob/main/agents/index.md">Explore all SupplyGraph AI Agents</a>
-</p>
 
-<p align="center">
-Autonomous, auditable, and real-time supply-chain intelligence that maps how companies, products, and geographies connect across the global economy — enabling visibility, resilience, and efficiency <b>without requiring any customer-provided data</b>.
-</p>
+**SupplyGraph AI** is an agentic supply-chain intelligence platform. It exposes autonomous agents for **HTS/HS classification**, **U.S. tariff calculation**, **trade compliance**, **due diligence**, and **multi-tier supply chain risk analysis** — via standard **A2A**, **MCP**, and a traditional **Agent API**. Outputs are explainable and auditable; **no customer supplier lists or proprietary uploads are required**.
 
-<p align="center">
-<strong>Keywords:</strong> AI-powered supply chain intelligence, tariff calculation, HTS classification, trade compliance, multi-tier supply chain risk analysis, A2A agent platform
-</p>
+> **Organization hub:** [SupplyGraphAI/SupplyGraphAI](https://github.com/SupplyGraphAI/SupplyGraphAI) · **Product & use cases:** [supplygraph.ai](https://www.supplygraph.ai)
+
+## At a Glance
+
+| Resource | URL |
+|----------|-----|
+| **A2A service** | `https://agent.supplygraph.ai/a2a` |
+| **A2A agent base** | `https://agent.supplygraph.ai/a2a/agents/{agent_id}` |
+| **MCP server** | `https://mcp.supplygraph.ai/mcp` |
+| **Agent API** | `https://agent.supplygraph.ai/api/v1/agents/{agent_id}/run` |
+| **API keys & Console** | [supplygraph.ai/zk_chat_os/dashboard/dashboard.html](https://supplygraph.ai/zk_chat_os/dashboard/dashboard.html) |
+| **ARD catalog** (machine discovery) | `https://supplygraph.ai/.well-known/ai-catalog.json` |
+| **Live docs (GitHub Pages)** | [supplygraphai.github.io/supplygraph-ai/](https://supplygraphai.github.io/supplygraph-ai/) |
+
+Authentication for all surfaces: `Authorization: Bearer {api_key}`.
+
+## Agent Catalog
+
+Each agent uses the same **`agent_id`** for A2A and MCP tool invocation. Per-agent inputs, demos, and behavior → [`docs/agents/`](./docs/agents/index.md).
+
+| Agent | `agent_id` | Capability |
+|-------|------------|------------|
+| Customs Classification | `tariff_classification` | Map product descriptions to HS / HTS codes |
+| U.S. Tariff Calculation | `tariff_calc` | Calculate U.S. duties, Chapter 99, and trade measures |
+| Due Diligence | `due_diligence_report` | Structured company intelligence reports |
+| Corporate Exception Report | `corporate_exception_report` | Continuous corporate anomaly monitoring |
+| Supply Chain Risk Prediction | `supply_chain_risk_prediction` | Multi-tier event impact and risk propagation |
+| Enterprise Supply Graph | `sg_visualization` | Multi-tier company-centric supply graph |
+| Geographic Concentration | `sg_chokepoint` | Country / regional over-concentration risk |
+| Procurement Risk (Supplier) | `supply_chain_risk_prediction_cross_company` | Key supplier dependency monitoring |
+| Procurement Risk (Component) | `supply_chain_risk_prediction_cross_product` | Key component dependency monitoring |
 
 ## Documentation Map
 
-This repository contains the official documentation of **SupplyGraph AI** and is structured as follows:
-
-📘 **Getting Started** – Setup, authentication and first request  
-👉 [`docs/getting-started.md`](./docs/getting-started.md)
-
-🤝 **A2A / MCP Protocol** – Standard interfaces for agent discovery, invocation, and interoperability  
-👉 **A2A** (Agent-to-Agent): [`docs/a2a.md`](./docs/a2a.md)  
-👉 **MCP** (Model Context Protocol): [`docs/mcp.md`](./docs/mcp.md)
-
-🤖 **Agent Library Overview**  
-👉 https://github.com/SupplyGraphAI/supplygraph-ai/blob/main/agents/index.md
-
-📦 **Developer SDK** – Programmatic access for integration  
-👉 https://github.com/SupplyGraphAI/supplygraphai_a2a_sdk
-
-📄 **Live Documentation Site (GitHub Pages)** – Fast-loading, shareable, searchable docs  
-👉 https://supplygraphai.github.io/supplygraph-ai/
-
-🌐 **Official Website** – Product, use cases & demo  
-👉 https://www.supplygraph.ai
-
-## Table of Contents
-1. Introduction  
-2. What We Do  
-3. Why It Matters  
-4. How It Works  
-5. Two Groups of AI Agents  
-6. Integration & Developer Experience  
-7. Who Uses SupplyGraph AI  
-8. Why We’re Different  
-9. Real Results Across Industries  
-10. Security & Privacy  
-11. About SupplyGraph AI  
-12. Contact  
-
-## Introduction
-
-**SupplyGraph AI** delivers real-time, AI-powered global supply graph intelligence for **multi-tier supply chain risk analysis, tariff calculation, HTS classification, and trade compliance** — an AI-native risk infrastructure that reveals multi-hop visibility with auditable analytics for enterprises, financial institutions, and public stakeholders.
-
-## What We Do
-
-We map how products, companies, and geographies connect across extended supply networks, surfacing risks and validated alternatives in real time.  
-
-Our AI-native graph infrastructure powers multi-hop visibility so teams can see, simulate, and secure complex value chains without adding tooling overhead.
-
-## Why It Matters
-
-Legacy solutions rarely reach beyond Tier 1–2 and depend heavily on static, probabilistic data or user-uploaded supplier lists.  
-
-SupplyGraph AI eliminates these blind spots, exposing 10+ tiers of verified enterprise-product relationships with explainable, source-linked evidence.
-
-## How It Works
-
-We maintain a continuously updated graph of hundreds of millions of enterprise records and millions of product nodes.  
-Each relationship is tied to live signals and an auditable evidence chain.  
-
-✅ **No customer data required** — our enterprise-centric design removes the need for supplier uploads, minimizing disclosure risk while accelerating time-to-value.
-
-## Two Groups of AI Agents
-
-### Group 1: Supply Chain Risk Prediction Data Engine
-
-- **[Supply Chain Risk Prediction Agent](https://github.com/SupplyGraphAI/supplygraph-ai/blob/main/docs/agents/supply_chain_risk_prediction.md)**
-- **[Procurement & Inventory Risk Agent](https://github.com/SupplyGraphAI/supplygraph-ai/blob/main/docs/agents/procurement_inventor.md)**
-- **[Global Supply Dependency Visualization Agent](https://github.com/SupplyGraphAI/supplygraph-ai/blob/main/docs/agents/sg_visualization.md)**  
-- **[Geographic Concentration Analysis Agent](https://github.com/SupplyGraphAI/supplygraph-ai/blob/main/docs/agents/sg_chokepoint.md)**  
-
-### Group 2: Supply Chain Management Kits
-
-- **[Customs Classification Agent](https://github.com/SupplyGraphAI/supplygraph-ai/blob/main/docs/agents/tariff_classification.md)**
-- **[U.S. Tariff Calculation Agent](https://github.com/SupplyGraphAI/supplygraph-ai/blob/main/docs/agents/tariff_calc.md)**  
-- **[Due Diligence Agent](https://github.com/SupplyGraphAI/supplygraph-ai/blob/main/docs/agents/due_diligence_report.md)**
-- **[Corporate Exception Agent](https://github.com/SupplyGraphAI/supplygraph-ai/blob/main/docs/agents/corporate_exception_report.md)**
-
-### Full agent descriptions here:  
-https://github.com/SupplyGraphAI/supplygraph-ai/blob/main/agents/index.md
+| Topic | Link |
+|-------|------|
+| Getting Started — account, API keys, Sandbox | [`docs/getting-started.md`](./docs/getting-started.md) |
+| Integration Guide — A2A vs MCP vs Agent API | [`docs/a2a_mcp/integration.md`](./docs/a2a_mcp/integration.md) |
+| A2A Protocol | [`docs/a2a_mcp/a2a.md`](./docs/a2a_mcp/a2a.md) |
+| MCP Protocol | [`docs/a2a_mcp/mcp.md`](./docs/a2a_mcp/mcp.md) |
+| Agent API (traditional REST) | [`docs/agent-api/agent-api.md`](./docs/agent-api/agent-api.md) |
+| Quick Examples | [A2A / MCP](./docs/a2a_mcp/quick_example.md) · [Agent API](./docs/agent-api/quick_example.md) |
+| Agent Library & live demos | [`docs/agents/index.md`](./docs/agents/index.md) |
+| Client SDKs | [a2a-sdk](https://pypi.org/project/a2a-sdk/) · [mcp](https://pypi.org/project/mcp/) · [supplygraphai_a2a_sdk](https://github.com/SupplyGraphAI/supplygraphai_a2a_sdk) (Agent API, optional) |
 
 ## Integration & Developer Experience
 
-Designed for **fast, standards-based integration** using A2A and MCP.
+| Integration | Endpoint | Docs | Quick Example |
+|-------------|----------|------|---------------|
+| **A2A** (recommended) | `https://agent.supplygraph.ai/a2a` | [`a2a.md`](./docs/a2a_mcp/a2a.md) | [`quick_example.md`](./docs/a2a_mcp/quick_example.md) |
+| **MCP** (recommended) | `https://mcp.supplygraph.ai/mcp` | [`mcp.md`](./docs/a2a_mcp/mcp.md) | [`quick_example.md`](./docs/a2a_mcp/quick_example.md) |
+| **Agent API** | `.../api/v1/agents/{agent_id}/run` | [`agent-api.md`](./docs/agent-api/agent-api.md) | [`quick_example.md`](./docs/agent-api/quick_example.md) |
 
-### Quick Example (Python SDK — A2A Pattern)
+New integrations: [`docs/getting-started.md`](./docs/getting-started.md) → [`docs/a2a_mcp/integration.md`](./docs/a2a_mcp/integration.md) → run a [quick example](./docs/a2a_mcp/quick_example.md).
 
-Requires the official [A2A Python SDK](https://pypi.org/project/a2a-sdk/) (`pip install a2a-sdk httpx`, Python 3.10+).
+## Developer FAQ
 
-```python
-import asyncio
+**What is SupplyGraph AI?**  
+An AI-native supply graph platform that connects companies, products, and geographies for trade compliance and multi-tier risk intelligence — exposed as discoverable agents, not static REST endpoints only.
 
-import httpx
-from a2a.client import ClientConfig, create_client
-from a2a.helpers import new_text_message
-from a2a.types.a2a_pb2 import GetTaskRequest, Role, SendMessageRequest, TaskState
+**How do I integrate?**  
+Choose **A2A** (agent orchestrators), **MCP** (Cursor, Claude Desktop, MCP-native IDEs), or **Agent API** (traditional `run` / `status` / `results`). All three use the same API key from the [Console](https://supplygraph.ai/zk_chat_os/dashboard/dashboard.html).
 
-API_KEY = "YOUR_API_KEY"
-AGENT_BASE = "https://agent.supplygraph.ai/a2a/agents/tariff_calc"
-TEXT = (
-    "Lithium-ion batteries for electric vehicles "
-    "manufactured in China"
-)
+**Which SDK should I use?**  
+**[a2a-sdk](https://pypi.org/project/a2a-sdk/)** for A2A · **[mcp](https://pypi.org/project/mcp/)** for MCP · **[supplygraphai_a2a_sdk](https://github.com/SupplyGraphAI/supplygraphai_a2a_sdk)** only if you want the Agent API REST wrapper.
 
-TERMINAL = {
-    TaskState.TASK_STATE_COMPLETED,
-    TaskState.TASK_STATE_FAILED,
-    TaskState.TASK_STATE_CANCELED,
-    TaskState.TASK_STATE_REJECTED,
-}
+**How do AI systems discover your agents?**  
+Publish ARD at `https://supplygraph.ai/.well-known/ai-catalog.json` — lists agents, MCP server, docs, and A2A registry URLs. See [A2A § ARD](./docs/a2a_mcp/a2a.md).
 
-
-async def main() -> None:
-    headers = {"Authorization": f"Bearer {API_KEY}"}
-    async with httpx.AsyncClient(headers=headers, timeout=60.0) as http:
-        client = await create_client(
-            AGENT_BASE,
-            client_config=ClientConfig(streaming=False, httpx_client=http),
-            resolver_http_kwargs={"headers": headers},
-            relative_card_path="/",
-        )
-        try:
-            request = SendMessageRequest(
-                message=new_text_message(TEXT, role=Role.ROLE_USER),
-            )
-            task = None
-            async for chunk in client.send_message(request):
-                if chunk.HasField("task"):
-                    task = chunk.task
-
-            if task is None:
-                print("No task returned.")
-                return
-
-            print(f"Task submitted: {task.id}")
-
-            while task.status.state not in TERMINAL:
-                await asyncio.sleep(3)
-                task = await client.get_task(GetTaskRequest(id=task.id))
-                print("Current status:", TaskState.Name(task.status.state))
-
-            if task.status.state == TaskState.TASK_STATE_COMPLETED:
-                print("Final result:")
-                print(task.artifacts)
-            else:
-                print("Task failed or cancelled.")
-        finally:
-            await client.close()
-
-
-asyncio.run(main())
-```
-
-### Quick Example (Python SDK — MCP Pattern)
-
-```python
-import asyncio
-
-from mcp import ClientSession
-from mcp.client.streamable_http import streamable_http_client
-from mcp.shared.experimental.tasks.helpers import is_terminal
-from mcp.types import CallToolResult
-
-API_KEY = "YOUR_API_KEY"
-MCP_URL = "https://mcp.supplygraph.ai/mcp"
-
-
-async def main() -> None:
-    headers = {"Authorization": f"Bearer {API_KEY}"}
-
-    async with streamable_http_client(MCP_URL, headers=headers) as (read, write, _):
-        async with ClientSession(read, write) as session:
-            await session.initialize()
-
-            create = await session.experimental.call_tool_as_task(
-                "tariff_calc",
-                {
-                    "text": (
-                        "Lithium-ion batteries for electric vehicles "
-                        "manufactured in China"
-                    ),
-                },
-            )
-            task_id = create.task.taskId
-            print(f"Task submitted: {task_id}")
-
-            async for status in session.experimental.poll_task(task_id):
-                print("Current status:", status.status)
-                if is_terminal(status.status):
-                    break
-
-            result = await session.experimental.get_task_result(
-                task_id,
-                CallToolResult,
-            )
-            if result.isError:
-                print("Task failed or cancelled.")
-            else:
-                print("Final result:")
-                print(result.content)
-
-
-asyncio.run(main())
-```
-
-## Who Uses SupplyGraph AI
-
-- Manufacturing & Automotive companies  
-- Energy, Electronics & Industrial groups  
-- Retail & Consumer Brands  
-- Consulting & Risk Advisory firms  
-- Financial Institutions & Investors  
-- Public Sector & Research organizations  
-
-## Why We’re Different
-
-- 10+ tier visibility  
-- Real-time updates  
-- Auditable evidence  
-- Zero customer data required  
-- Explainable, policy-aware AI  
-
-## Real Results Across Industries
-
-Supply Chain – Reduced tariff filing time from hours to minutes  
-Consulting – Cut analysis time by up to 90%  
-Finance – Extended visibility from Tier-3 to Tier-10  
-Research – Enabled empirical network modeling  
-Government – Supported policy and risk simulations  
+**Do I need to upload supplier lists?**  
+No. Agents operate on SupplyGraph's continuously updated global supply graph. Sandbox keys return mock or sample data for integration testing — see [Getting Started § Sandbox](./docs/getting-started.md#31-sandbox-api-keys-for-testing--development).
 
 ## Security & Privacy
 
-No customer data is required or stored.  
-All output is backed by a verifiable evidence chain.
-
-## About SupplyGraph AI
-
-SupplyGraph AI redefines how the world understands and secures supply chains.  
-Through autonomous graph intelligence, organizations can predict risk and act with confidence.
+No customer data is required or stored. All output is backed by a verifiable evidence chain.
 
 ## Contact
 
-info@supplygraph.ai  
-https://www.supplygraph.ai
+info@supplygraph.ai · https://www.supplygraph.ai
 
-## More about SupplyGraph AI
-
-Getting Started  
-https://github.com/SupplyGraphAI/supplygraph-ai/blob/main/docs/getting-started.md
-
-Agent Hub  
-https://github.com/SupplyGraphAI/supplygraph-ai/blob/main/agents/index.md
-
-Python A2A SDK  
-https://github.com/SupplyGraphAI/supplygraphai_a2a_sdk
-
-Website  
-https://www.supplygraph.ai
-
-
-© 2025 SupplyGraph AI, Inc. All rights reserved.
-
+© 2025–2026 SupplyGraph AI, Inc. All rights reserved.
