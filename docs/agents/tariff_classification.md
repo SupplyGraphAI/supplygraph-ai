@@ -110,320 +110,40 @@ Sandbox Keys are recommended for:
 ⚠️ Sandbox Keys do **not** produce real analytical results and must not be used in production systems.
 
 For a full comparison of Production vs. Sandbox keys, see  
-[Getting Started Guide → API Keys](https://github.com/SupplyGraphAI/supplygraph-ai/blob/main/docs/getting-started.md#3-generate-an-a2amcp-key).
+[Getting Started Guide → API Keys](../getting-started.md#3-generate-an-a2amcp-key).
 
 
-## API Overview
+## Input Requirements
 
-This section provides an overview of the **A2A (Agent-to-Agent)** API structure and usage.
+`agent_id`: `tariff_classification` · MCP tool: `tariff_classification`
 
+| Field | Required | Description |
+|-------|----------|-------------|
+| `text` | Yes | Clear, detailed natural-language product description |
 
-## Endpoints Summary
+Country of origin may be included but is optional. No HTS knowledge is required from the user.
 
-| Endpoint | Method | Description |
-|--------|------|-------------|
-| `/api/v1/agents/tariff_classification/manifest` | GET | Retrieve metadata, schema, pricing, and version info |
-| `/api/v1/agents/tariff_classification/run` | POST | Execute or manage tasks via `mode` |
+Multi-turn: respond to `WAITING_USER` with the same `task_id`. See [Agent API §8](../agent-api/agent-api.md#8-multi-turn-waiting_user).
 
-**Supported modes:**
+## Output Format
 
-- `mode=run` — start a new task (supports streaming)
-- `mode=status` — check task progress
-- `mode=results` — retrieve task output
+On success, results include `classification_results` — an array of suggested HTS codes with `confidence_score`, `reasoning`, and `description`. Designed for direct handoff to the [U.S. Tariff Calculation Agent](./tariff_calc.md).
 
+## Integration
 
-## Manifest
+| Method | ID / Tool | Documentation |
+|--------|-----------|---------------|
+| **A2A** | `tariff_classification` | [a2a.md](../a2a_mcp/a2a.md) |
+| **MCP** | `tariff_classification` | [mcp.md](../a2a_mcp/mcp.md) |
+| **Agent API** | `tariff_classification` | [agent-api.md](../agent-api/agent-api.md) |
 
-### Request
+Quick examples: [A2A / MCP](../a2a_mcp/quick_example.md) · [Agent API](../agent-api/quick_example.md)
 
-```bash
-curl -X GET https://agent.supplygraph.ai/api/v1/agents/tariff_classification/manifest
-  -H "Authorization: Bearer <YOUR_API_KEY>"
-```
+## Errors
 
-### Example Response
-
-```json
-{
-  "agent_id": "tariff_classification",
-  "name": "Customs Classification Agent",
-  "version": "1.0.0",
-  "description": "Automatically maps product descriptions to correct HS/HTS codes with confidence scoring and reasoning.",
-  "input_schema": { ... },
-  "output_schema": { ... },
-  "pricing": { "unit": "credits", "per_run": 2 },
-  "status": "active"
-}
-```
-
-
-## Run Endpoint
-
-
-### Purpose
-
-Start a new classification task.
-
-This endpoint supports both:
-
-- Streaming (`stream=true`)
-- Non-streaming (`stream=false`)
-
-
-### Request
-
-```bash
-curl -X POST https://agent.supplygraph.ai/api/v1/agents/tariff_classification/run
-  -H "Authorization: Bearer <YOUR_API_KEY>"
-  -H "Content-Type: application/json"
-  -d '{
-        "text": "Cotton T-shirts for women, 100% cotton, made in Mexico",
-        "stream": true
-      }'
-```
-
-
-## Text Input Requirements
-
-The `text` field should contain a **clear and detailed natural-language product description**.
-
-- The more specific the description, the higher the classification precision
-- Country-of-origin may be included, but is **optional**
-- No HTS knowledge is required from the user
-
-
-## Example Response (Streaming)
-
-| Event | Stage | Code | Description |
-|------|------|------|-------------|
-| stream | interpreting | THINKING | Agent is analyzing product attributes |
-| stream | executing | TASK_ACCEPTED | Task accepted and queued |
-| end | — | — | Stream completed |
-
-
-### Event 1 — Interpreting (THINKING)
-
-```json
-{
-  "event": "stream",
-  "data": {
-    "task_id": "<task-id>",
-    "agent": "tariff_classification",
-    "stage": "interpreting",
-    "code": "THINKING",
-    "reasoning": ["Analyzing product description..."],
-    "timestamp": "2025-11-12T09:00:00Z",
-    "is_final": false
-  }
-}
-```
-
-
-### Event 2 — Task Accepted
-
-```json
-{
-  "success": true,
-  "code": "TASK_ACCEPTED",
-  "message": "Task accepted and queued.",
-  "data": {
-    "task_id": "<task-id>",
-    "agent": "tariff_classification",
-    "stage": "executing",
-    "timestamp": "2025-11-12T09:00:10Z",
-    "is_final": true
-  }
-}
-```
-
-
-### Stream End
-
-```
-event: end
-data: [DONE]
-```
-
-
-## Handling WAITING_USER
-
-If the Agent returns `code = "WAITING_USER"`, additional confirmation or clarification is required.
-
-To continue, you **must include the original `task_id`** in the follow-up request.  
-Otherwise, the system will treat the message as a **new task**.
-
-
-## Status Endpoint
-
-
-### Request
-
-```bash
-curl -X POST https://agent.supplygraph.ai/api/v1/agents/tariff_classification/run
-  -H "Authorization: Bearer <YOUR_API_KEY>"
-  -H "Content-Type: application/json"
-  -d '{
-        "mode": "status",
-        "task_id": "<task-id>"
-      }'
-```
-
-
-### Example Response
-
-```json
-{
-  "success": true,
-  "code": "TASK_RUNNING",
-  "data": {
-    "task_id": "<task-id>",
-    "agent": "tariff_classification",
-    "stage": "running",
-    "progress": 72.4
-  }
-}
-```
-
-
-## Results Endpoint
-
-
-### Request
-
-```bash
-curl -X POST https://agent.supplygraph.ai/api/v1/agents/tariff_classification/run
-  -H "Authorization: Bearer <YOUR_API_KEY>"
-  -H "Content-Type: application/json"
-  -d '{
-        "mode": "results",
-        "task_id": "<task-id>"
-      }'
-```
-
-
-### Example Response
-
-```json
-{
-  "success": true,
-  "code": "TASK_COMPLETED",
-  "data": {
-    "task_id": "<task-id>",
-    "agent": "tariff_classification",
-    "content": {
-      "type": "result",
-      "data": {
-        "classification_results": [
-          {
-            "hts_code": "6109.10.00.40",
-            "confidence_score": 0.90,
-            "reasoning": "The product is a knitted cotton T-shirt for women. This subheading explicitly covers women's cotton T-shirts.",
-            "description": "T-shirts, singlets, tank tops and similar garments, knitted or crocheted > Of cotton > Women's or girls' > Other"
-          }
-        ],
-        "country_of_origin": "Mexico"
-      }
-    }
-  },
-  "metadata": {
-    "agent": "tariff_classification",
-    "credits_used": 2
-  }
-}
-```
-
-
-## `content` Field Explanation
-
-On successful execution (`TASK_COMPLETED`), the `content` object contains:
-
-```json
-"content": {
-  "type": "result",
-  "data": {
-    "classification_results": [ ... ],
-    "country_of_origin": "<if detected>"
-  }
-}
-```
-
-Each item in `classification_results` includes:
-
-- `hts_code` — Suggested HTS code
-- `confidence_score` — Classification confidence (0–1)
-- `reasoning` — Why this code matches
-- `description` — Official HTS description
-
-This structure is designed for **direct downstream handoff** to:
-
-- U.S. Tariff Calculation Agent (`tariff_calc`)
-- Tariff Optimization workflows
-- Compliance verification pipelines
-
-
-## Make Your First A2A Call
-
-Typical workflow:
-
-1. Start classification with `mode=run`
-2. Monitor progress with `mode=status`
-3. Retrieve result with `mode=results`
-4. (Optional) Pass HTS result to `tariff_calc`
-
-
-## Integration Options
-
-
-### Protocols
-
-| Protocol | Description | Docs |
-|------|------|------|
-| **A2A (Agent-to-Agent)** | Native protocol for autonomous multi-agent workflows | [A2A Protocol](../a2a.md) |
-| **MCP (Multi-Channel Protocol)** | Next-generation enterprise orchestration standard | *(Coming Soon)* |
-
-
-### Developer Interfaces
-
-| Interface | Description | Docs |
-|------|------|------|
-| **Python SDK (A2A Client)** | Official wrapper for rapid integration | https://github.com/SupplyGraphAI/supplygraphai_a2a_sdk |
-
-
-## Error Handling & Rate Limits
-
-
-### Common Error Codes
-
-| Code | Description |
-|------|------------|
-| UNAUTHORIZED | Missing or expired API key |
-| INSUFFICIENT_CREDITS | Not enough credits |
-| RATE_LIMITED | Too many requests |
-| INVALID_REQUEST | Input outside agent scope |
-
-
-### Stage-Specific Codes
-
-```
-interpreting:
-  INTERPRETING
-  INVALID_REQUEST
-  UNAUTHORIZED
-  WAITING_USER
-
-executing:
-  TASK_ACCEPTED
-  TASK_RUNNING
-
-completed:
-  TASK_COMPLETED
-  TASK_FAILED
-
-cancelled:
-  TASK_CANCELLED
-```
+Common codes → [Agent API §10](../agent-api/agent-api.md#10-error--status-codes). This agent may return `WAITING_USER` for clarification.
 
 
 Maintainer: info@supplygraph.ai  
 License: Proprietary / Internal  
-© 2025 SupplyGraph AI. All rights reserved.
+© 2025–2026 SupplyGraph AI. All rights reserved.
