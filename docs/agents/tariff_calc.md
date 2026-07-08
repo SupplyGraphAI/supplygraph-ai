@@ -106,310 +106,36 @@ Sandbox Keys are recommended for:
 ⚠️ Sandbox Keys do **not** produce real analytical results and must not be used in production systems.
 
 For a full comparison of Production vs. Sandbox keys, see  
-[Getting Started Guide → API Keys](https://github.com/SupplyGraphAI/supplygraph-ai/blob/main/docs/getting-started.md#3-generate-an-a2amcp-key).
+[Getting Started Guide → API Keys](../getting-started.md#3-generate-an-a2amcp-key).
 
 
-## API Overview
+## Input Requirements
 
-This section provides an overview of the **A2A (Agent-to-Agent)** interface used by this agent.
+`agent_id`: `tariff_calc` · MCP tool: `tariff_calc`
 
+| Field | Required | Description |
+|-------|----------|-------------|
+| `text` | Yes | Product description **or** 10-digit HTS code, plus **country of origin** |
 
-## Endpoints Summary
+Optional in text: weight, quantity, declared value. Multi-turn via `WAITING_USER` + same `task_id` → [Agent API §8](../agent-api/agent-api.md#8-multi-turn-waiting_user).
 
-| Endpoint | Method | Description |
-|---------|--------|-------------|
-| `/api/v1/agents/tariff_calc/manifest` | GET | Retrieve metadata, schema, pricing, and version info |
-| `/api/v1/agents/tariff_calc/run` | POST | Execute or manage tasks via `mode` |
+**Example:** "Calculate import duties for 5601.21.0010, country of origin China, shipment value 200 USD, 50 kg."
 
-**Supported modes:**
 
-- `mode=run` — start a new task (supports streaming)
-- `mode=status` — check task progress
-- `mode=results` — retrieve completed output
+## Integration
 
+| Method | ID / Tool | Documentation |
+|--------|-----------|---------------|
+| **A2A** | `tariff_calc` | [a2a.md](../a2a_mcp/a2a.md) |
+| **MCP** | `tariff_calc` | [mcp.md](../a2a_mcp/mcp.md) |
+| **Agent API** | `tariff_calc` | [agent-api.md](../agent-api/agent-api.md) |
 
-## Manifest
+Quick examples: [A2A / MCP](../a2a_mcp/quick_example.md) · [Agent API](../agent-api/quick_example.md)
 
-### Request
+## Errors
 
-```bash
-curl -X GET https://agent.supplygraph.ai/api/v1/agents/tariff_calc/manifest
-  -H "Authorization: Bearer <YOUR_API_KEY>"
-```
-
-### Example Response
-
-```json
-{
-  "agent_id": "tariff_calc",
-  "name": "U.S. Tariff Calculation Agent",
-  "version": "1.0.0",
-  "description": "Calculates U.S. customs duties by combining HTS base rates with applicable Chapter 99 measures, providing transparent, regulation-aware tariff outcomes.",
-  "input_schema": { ... },
-  "output_schema": { ... },
-  "pricing": { "unit": "credits", "per_run": 10 },
-  "status": "active"
-}
-```
-
-
-## Run Endpoint
-
-
-### Purpose
-
-Start a new tariff calculation task.
-
-This endpoint supports both:
-
-- Streaming (`stream=true`)
-- Non-streaming (`stream=false`)
-
-
-### Request
-
-```bash
-curl -X POST https://agent.supplygraph.ai/api/v1/agents/tariff_calc/run
-  -H "Authorization: Bearer <YOUR_API_KEY>"
-  -H "Content-Type: application/json"
-  -d '{
-        "text": "Cotton T-shirts for women, 100% cotton, made in Mexico",
-        "stream": true
-      }'
-```
-
-
-## Text Input Requirements
-
-The `text` field contains the natural-language instructions that define the tariff calculation.
-
-**Minimum required information:**
-
-- Either:
-  - a **10-digit HTS code** (e.g. `5601.21.0010`)  
-  **or**
-  - a detailed **product description**
-- A **country of origin** must be included
-
-**Optional parameters:**
-
-- Product weight
-- Quantity
-- Declared customs value
-
-If optional fields are omitted, the Agent applies standardized defaults for estimation purposes.
-
-**Example:**
-
-> “Calculate import duties for 5601.21.0010, country of origin China, shipment value 200 USD, 50 kg.”
-
-
-## Example Response (Streaming)
-
-| Event | Stage | Code | Description |
-|------|------|------|-------------|
-| stream | interpreting | THINKING | Agent is analyzing product and policy context |
-| stream | executing | TASK_ACCEPTED | Task accepted and queued for execution |
-| end | — | — | Stream completed |
-
-
-### Event 1 — Interpreting (THINKING)
-
-```json
-{
-  "event": "stream",
-  "data": {
-    "task_id": "<task-id>",
-    "agent": "tariff_calc",
-    "stage": "interpreting",
-    "code": "THINKING",
-    "reasoning": ["Analyzing product and country of origin..."],
-    "timestamp": "2025-11-12T09:00:00Z",
-    "is_final": false
-  }
-}
-```
-
-
-### Event 2 — Task Accepted
-
-```json
-{
-  "success": true,
-  "code": "TASK_ACCEPTED",
-  "message": "Task accepted and queued.",
-  "data": {
-    "task_id": "<task-id>",
-    "agent": "tariff_calc",
-    "stage": "executing",
-    "code": "TASK_ACCEPTED",
-    "timestamp": "2025-11-12T09:00:10Z",
-    "is_final": true
-  }
-}
-```
-
-
-### Stream End
-
-```
-event: end
-data: [DONE]
-```
-
-
-## Handling WAITING_USER
-
-If the response includes `code = "WAITING_USER"`, the agent needs additional information or confirmation.
-
-To continue execution, you **must**:
-
-- Send the follow-up message
-- Include the original `task_id`
-
-Without the correct `task_id`, the message will be treated as a **new request** and the original task will remain paused.
-
-
-## Status Endpoint
-
-
-### Request
-
-```bash
-curl -X POST https://agent.supplygraph.ai/api/v1/agents/tariff_calc/run
-  -H "Authorization: Bearer <YOUR_API_KEY>"
-  -H "Content-Type: application/json"
-  -d '{
-        "mode": "status",
-        "task_id": "<task-id>"
-      }'
-```
-
-
-### Example Response
-
-```json
-{
-  "success": true,
-  "code": "TASK_RUNNING",
-  "data": {
-    "task_id": "<task-id>",
-    "agent": "tariff_calc",
-    "stage": "running",
-    "progress": 65.5
-  }
-}
-```
-
-
-## Results Endpoint
-
-
-### Request
-
-```bash
-curl -X POST https://agent.supplygraph.ai/api/v1/agents/tariff_calc/run
-  -H "Authorization: Bearer <YOUR_API_KEY>"
-  -H "Content-Type: application/json"
-  -d '{
-        "mode": "results",
-        "task_id": "<task-id>"
-      }'
-```
-
-
-### Example Response
-
-```json
-{
-  "success": true,
-  "code": "TASK_COMPLETED",
-  "data": {
-    "task_id": "<task-id>",
-    "agent": "tariff_calc",
-    "content": {
-      "type": "tariff_analysis",
-      "data": {
-        "hts_code": "8415.90.80.25",
-        "product": "Air conditioning evaporator coils",
-        "country_of_origin": "Japan",
-        "base_duty_rate": "X%",
-        "additional_measures": ["Chapter 99"],
-        "total_effective_duty": "X.XX%",
-        "explanation": "..."
-      }
-    }
-  },
-  "metadata": {
-    "credits_used": 10
-  }
-}
-```
-
-
-## Make Your First A2A Call
-
-Typical workflow:
-
-1. Start the task with `mode=run`
-2. (Optional) receive live reasoning via streaming
-3. Poll using `mode=status`
-4. Retrieve the final result using `mode=results`
-
-
-## Integration Options
-
-
-### Protocols
-
-| Protocol | Description | Docs |
-|------|------|------|
-| **A2A (Agent-to-Agent)** | Native communication protocol for autonomous agent workflows | [A2A Protocol](../a2a.md) |
-| **MCP (Multi-Channel Protocol)** | Next-generation orchestration protocol for complex environments | *(Coming Soon)* |
-
-
-### Developer Interfaces
-
-| Interface | Description | Docs |
-|------|------|------|
-| **Python SDK (A2A Client)** | Official wrapper for rapid integration | https://github.com/SupplyGraphAI/supplygraphai_a2a_sdk |
-
-
-## Error Handling & Rate Limits
-
-
-### Common Error Codes
-
-| Code | Description |
-|------|--------------|
-| UNAUTHORIZED | Missing or expired API key |
-| INSUFFICIENT_CREDITS | Not enough credits |
-| RATE_LIMITED | Too many requests |
-| INVALID_REQUEST | Input outside agent’s task scope |
-
-
-### Stage-Specific Codes
-
-```
-interpreting:
-  INTERPRETING
-  INVALID_REQUEST
-  UNAUTHORIZED
-  WAITING_USER
-
-executing:
-  TASK_ACCEPTED
-  TASK_RUNNING
-
-completed:
-  TASK_COMPLETED
-  TASK_FAILED
-
-cancelled:
-  TASK_CANCELLED
-```
-
+Common codes → [Agent API §10](../agent-api/agent-api.md#10-error--status-codes). This agent may return `WAITING_USER` when input is incomplete.
 
 Maintainer: info@supplygraph.ai  
 License: Proprietary / Internal  
-© 2025 SupplyGraph AI. All rights reserved.
+© 2025–2026 SupplyGraph AI. All rights reserved.
