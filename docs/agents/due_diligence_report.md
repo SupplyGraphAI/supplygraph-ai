@@ -120,273 +120,37 @@ Sandbox Keys are ideal for:
 ⚠️ Sandbox results are not dynamically generated — they come from a predefined dataset and must not be used in production analytics.
 
 For a full comparison of Production vs. Sandbox keys, see  
-[Getting Started Guide → API Keys](https://github.com/SupplyGraphAI/supplygraph-ai/blob/main/docs/getting-started.md#3-generate-an-a2amcp-key).
+[Getting Started Guide → API Keys](../getting-started.md#3-generate-an-a2amcp-key).
 
 
+## Input Requirements
 
-## API Overview
+`agent_id`: `due_diligence_report` · MCP tool: `due_diligence_report`
 
-This section provides an overview of the **A2A (Agent-to-Agent)** interface.
+| Field | Required | Description |
+|-------|----------|-------------|
+| `text` | Yes | Company name and country (e.g. "Tesla, Inc. United States") |
+| `chapter_name` | No | Report section to generate; default `ALL` |
 
+**`chapter_name` values:** `ALL`, `Company Registration Information`, `Branch Offices`, `Corporate Brand Initiatives`, `Administrative Sanctions`, `Software Copyright Details`, `Outbound Investments`, `Financing Activities`, `Competitor Analysis`, `Subsidiary Companies`, `Trademark Portfolio`, `Patent Holdings`, `Website Registrations`, `Court Judgments`, `Shareholder Structure`, `Senior Management Team`, `Administrative Permits`, `Court Hearing Notices`, `Court Notices`, `Equity Pledges`, `Mobile Applications`, `Copyrighted Works`, `Equity Freezes`, `Chattel Mortgages`, `WeChat Official Accounts`, `Tendering and Bidding Activities`, `Qualification Certificates`, `Engineering Irregularities`, `Major Regulatory Violations`, `Compensation and Benefits`, `Enforcement Targets`, `Supplier Network`, `Credit Ratings`, `Tax Offenses`, `Regulatory Spot Checks`, `Import-Export Credit Records`, `Regulatory Actions`, `Granted Government Subsidies`, `Eligible Government Subsidies`, `Consolidated Statements of Operations`, `Income Statement`, `Statement of Cash Flows`, `Consolidated Balance Sheets`
 
-## Endpoints Summary
+Confirm matched company when prompted (`WAITING_USER`).
 
-| Endpoint | Method | Description |
-|---------|--------|-------------|
-| `/api/v1/agents/due_diligence_report/manifest` | GET | Retrieve metadata, schema, pricing, and version information |
-| `/api/v1/agents/due_diligence_report/run` | POST | Execute or manage tasks via `mode` |
 
+## Integration
 
-**Supported modes:**
+| Method | ID / Tool | Documentation |
+|--------|-----------|---------------|
+| **A2A** | `due_diligence_report` | [a2a.md](../a2a_mcp/a2a.md) |
+| **MCP** | `due_diligence_report` | [mcp.md](../a2a_mcp/mcp.md) |
+| **Agent API** | `due_diligence_report` | [agent-api.md](../agent-api/agent-api.md) |
 
-- `mode=run` — start a new task
-- `mode=status` — check task progress
-- `mode=results` — retrieve completed output
+Quick examples: [A2A / MCP](../a2a_mcp/quick_example.md) · [Agent API](../agent-api/quick_example.md)
 
+## Errors
 
-## Manifest
-
-### Request
-
-```bash
-curl -X GET https://agent.supplygraph.ai/api/v1/agents/due_diligence_report/manifest
-  -H "Authorization: Bearer <YOUR_API_KEY>"
-```
-
-### Example Response
-
-```json
-{
-  "agent_id": "due_diligence_report",
-  "name": "Due Diligence Agent",
-  "version": "1.0.0",
-  "description": "Generates structured and continuously updated company due diligence intelligence",
-  "input_schema": { ... },
-  "output_schema": { ... },
-  "pricing": { "unit": "credits", "per_run": 10 },
-  "status": "active"
-}
-```
-
-
-## Run Endpoint
-
-### Purpose
-
-Start a new due diligence task.  
-Supports **entity resolution + chapter-level control** via `chapter_name`.
-
-### Request
-
-```bash
-curl -X POST https://agent.supplygraph.ai/api/v1/agents/due_diligence_report/run
-  -H "Authorization: Bearer <YOUR_API_KEY>"
-  -H "Content-Type: application/json"
-  -d '{
-        "text": "Tesla, Inc. United States",
-        "stream": false
-      }'
-```
-
-### Example Response (WAITING_USER)
-
-```json
-{
-  "success": false,
-  "code": "WAITING_USER",
-  "data": {
-    "task_id": "<task-id>",
-    "agent": "due_diligence_report",
-    "stage": "interpreting",
-    "content": "Here are the companies we’ve identified.\nCompany Name: Tesla, Inc.\nCountry: United States\nPlease reply [Yes] or [No] to confirm."
-  }
-}
-```
-
-
-## chapter_name Parameter
-
-The `chapter_name` parameter allows you to generate **specific sections** of the report instead of the full report.
-
-```json
-{
-  "type": "string",
-  "enum": [
-    "ALL",
-    "Company Registration Information",
-    "Branch Offices",
-    "Corporate Brand Initiatives",
-    "Administrative Sanctions",
-    "Software Copyright Details",
-    "Outbound Investments",
-    "Financing Activities",
-    "Competitor Analysis",
-    "Subsidiary Companies",
-    "Trademark Portfolio",
-    "Patent Holdings",
-    "Website Registrations",
-    "Court Judgments",
-    "Shareholder Structure",
-    "Senior Management Team",
-    "Administrative Permits",
-    "Court Hearing Notices",
-    "Court Notices",
-    "Equity Pledges",
-    "Mobile Applications",
-    "Copyrighted Works",
-    "Equity Freezes",
-    "Chattel Mortgages",
-    "WeChat Official Accounts",
-    "Tendering and Bidding Activities",
-    "Qualification Certificates",
-    "Engineering Irregularities",
-    "Major Regulatory Violations",
-    "Compensation and Benefits",
-    "Enforcement Targets",
-    "Supplier Network",
-    "Credit Ratings",
-    "Tax Offenses",
-    "Regulatory Spot Checks",
-    "Import-Export Credit Records",
-    "Regulatory Actions",
-    "Granted Government Subsidies",
-    "Eligible Government Subsidies",
-    "Consolidated Statements of Operations",
-    "Income Statement",
-    "Statement of Cash Flows",
-    "Consolidated Balance Sheets"
-  ],
-  "default": "ALL"
-}
-```
-
-
-## Status Endpoint
-
-### Request
-
-```bash
-curl -X POST https://agent.supplygraph.ai/api/v1/agents/due_diligence_report/run
-  -H "Authorization: Bearer <YOUR_API_KEY>"
-  -H "Content-Type: application/json"
-  -d '{
-        "mode": "status",
-        "task_id": "<task-id>"
-      }'
-```
-
-### Example Response
-
-```json
-{
-  "success": true,
-  "code": "TASK_RUNNING",
-  "data": {
-    "task_id": "<task-id>",
-    "agent": "due_diligence_report",
-    "stage": "running",
-    "progress": 65.5
-  }
-}
-```
-
-
-## Results Endpoint
-
-### Request
-
-```bash
-curl -X POST https://agent.supplygraph.ai/api/v1/agents/due_diligence_report/run
-  -H "Authorization: Bearer <YOUR_API_KEY>"
-  -H "Content-Type: application/json"
-  -d '{
-        "mode": "results",
-        "task_id": "<task-id>"
-      }'
-```
-
-### Example Response
-
-```json
-{
-  "success": true,
-  "code": "TASK_COMPLETED",
-  "data": {
-    "task_id": "<task-id>",
-    "agent": "due_diligence_report",
-    "progress": 100,
-    "content": "## Due Diligence Analysis..."
-  },
-  "metadata": {
-    "credits_used": 10
-  }
-}
-```
-
-
-## Make Your First A2A Call
-
-Typical workflow:
-
-1. Start the task with `mode=run`
-2. Confirm company (if prompted)
-3. Poll using `mode=status`
-4. Retrieve the report via `mode=results`
-
-
-## Integration Options
-
-
-### Protocols
-
-| Protocol | Description | Docs |
-|------|------|------|
-| **A2A (Agent-to-Agent)** | Autonomous workflow integration standard | [A2A Protocol](../a2a.md) |
-| **MCP (Multi-Channel Protocol)** | Enterprise orchestration layer | *(Coming Soon)* |
-
-
-### Developer Interfaces
-
-| Interface | Description | Docs |
-|------|------|------|
-| **Python SDK (A2A Client)** | Official wrapper for rapid integration | https://github.com/SupplyGraphAI/supplygraphai_a2a_sdk |
-
-
-## Error Handling & Rate Limits
-
-
-### Common Error Codes
-
-| Code | Description |
-|------|--------------|
-| UNAUTHORIZED | Missing or expired API key |
-| INSUFFICIENT_CREDITS | Not enough credits |
-| RATE_LIMITED | Too many requests |
-| INVALID_REQUEST | Input outside agent’s scope |
-
-
-### Stage-Specific Codes
-
-```
-interpreting:
-  INTERPRETING
-  INVALID_REQUEST
-  UNAUTHORIZED
-  WAITING_USER
-
-executing:
-  TASK_ACCEPTED
-  TASK_RUNNING
-
-completed:
-  TASK_COMPLETED
-  TASK_FAILED
-
-cancelled:
-  TASK_CANCELLED
-```
-
+Common codes → [Agent API §10](../agent-api/agent-api.md#10-error--status-codes). This agent returns `WAITING_USER` for company confirmation.
 
 Maintainer: info@supplygraph.ai  
 License: Proprietary / Internal  
-© 2025 SupplyGraph AI. All rights reserved.
+© 2025–2026 SupplyGraph AI. All rights reserved.
