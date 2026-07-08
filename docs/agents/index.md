@@ -34,9 +34,15 @@ Detects and reports **corporate anomalies and exception events** for continuous 
 
 ## Supply Graph & Risk Intelligence Agents
 
-### Supply Chain Risk Prediction Agent
+### Supply Chain Risk Prediction Agents
 
-Core **multi-tier risk prediction engine** — impact propagation, dependency scoring, and scenario analysis.
+Core **multi-tier risk prediction engine** — impact propagation, dependency scoring, and scenario analysis. Exposed as three role-specific agents (same input schema and pricing):
+
+| Audience | `agent_id` | Demo |
+|----------|------------|------|
+| Corporate executives | `risk_propagation_detail_ceo` | [Live Demo](https://supplygraph.ai/zk_chat_os/agentic/dialog.html?name=risk_propagation_detail_ceo) |
+| Hedge fund managers | `risk_propagation_detail_hedgefund` | [Live Demo](https://supplygraph.ai/zk_chat_os/agentic/dialog.html?name=risk_propagation_detail_hedgefund) |
+| Supply chain risk professionals | `risk_propagation_detail_riskexpert` | [Live Demo](https://supplygraph.ai/zk_chat_os/agentic/dialog.html?name=risk_propagation_detail_riskexpert) |
 
 [Documentation →](./supply_chain_risk_prediction.md)
 
