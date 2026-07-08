@@ -111,289 +111,34 @@ This is useful for:
 Use Production Keys for live graph computation.
 
 For details, see  
-[Getting Started Guide → API Keys](https://github.com/SupplyGraphAI/supplygraph-ai/blob/main/docs/getting-started.md#3-generate-an-a2amcp-key).
+[Getting Started Guide → API Keys](../getting-started.md#3-generate-an-a2amcp-key).
 
 
-## API Overview
+## Input Requirements
 
-This section provides an overview of the **A2A (Agent-to-Agent)** interface for this agent.
+`agent_id`: `sg_visualization` · MCP tool: `sg_visualization`
 
+| Field | Required | Description |
+|-------|----------|-------------|
+| `text` | Yes | Target company name (natural language) |
 
-## Endpoints Summary
+**Example:** "Build the supply graph for Tesla, Inc."
 
-| Endpoint | Method | Description |
-|---------|--------|-------------|
-| `/api/v1/agents/sg_visualization/manifest` | GET | Retrieve metadata, schema, pricing, and version information |
-| `/api/v1/agents/sg_visualization/run` | POST | Execute or manage tasks via `mode` |
 
+## Integration
 
-**Supported modes:**
+| Method | ID / Tool | Documentation |
+|--------|-----------|---------------|
+| **A2A** | `sg_visualization` | [a2a.md](../a2a_mcp/a2a.md) |
+| **MCP** | `sg_visualization` | [mcp.md](../a2a_mcp/mcp.md) |
+| **Agent API** | `sg_visualization` | [agent-api.md](../agent-api/agent-api.md) |
 
-- `mode=run` — start a new task (supports streaming)
-- `mode=status` — check task progress
-- `mode=results` — retrieve completed output
+Quick examples: [A2A / MCP](../a2a_mcp/quick_example.md) · [Agent API](../agent-api/quick_example.md)
 
+## Errors
 
-## Manifest
-
-### Request
-
-```bash
-curl -X GET https://agent.supplygraph.ai/api/v1/agents/sg_visualization/manifest
-  -H "Authorization: Bearer <YOUR_API_KEY>"
-```
-
-### Example Response
-
-```json
-{
-  "agent_id": "sg_visualization",
-  "name": "Enterprise Supply Graph Agent",
-  "version": "1.0.0",
-  "description": "Generates a multi-tier enterprise supply chain dependency graph",
-  "input_schema": { ... },
-  "output_schema": { ... },
-  "pricing": { "unit": "credits", "per_run": 10 },
-  "status": "active"
-}
-```
-
-
-## Run Endpoint
-
-
-### Purpose
-
-Start a new task with this agent.  
-Supports both **streaming (`stream=true`)** and **non-streaming (`stream=false`)** modes.
-
-
-### Request
-
-```bash
-curl -X POST https://agent.supplygraph.ai/api/v1/agents/sg_visualization/run
-  -H "Authorization: Bearer <YOUR_API_KEY>"
-  -H "Content-Type: application/json"
-  -d '{
-        "text": "{{example_company_name}}",
-        "stream": true
-      }'
-```
-
-
-### Example Response (Streaming)
-
-| Event | Stage | Code | Description |
-|------|------|------|-------------|
-| stream | interpreting | THINKING | Agent is analyzing input and expanding the graph |
-| stream | executing | TASK_ACCEPTED | Task accepted and queued for processing |
-| end | — | — | Stream completed |
-
-
-#### Event 1 — Interpreting (THINKING)
-
-```json
-{
-  "event": "stream",
-  "data": {
-    "task_id": "<task-id>",
-    "agent": "sg_visualization",
-    "stage": "interpreting",
-    "code": "THINKING",
-    "reasoning": ["Analyzing input and identifying target entity..."],
-    "timestamp": "2025-11-12T09:00:00Z",
-    "is_final": false
-  }
-}
-```
-
-
-#### Event 2 — Task Accepted
-
-```json
-{
-  "success": true,
-  "code": "TASK_ACCEPTED",
-  "message": "Task accepted and queued.",
-  "data": {
-    "task_id": "<task-id>",
-    "agent": "sg_visualization",
-    "stage": "executing",
-    "code": "TASK_ACCEPTED",
-    "timestamp": "2025-11-12T09:00:10Z",
-    "is_final": true
-  },
-  "metadata": {
-    "timestamp": "2025-11-12T09:00:10Z"
-  },
-  "errors": null
-}
-```
-
-
-#### Stream End
-
-```
-event: end
-data: [DONE]
-```
-
-
-### Example Response (Non-Streaming)
-
-```json
-{
-  "success": true,
-  "code": "TASK_ACCEPTED",
-  "message": "Task accepted and queued for execution.",
-  "data": {
-    "task_id": "<task-id>",
-    "agent": "sg_visualization",
-    "stage": "executing",
-    "code": "TASK_ACCEPTED",
-    "progress": 0,
-    "timestamp": "2025-11-12T09:00:10Z",
-    "is_final": true
-  },
-  "metadata": {
-    "agent": "sg_visualization",
-    "timestamp": "2025-11-12T09:00:10Z"
-  },
-  "errors": null
-}
-```
-
-
-## Status Endpoint
-
-
-### Request
-
-```bash
-curl -X POST https://agent.supplygraph.ai/api/v1/agents/sg_visualization/run
-  -H "Authorization: Bearer <YOUR_API_KEY>"
-  -H "Content-Type: application/json"
-  -d '{
-        "mode": "status",
-        "task_id": "<task-id>"
-      }'
-```
-
-
-### Example Response
-
-```json
-{
-  "success": true,
-  "code": "TASK_RUNNING",
-  "data": {
-    "task_id": "<task-id>",
-    "agent": "sg_visualization",
-    "stage": "running",
-    "progress": 65.5
-  }
-}
-```
-
-
-## Results Endpoint
-
-
-### Request
-
-```bash
-curl -X POST https://agent.supplygraph.ai/api/v1/agents/sg_visualization/run
-  -H "Authorization: Bearer <YOUR_API_KEY>"
-  -H "Content-Type: application/json"
-  -d '{
-        "mode": "results",
-        "task_id": "<task-id>"
-      }'
-```
-
-
-### Example Response
-
-```json
-{
-  "success": true,
-  "code": "TASK_COMPLETED",
-  "data": {
-    "task_id": "<task-id>",
-    "agent": "sg_visualization",
-    "progress": 100,
-    "content": "## Generated multi-tier supply graph output"
-  },
-  "metadata": {
-    "credits_used": 10
-  }
-}
-```
-
-
-## Make Your First A2A Call
-
-Typical workflow:
-
-1. Start the task with `mode=run`
-2. Follow reasoning (if streaming is enabled)
-3. Poll using `mode=status`
-4. Retrieve the final output via `mode=results`
-
-
-## Integration Options
-
-
-### Protocols
-
-| Protocol | Description | Docs |
-|------|------|------|
-| **A2A (Agent-to-Agent)** | Autonomous workflow integration standard | [A2A Protocol](../a2a.md) |
-| **MCP (Multi-Channel Protocol)** | Enterprise orchestration layer | *(Coming Soon)* |
-
-
-### Developer Interfaces
-
-| Interface | Description | Docs |
-|------|------|------|
-| **Python SDK (A2A Client)** | Official wrapper for rapid integration | https://github.com/SupplyGraphAI/supplygraphai_a2a_sdk |
-
-
-## Error Handling & Rate Limits
-
-
-### Common Error Codes
-
-| Code | Description |
-|------|--------------|
-| UNAUTHORIZED | Missing or expired API key |
-| INSUFFICIENT_CREDITS | Not enough credits |
-| RATE_LIMITED | Too many requests |
-| INVALID_REQUEST | Input outside agent’s scope |
-
-
-### Stage-Specific Codes
-
-```
-interpreting:
-  INTERPRETING
-  INVALID_REQUEST
-  UNAUTHORIZED
-  WAITING_USER
-
-executing:
-  TASK_ACCEPTED
-  TASK_RUNNING
-
-completed:
-  TASK_COMPLETED
-  TASK_FAILED
-
-cancelled:
-  TASK_CANCELLED
-```
-
+Common codes → [Agent API §10](../agent-api/agent-api.md#10-error--status-codes).
 
 Maintainer: info@supplygraph.ai  
 License: Proprietary / Internal  
-© 2025 SupplyGraph AI. All rights reserved.
+© 2025–2026 SupplyGraph AI. All rights reserved.
