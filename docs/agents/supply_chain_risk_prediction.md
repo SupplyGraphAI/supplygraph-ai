@@ -1,20 +1,20 @@
-# Supply Chain Risk Prediction Agent
+# Supply Chain Risk Prediction Agents
 
 ## Overview
 
-The **Supply Chain Risk Prediction Agent** continuously monitors global supply chain risk events and evaluates whether, how, and to what extent those events may affect a target company.
+**Supply Chain Risk Prediction** continuously monitors global supply chain risk events and evaluates whether, how, and to what extent those events may affect a target company.
 
 It transforms fragmented global signals into **structured, auditable, and continuously updated enterprise risk warnings**, enabling users to understand event relevance, propagation logic, risk severity, impacted nodes, estimated timing, and recommended actions.
 
-The agent supports three interpretation roles (via optional `role` on `mode=result`):
+The capability is exposed as **three separate A2A agents and MCP tools** — one per audience. All three share the same input schema, pricing, and multi-turn workflow; output structure is the same, but interpretation emphasis differs by agent:
 
-| Role | Audience |
-|------|----------|
-| `ceo` | Corporate executives — enterprise exposure, business impact, severity, timing |
-| `hedgefund` | Hedge fund managers — operational impact, financial relevance, market signals |
-| `riskexpert` | Supply chain risk professionals — nodes, paths, mechanisms, mitigation |
+| Audience | `agent_id` / MCP tool | Focus |
+|----------|----------------------|-------|
+| Corporate executives | `risk_propagation_detail_ceo` | Enterprise exposure, business impact, severity, timing |
+| Hedge fund managers | `risk_propagation_detail_hedgefund` | Operational impact, financial relevance, market signals |
+| Supply chain risk professionals | `risk_propagation_detail_riskexpert` | Nodes, paths, mechanisms, mitigation |
 
-Each role receives the same underlying risk intelligence with adapted presentation.
+Choose the agent that matches your audience — **do not pass a separate `role` parameter**.
 
 
 ## Pain
@@ -34,7 +34,7 @@ Traditional monitoring tools detect global events but usually cannot explain how
 
 ## Breakthrough
 
-The Supply Chain Risk Prediction Agent extends event monitoring into **company-specific, multi-tier supply chain risk propagation analysis**.
+Supply Chain Risk Prediction extends event monitoring into **company-specific, multi-tier supply chain risk propagation analysis**.
 
 Behind the scenes, it:
 
@@ -62,15 +62,15 @@ Powered by:
 SupplyGraph AI connects global risk events to company-specific exposure — suitable for executives, investors, risk professionals, procurement teams, and enterprise risk management.
 
 
-## Try the Supply Chain Risk Prediction Agent (Live Chatbot)
+## Try the Supply Chain Risk Prediction Agents (Live Chatbot)
 
-Three role-specific chatbot demos share the same agent API; each preview adapts output emphasis to the role:
+Each role has its own chatbot demo and API endpoint:
 
 | Role | Chatbot |
 |------|---------|
-| Corporate Executives (`ceo`) | https://supplygraph.ai/zk_chat_os/agentic/dialog.html?name=risk_propagation_detail_ceo |
-| Hedge Fund Managers (`hedgefund`) | https://supplygraph.ai/zk_chat_os/agentic/dialog.html?name=risk_propagation_detail_hedgefund |
-| Supply Chain Risk Professionals (`riskexpert`) | https://supplygraph.ai/zk_chat_os/agentic/dialog.html?name=risk_propagation_detail_riskexpert |
+| Corporate Executives | https://supplygraph.ai/zk_chat_os/agentic/dialog.html?name=risk_propagation_detail_ceo |
+| Hedge Fund Managers | https://supplygraph.ai/zk_chat_os/agentic/dialog.html?name=risk_propagation_detail_hedgefund |
+| Supply Chain Risk Professionals | https://supplygraph.ai/zk_chat_os/agentic/dialog.html?name=risk_propagation_detail_riskexpert |
 
 To use a chatbot or API:
 
@@ -83,7 +83,7 @@ Credits are deducted the same way as API / A2A usage. Everything you experience 
 
 ## Sandbox Key Support (for Development)
 
-This agent supports **Sandbox API Keys** — test integrations without consuming credits.
+These agents support **Sandbox API Keys** — test integrations without consuming credits.
 
 When using a Sandbox Key:
 
@@ -102,11 +102,25 @@ See [Getting Started → API Keys](../getting-started.md#3-generate-an-a2amcp-ke
 
 ## Input Requirements
 
-`agent_id`: `supply_chain_risk_prediction` · MCP tool: `supply_chain_risk_prediction`
+### Public agent IDs
 
-**Important:** This agent uses `mode=result` (not `results`) to retrieve output.
+| Audience | A2A / Agent API `agent_id` | MCP tool |
+|----------|---------------------------|----------|
+| Corporate executives | `risk_propagation_detail_ceo` | `risk_propagation_detail_ceo` |
+| Hedge fund managers | `risk_propagation_detail_hedgefund` | `risk_propagation_detail_hedgefund` |
+| Supply chain risk professionals | `risk_propagation_detail_riskexpert` | `risk_propagation_detail_riskexpert` |
+
+**Important:** These agents use `mode=result` (not `results`) to retrieve output.
 
 Supported top-level modes: `run` · `status` · `result`
+
+Manifest (per agent):
+
+- `GET /api/v1/agents/risk_propagation_detail_ceo/manifest`
+- `GET /api/v1/agents/risk_propagation_detail_hedgefund/manifest`
+- `GET /api/v1/agents/risk_propagation_detail_riskexpert/manifest`
+
+See [Agent API §3](../agent-api/agent-api.md#3-manifest).
 
 ### A2A & Agent API
 
@@ -121,7 +135,8 @@ text = json.dumps({"event_info": event_info})
 | `text` | Yes | JSON string containing `event_info` (see below) |
 | `mode` | No | `run` (default), `status`, or `result` |
 | `task_id` | Conditional | Required when continuing after `WAITING_USER`, or for `status` / `result` |
-| `role` | No | On `mode=result` only: `ceo` \| `hedgefund` \| `riskexpert` |
+
+Replace `{agent_id}` in URLs with the agent ID from the table above.
 
 ### MCP
 
@@ -130,9 +145,7 @@ MCP does **not** use multi-turn company confirmation. Resolve `pid` first, then 
 | Step | MCP tool | Input |
 |------|----------|-------|
 | 1 | `search_company_candidates` | `text` → `candidates[].pid` |
-| 2 | `supply_chain_risk_prediction` | `pid` + `event_info` (no `company_name`) |
-
-Full schema → `GET /api/v1/agents/supply_chain_risk_prediction/manifest` ([Agent API §3](../agent-api/agent-api.md#3-manifest)).
+| 2 | `risk_propagation_detail_ceo` / `_hedgefund` / `_riskexpert` | `pid` + `event_info` (no `company_name`) |
 
 ### Analysis mode (`event_info.analysis_mode`)
 
@@ -191,6 +204,8 @@ Fee is charged only after the user confirms the matched company (`confirm_compan
 
 On success, `mode=result` returns structured assessment data in `data.content` (A2A) or the result payload (Agent API). Intermediate states return `content` as a **string** (Markdown).
 
+The JSON schema is identical across all three agents; narrative emphasis (executive vs. investment vs. operational) is determined by which agent you invoked.
+
 **Top-level result structure (abbreviated):**
 
 ```json
@@ -236,14 +251,12 @@ On success, `mode=result` returns structured assessment data in `data.content` (
 | `node_assessment_list` | Per-node evaluation records |
 | `dossier_paragraph_list` | Structured dossier paragraphs (`paragraph_title`, `paragraph_text`, `is_key_conclusion`, etc.) |
 
-Optional `role` on `mode=result` adapts interpretation emphasis without changing underlying data.
-
 
 ## Sample Response (Sandbox)
 
 > Sandbox returns static sample assessment data with the **same structure** as Production.
 
-**Success — `mode=result`:**
+**Success — `mode=result` (example: `risk_propagation_detail_ceo`):**
 
 ```json
 {
@@ -251,7 +264,7 @@ Optional `role` on `mode=result` adapts interpretation emphasis without changing
   "code": "TASK_COMPLETED",
   "data": {
     "task_id": "<task-id>",
-    "agent": "supply_chain_risk_prediction",
+    "agent": "risk_propagation_detail_ceo",
     "content": {
       "success": true,
       "task_id": "<task-id>",
@@ -292,10 +305,12 @@ Optional `role` on `mode=result` adapts interpretation emphasis without changing
 
 > **A2A and Agent API only.** MCP passes `pid` directly — no company confirmation turn.
 
+Examples below use `risk_propagation_detail_ceo`. Substitute `risk_propagation_detail_hedgefund` or `risk_propagation_detail_riskexpert` for other audiences.
+
 **Turn 1 — submit event with company name:**
 
 ```bash
-curl -X POST "https://agent.supplygraph.ai/api/v1/agents/supply_chain_risk_prediction/run" \
+curl -X POST "https://agent.supplygraph.ai/api/v1/agents/risk_propagation_detail_ceo/run" \
   -H "Authorization: Bearer <YOUR_API_KEY>" \
   -H "Content-Type: application/json" \
   -d '{
@@ -322,7 +337,7 @@ Poll until `WAITING_USER`. Example content:
 **Turn 2 — confirm company (same `task_id`, resend full `event_info` + confirmation):**
 
 ```bash
-curl -X POST "https://agent.supplygraph.ai/api/v1/agents/supply_chain_risk_prediction/run" \
+curl -X POST "https://agent.supplygraph.ai/api/v1/agents/risk_propagation_detail_ceo/run" \
   -H "Authorization: Bearer <YOUR_API_KEY>" \
   -H "Content-Type: application/json" \
   -d '{
@@ -341,10 +356,10 @@ curl -X POST "https://agent.supplygraph.ai/api/v1/agents/supply_chain_risk_predi
 Retrieve results:
 
 ```bash
-curl -X POST "https://agent.supplygraph.ai/api/v1/agents/supply_chain_risk_prediction/run" \
+curl -X POST "https://agent.supplygraph.ai/api/v1/agents/risk_propagation_detail_ceo/run" \
   -H "Authorization: Bearer <YOUR_API_KEY>" \
   -H "Content-Type: application/json" \
-  -d '{"mode": "result", "task_id": "<task-id>", "role": "ceo", "stream": false}'
+  -d '{"mode": "result", "task_id": "<task-id>", "stream": false}'
 ```
 
 See [Agent API §8](../agent-api/agent-api.md#8-multi-turn-waiting_user) for the general multi-turn pattern.
@@ -369,9 +384,9 @@ See [Agent API §8](../agent-api/agent-api.md#8-multi-turn-waiting_user) for the
 }
 ```
 
-### Step 2 — `supply_chain_risk_prediction`
+### Step 2 — role-specific risk prediction tool
 
-Pass `pid` and `event_info` **without** `company_name`:
+Pass `pid` and `event_info` **without** `company_name`. Example for the executive agent:
 
 ```python
 event_info = {
@@ -383,7 +398,7 @@ event_info = {
 }
 
 await session.experimental.call_tool_as_task(
-    "supply_chain_risk_prediction",
+    "risk_propagation_detail_ceo",
     {
         "pid": "a77828f060c866441f2403384b271e63",
         "event_info": event_info,
@@ -391,14 +406,16 @@ await session.experimental.call_tool_as_task(
 )
 ```
 
+Use `risk_propagation_detail_hedgefund` or `risk_propagation_detail_riskexpert` for the other audiences.
+
 
 ## Integration
 
-| Method | ID / Tool | Documentation |
-|--------|-----------|---------------|
-| **A2A** | `supply_chain_risk_prediction` | [a2a.md](../a2a_mcp/a2a.md) |
-| **MCP** | `search_company_candidates` + `supply_chain_risk_prediction` | [mcp.md](../a2a_mcp/mcp.md) |
-| **Agent API** | `supply_chain_risk_prediction` | [agent-api.md](../agent-api/agent-api.md) |
+| Method | Agent IDs / Tools | Documentation |
+|--------|-------------------|---------------|
+| **A2A** | `risk_propagation_detail_ceo` · `risk_propagation_detail_hedgefund` · `risk_propagation_detail_riskexpert` | [a2a.md](../a2a_mcp/a2a.md) |
+| **MCP** | `search_company_candidates` + one of the three role tools above | [mcp.md](../a2a_mcp/mcp.md) |
+| **Agent API** | Same three `agent_id` values | [agent-api.md](../agent-api/agent-api.md) |
 
 Uses `mode=result` (not `results`). Quick examples: [A2A / MCP](../a2a_mcp/quick_example.md) · [Agent API](../agent-api/quick_example.md)
 
