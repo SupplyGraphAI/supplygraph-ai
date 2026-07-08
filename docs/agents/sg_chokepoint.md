@@ -103,245 +103,33 @@ Suitable for:
 Production Keys are required for real, dynamic computations.
 
 For more information, see  
-[Getting Started Guide → API Keys](https://github.com/SupplyGraphAI/supplygraph-ai/blob/main/docs/getting-started.md#3-generate-an-a2amcp-key).
+[Getting Started Guide → API Keys](../getting-started.md#3-generate-an-a2amcp-key).
 
 
-## API Overview
+## Input Requirements
 
-This section is intended for developers integrating the agent programmatically via the **SupplyGraph A2A (Agent-to-Agent) protocol**.
+`agent_id`: `sg_chokepoint` · MCP tool: `sg_chokepoint`
 
+| Field | Required | Description |
+|-------|----------|-------------|
+| `text` | Yes | Target company name for geographic concentration analysis |
 
-## Endpoints Summary
+**Example:** "Analyze geographic concentration risk for Tesla, Inc."
 
-| Endpoint | Method | Description |
-|---------|--------|-------------|
-| `/api/v1/agents/sg_chokepoint/manifest` | GET | Retrieve metadata, schema, pricing, and version info |
-| `/api/v1/agents/sg_chokepoint/run` | POST | Start task or manage execution via mode |
+## Integration
 
+| Method | ID / Tool | Documentation |
+|--------|-----------|---------------|
+| **A2A** | `sg_chokepoint` | [a2a.md](../a2a_mcp/a2a.md) |
+| **MCP** | `sg_chokepoint` | [mcp.md](../a2a_mcp/mcp.md) |
+| **Agent API** | `sg_chokepoint` | [agent-api.md](../agent-api/agent-api.md) |
 
-**Supported modes:**
+Quick examples: [A2A / MCP](../a2a_mcp/quick_example.md) · [Agent API](../agent-api/quick_example.md)
 
-- `mode=run` — Start a new task (default, supports streaming)
-- `mode=status` — Check task progress (non-streaming)
-- `mode=results` — Retrieve final output (non-streaming)
+## Errors
 
-
-## Manifest
-
-### Purpose
-
-The manifest exposes information about the agent, including:
-
-- Version
-- Accepted input schema
-- Output structure
-- Pricing model
-- Capability description
-
-
-### Request
-
-```bash
-curl -X GET https://agent.supplygraph.ai/api/v1/agents/sg_chokepoint/manifest
-  -H "Authorization: Bearer <YOUR_API_KEY>"
-```
-
-
-### Example Response
-
-```json
-{
-  "agent_id": "sg_chokepoint",
-  "name": "Geographic Concentration Analysis Agent",
-  "version": "1.0.0",
-  "description": "Performs geographic concentration analysis on enterprise supply chains",
-  "input_schema": { ... },
-  "output_schema": { ... },
-  "pricing": { "unit": "credits", "per_run": 10 },
-  "status": "active"
-}
-```
-
-
-## Run Endpoint
-
-### Purpose
-
-Start a new analysis task with this agent.  
-Supports both **streaming** (`stream=true`) and **non-streaming** (`stream=false`) execution.
-
-### Request
-
-```bash
-curl -X POST https://agent.supplygraph.ai/api/v1/agents/sg_chokepoint/run
-  -H "Authorization: Bearer <YOUR_API_KEY>"
-  -H "Content-Type: application/json"
-  -d '{"text":"{{company_name}}","stream":true}'
-```
-
-
-### Example Response (Streaming)
-
-| Event | Stage | Code | Description |
-|------|------|------|-------------|
-| stream | interpreting | THINKING | Input analysis and reasoning |
-| stream | executing | TASK_ACCEPTED | Task accepted and queued |
-| end | — | — | Stream completed |
-
-
-### Example Event: Interpreting (THINKING)
-
-```json
-{
-  "event": "stream",
-  "data": {
-    "task_id": "<task-id>",
-    "agent": "sg_chokepoint",
-    "stage": "interpreting",
-    "code": "THINKING",
-    "reasoning": ["Analyzing input..."],
-    "timestamp": "2025-11-12T09:00:00Z",
-    "is_final": false
-  }
-}
-```
-
-
-### Example Event: TASK_ACCEPTED
-
-```json
-{
-  "success": true,
-  "code": "TASK_ACCEPTED",
-  "message": "Task accepted and queued.",
-  "data": {
-    "task_id": "<task-id>",
-    "agent": "sg_chokepoint",
-    "stage": "executing",
-    "timestamp": "2025-11-12T09:00:10Z",
-    "is_final": true
-  }
-}
-```
-
-
-## Status Endpoint
-
-### Purpose
-
-Check the processing status of an existing task.
-
-### Request
-
-```bash
-curl -X POST https://agent.supplygraph.ai/api/v1/agents/sg_chokepoint/run
-  -H "Authorization: Bearer <YOUR_API_KEY>"
-  -H "Content-Type: application/json"
-  -d '{"mode":"status","task_id":"<task-id>"}'
-```
-
-
-### Example Response
-
-```json
-{
-  "success": true,
-  "code": "TASK_RUNNING",
-  "data": {
-    "task_id": "<task-id>",
-    "stage": "running",
-    "progress": 65.5
-  }
-}
-```
-
-
-## Results Endpoint
-
-### Purpose
-
-Retrieve the final output of a completed task.
-
-### Request
-
-```bash
-curl -X POST https://agent.supplygraph.ai/api/v1/agents/sg_chokepoint/run
-  -H "Authorization: Bearer <YOUR_API_KEY>"
-  -H "Content-Type: application/json"
-  -d '{"mode":"results","task_id":"<task-id>"}'
-```
-
-
-### Example Response
-
-```json
-{
-  "success": true,
-  "code": "TASK_COMPLETED",
-  "data": {
-    "task_id": "<task-id>",
-    "agent": "sg_chokepoint",
-    "progress": 100,
-    "content": "## Concentration Analysis Report ..."
-  },
-  "metadata": {
-    "credits_used": 10
-  }
-}
-```
-
-
-## Integration Options
-
-### Protocols
-
-| Protocol | Description | Docs |
-|------|------|------|
-| **A2A (Agent-to-Agent)** | Standard interface for autonomous agent workflows | [A2A Protocol](../a2a.md) |
-| **MCP (Multi-Channel Protocol)** | Enterprise orchestration layer | *(Coming Soon)* |
-
-
-### Developer Interfaces
-
-| Interface | Description | Docs |
-|------|------|------|
-| **Python SDK (A2A Client)** | Official wrapper for rapid A2A integration | https://github.com/SupplyGraphAI/supplygraphai_a2a_sdk |
-
-
-## Error Handling & Status Codes
-
-### Common Errors
-
-| Code | Description |
-|------|-------------|
-| UNAUTHORIZED | Invalid or missing API key |
-| INSUFFICIENT_CREDITS | Not enough credits |
-| RATE_LIMITED | Too many requests |
-| INVALID_REQUEST | Input outside agent scope |
-
-
-### Stage-Specific Codes
-
-```
-interpreting:
-  INTERPRETING
-  INVALID_REQUEST
-  UNAUTHORIZED
-  WAITING_USER
-
-executing:
-  TASK_ACCEPTED
-  TASK_RUNNING
-
-completed:
-  TASK_COMPLETED
-  TASK_FAILED
-
-cancelled:
-  TASK_CANCELLED
-```
-
+Common codes → [Agent API §10](../agent-api/agent-api.md#10-error--status-codes).
 
 Maintainer: info@supplygraph.ai  
 License: Proprietary / Internal  
-© 2025 SupplyGraph AI. All rights reserved.
+© 2025–2026 SupplyGraph AI. All rights reserved.
