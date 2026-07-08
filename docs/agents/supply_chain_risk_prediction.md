@@ -281,118 +281,13 @@ The `result` response include:
 * Impact graph data for visualization
 * Analysis dossier text and structured dossier paragraphs
 
-# API Overview
+## Input Requirements
 
-This section provides an overview of the **A2A (Agent-to-Agent)** interface used to integrate this agent into other systems.
+`agent_id`: `supply_chain_risk_prediction` · MCP tool: `supply_chain_risk_prediction`
 
-## Endpoints Summary
+Serialize `event_info` as JSON and pass via the `text` field: `text = json.dumps({"event_info": {...}})`.
 
-| Endpoint | Method | Description |
-|---------|--------|-------------|
-| `/api/v1/agents/supply_chain_risk_prediction/manifest` | GET | Retrieve metadata, schema, pricing, and version info |
-| `/api/v1/agents/supply_chain_risk_prediction/run` | POST | Execute or manage tasks via `mode` |
-
-Supported modes:
-
-- `run` — create or continue a company-level supply chain risk assessment task
-- `status` — check task status
-- `result` — retrieve the latest available risk assessment result
-
-## Manifest
-
-### Request
-
-```bash
-curl -X GET https://agent.supplygraph.ai/api/v1/agents/supply_chain_risk_prediction/manifest \
-  -H "Authorization: Bearer <YOUR_API_KEY>"
-```
-
-### Example Response
-
-```json
-{
-  "agent_id": "supply_chain_risk_prediction",
-  "name": "Supply Chain Risk Prediction Agent",
-  "version": "1.0.0",
-  "description": "Evaluates how a supply chain risk event may affect a target company through multi-tier supply chain propagation analysis",
-  "input_schema": { ... },
-  "output_schema": { ... },
-  "pricing": {
-    "unit": "USD",
-    "one_time_fee_per_event_per_target_company": 49999
-  },
-  "status": "active"
-}
-```
-
-## Run Endpoint
-
-### Purpose
-
-The `run` endpoint is used to submit an event analysis task for a target company.
-
-The endpoint supports two analysis modes:
-
-| Analysis Mode | Description                                                                  |
-| ------------- | ---------------------------------------------------------------------------- |
-| `normal`      | Run normal forward-looking or current event impact analysis                  |
-| `backtest`    | Run backtest analysis based on historical event or historical market context |
-
-Important: `mode` and `analysis_mode` are different fields.
-
-`mode` is a top-level request field used to control endpoint behavior: `run`, `status`, or `result`.
-
-`analysis_mode` is inside `event_info` and controls the assessment type: `normal` or `backtest`.
-
-This endpoint currently supports three event types:
-
-| Event Type        | Description                                                              |
-| ----------------- | ------------------------------------------------------------------------ |
-| `news`            | Analyze the impact of a news event on the target company                 |
-| `policy`          | Analyze the impact of a policy or regulatory event on the target company |
-| `commodity_price` | Analyze the impact of commodity price changes on the target company      |
-
-For backward compatibility with the existing A2A interface, all event analysis input must be serialized as JSON and passed through the `text` field.
-
-In other words, the client should build an `event_info` object first, then call:
-
-```python
-text = json.dumps({
-    "event_info": event_info
-})
-```
-
-If `mode` is omitted, the request is treated as `mode=run`.
-
----
-
-### Endpoint
-
-```http
-POST /api/v1/agents/supply_chain_risk_prediction/run
-```
-
----
-
-### Request Body
-
-| Field    | Type    | Required | Description                                             |
-| -------- | ------- | -------: | ------------------------------------------------------- |
-| `mode`   | string  |       No | Execution mode. Defaults to `run` if omitted            |
-| `text`   | string  |      Yes | A JSON-dumped string containing the `event_info` object |
-| `stream` | boolean |       No | Whether to enable streaming response                    |
-
-The `text` field must be a JSON string generated from the following structure:
-
-```json
-{
-  "event_info": {
-    "...": "..."
-  }
-}
-```
-
----
+Optional on `mode=result`: `role` = `ceo` | `hedgefund` | `riskexpert` for role-adapted interpretation.
 
 ## Event Info Schema
 
@@ -730,233 +625,24 @@ response = requests.post(
 )
 ```
 
-## Status Endpoint
 
-### Purpose
+## Integration
 
-Check whether the supply chain risk assessment task has completed.
+| Method | ID / Tool | Documentation |
+|--------|-----------|---------------|
+| **A2A** | `supply_chain_risk_prediction` | [a2a.md](../a2a_mcp/a2a.md) |
+| **MCP** | `supply_chain_risk_prediction` | [mcp.md](../a2a_mcp/mcp.md) |
+| **Agent API** | `supply_chain_risk_prediction` | [agent-api.md](../agent-api/agent-api.md) |
 
-For this agent, once the initial setup and assessment process is completed, the task status will remain completed.
+Quick examples: [A2A / MCP](../a2a_mcp/quick_example.md) · [Agent API](../agent-api/quick_example.md)
 
-### Request
+## Errors
 
-```bash
-curl -X POST https://agent.supplygraph.ai/api/v1/agents/supply_chain_risk_prediction/run \
-  -H "Authorization: Bearer <YOUR_API_KEY>" \
-  -H "Content-Type: application/json" \
-  -d '{
-        "mode": "status",
-        "task_id": "<task-id>"
-      }'
-```
-
-### Example Response
-
-```json
-{
-  "success": true,
-  "code": "TASK_COMPLETED",
-  "data": {
-    "task_id": "<task-id>",
-    "agent": "supply_chain_risk_prediction",
-    "stage": "completed",
-    "progress": 100
-  }
-}
-```
-
-## Result Endpoint
-
-### Purpose
-
-Retrieve the latest available supply chain risk assessment result for the activated task.
-
-The result endpoint returns company-specific risk assessment data, including event information, target company information, enterprise-level risk interpretation, impacted nodes, propagation paths, impact graph data, and analysis dossier content.
-
-Users may provide an optional `role` parameter to receive role-adapted interpretation.
-
-Supported `role` values:
-
-* `ceo` — For corporate executives. Focuses on enterprise exposure, business impact, risk severity, timing, and management actions.
-* `hedgefund` — For hedge fund managers. Focuses on company-level operational impact, financial relevance, market signals, and investment-facing implications.
-* `riskexpert` — For supply chain risk professionals. Focuses on impacted nodes, propagation paths, key nodes, key paths, risk mechanisms, and mitigation actions.
-
-If `role` is not provided, the agent returns the default enterprise risk assessment result without any role-specific interpretation.
-
-### Request
-
-```bash
-curl -X POST https://agent.supplygraph.ai/api/v1/agents/supply_chain_risk_prediction/run \
-  -H "Authorization: Bearer <YOUR_API_KEY>" \
-  -H "Content-Type: application/json" \
-  -d '{
-        "mode": "result",
-        "task_id": "<task-id>",
-        "role": "ceo"
-      }'
-```
-
-### Example Response
-
-```json
-{
-  "success": true,
-  "code": "TASK_COMPLETED",
-  "data": {
-    "success": true,
-    "task_id": "<task-id>",
-    "event": {
-      "event_id": "<event-id>",
-      "event_info": {
-        "event_date": "2026-06-22",
-        "event_type": "Supply Chain Disruption",
-        "event_summary": "A supply chain event that may affect the target company."
-      }
-    },
-    "company": {
-      "company_id": "<company-id>",
-      "company_name": "<company-name>",
-      "company_info": {
-        "industry": "<industry>",
-        "main_products": []
-      }
-    },
-    "assessment_result": {
-      "assessment_time": "2026-06-22T00:00:00Z",
-      "task_desc": "Company-level supply chain risk assessment for the target enterprise.",
-      "task_status": 2,
-      "total_node_count": 0,
-      "finished_node_count": 0,
-      "failed_node_count": 0,
-      "total_path_count": 0,
-      "key_path_count": 0,
-      "key_node_count": 0,
-      "impact_date": null,
-      "impact_end_date": null,
-      "risk_summary": "No material enterprise-level supply chain risk has been identified based on the latest available assessment.",
-      "final_interpretation": "The current assessment does not indicate a significant supply chain impact on the target company.",
-      "impact_result": {},
-      "path_risk_interpretation_list": [],
-      "impact_graph_data": {},
-      "analysis_dossier_text": "",
-      "create_time": "2026-06-22T00:00:00Z",
-      "update_time": "2026-06-22T00:00:00Z"
-    },
-    "node_assessment_list": [],
-    "dossier_paragraph_list": []
-  }
-}
-```
-
-## Response Fields
-
-### `assessment_result.impact_result`
-
-Structured enterprise-level impact analysis result.
-
-It describes the overall supply chain impact on the target company. It may include fields such as `overall_summary`, `impact_direction`, `risk_level`, `impact_date`, `impact_end_date`, `key_nodes`, `key_paths`, `top_risk_nodes`, and `management_actions`.
-
-If no material impact is identified, this field may be an empty object.
-
-### `assessment_result.path_risk_interpretation_list`
-
-List of path-level risk interpretations.
-
-Each item describes one supply chain propagation path, including whether the path is valid, whether it is a key path, the path risk level, key nodes on the path, risk transmission logic, supporting evidence, and mitigation suggestions.
-
-If no valid propagation path is identified, this field may be an empty array.
-
-### `assessment_result.impact_graph_data`
-
-Graph data for supply chain impact visualization.
-
-It is used by the frontend to render the event-to-company propagation graph. It may include `nodes`, `edges`, `paths`, and related display metadata.
-
-If no graph data is available, this field may be an empty object.
-
-### `assessment_result.analysis_dossier_text`
-
-Full analysis dossier text.
-
-It contains the narrative assessment basis, including event background, target company information, node analysis, path analysis, risk conclusion, impact explanation, and recommended actions.
-
-This field is intended for reading, export, archiving, or report generation.
-
-### `node_assessment_list`
-
-List of node-level assessment records.
-
-Each item describes one evaluated supply chain node. It may include `node_id`, `node_info`, `node_task_params`, `status`, `node_risk_trace_id`, `error_msg`, `create_time`, and `update_time`.
-
-If no nodes are evaluated, this field may be an empty array.
-
-### `dossier_paragraph_list`
-
-List of structured dossier paragraphs.
-
-Each item represents one paragraph extracted from the analysis dossier. It may include `paragraph_no`, `paragraph_title`, `paragraph_text`, `paragraph_level`, `paragraph_type`, `is_key_conclusion`, and `source_data`.
-
-This field is useful for structured display, section-level retrieval, citation, and report generation. If dossier paragraphs are not requested or unavailable, it may be an empty array.
-
-## Make Your First A2A Call
-
-Typical workflow:
-
-1. Start with `mode=run`
-2. Provide the target company and event information
-3. Confirm matched companies if prompted
-4. Retrieve the latest available risk assessment result with `mode=result`
-5. Use `mode=status` only when checking setup completion
-
-## Integration Options
-
-| Protocol | Description                     | Docs                      |
-| -------- | ------------------------------- | ------------------------- |
-| A2A      | Autonomous workflow integration | [A2A Protocol](../a2a.md) |
-| MCP      | Multi-channel orchestration     | *(Coming Soon)*           |
-
-Developer Interfaces:
-
-| Interface  | Description         | Docs                                                                                                             |
-| ---------- | ------------------- | ---------------------------------------------------------------------------------------------------------------- |
-| Python SDK | Official A2A Client | [https://github.com/SupplyGraphAI/supplygraphai_a2a_sdk](https://github.com/SupplyGraphAI/supplygraphai_a2a_sdk) |
-
-## Error Handling & Rate Limits
-
-### Common Error Codes
-
-| Code                 | Description                                     |
-| -------------------- | ----------------------------------------------- |
-| UNAUTHORIZED         | Invalid or missing API key                      |
-| INSUFFICIENT_CREDITS | Not enough balance                              |
-| RATE_LIMITED         | Too many requests                               |
-| INVALID_REQUEST      | Input outside agent scope                       |
-| WAITING_USER         | User confirmation is required before activation |
-
-### Stage-Specific Codes
-
-```text
-interpreting:
-  INTERPRETING
-  INVALID_REQUEST
-  UNAUTHORIZED
-  WAITING_USER
-
-executing:
-  TASK_ACCEPTED
-  TASK_RUNNING
-
-completed:
-  TASK_COMPLETED
-  TASK_FAILED
-
-cancelled:
-  TASK_CANCELLED
-```
+Common codes → [Agent API §10](../agent-api/agent-api.md#10-error--status-codes). Returns `WAITING_USER` before task activation. Uses `mode=result` (not `results`).
 
 Maintainer: [info@supplygraph.ai](mailto:info@supplygraph.ai)
 
 License: Proprietary / Internal
 
-© 2025 SupplyGraph AI. All rights reserved.
+© 2025–2026 SupplyGraph AI. All rights reserved.
 
