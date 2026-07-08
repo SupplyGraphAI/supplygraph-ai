@@ -1,8 +1,8 @@
 # Getting Started
 
-Welcome to the **SupplyGraph AI Developer Platform** — the gateway to accessing autonomous supply-chain intelligence through our A2A/MCP interfaces.
+Welcome to the **SupplyGraph AI Developer Platform** — the gateway to accessing autonomous supply-chain intelligence through A2A, MCP, or Agent API.
 
-This guide walks you through the essentials: creating an account, managing credits, generating an API key, and making your first request.
+This guide walks you through the essentials: creating an account, managing credits, generating an API key, and choosing an integration path.
 
 
 
@@ -12,7 +12,7 @@ This guide walks you through the essentials: creating an account, managing credi
    If an invitation code is required, please contact us at info@supplygraph.ai.
 3. Verify your email address and sign in to the dashboard to begin.
 
-Once signed in, you’ll have access to:
+Once signed in, you'll have access to:
 - Account and billing settings  
 - A2A/MCP key management  
 - Usage analytics and credit balance  
@@ -21,7 +21,7 @@ Once signed in, you’ll have access to:
 
 ## 2. Recharge Credits
 SupplyGraph AI uses a **credit-based pay-as-you-go** model.  
-Each A2A or MCP request deducts a small number of credits, depending on the agent used.
+Each agent invocation deducts credits depending on the agent used.
 
 1. Navigate to **Billing → Recharge** in the dashboard.  
 2. Choose your preferred payment method.  
@@ -32,13 +32,13 @@ Each A2A or MCP request deducts a small number of credits, depending on the agen
 
 
 ## 3. Generate an A2A/MCP Key
-All A2A and MCP integrations require authentication via an API key.
+All integrations require authentication via an API key.
 
 1. Go to **Developer Settings → A2A/MCP Keys**  
 2. Click **Create New Key**  
 3. Copy your key and store it securely  
 
-⚠️ A2A/MCP keys are personal credentials.  
+⚠️ API keys are personal credentials.  
 - Never expose them in client-side code or public repositories.  
 - Rotate them regularly through the dashboard.
 
@@ -101,91 +101,33 @@ These allow developers to:
 
 
 
-## 4. Make Your First A2A Call
-SupplyGraph AI follows a task-based A2A architecture:  
-**run → status → results**.  
-The same endpoint is used for all stages, controlled by the `mode` field.
+## 4. Choose Your Integration
 
-Below is a minimal example using the **Tariff classification Agent**:
+SupplyGraph AI exposes three integration surfaces. Pick the one that matches your client stack:
 
-### Step 1: Submit the Initial Request
-**Purpose:** Start a new task by providing a product description.
-```bash
-curl -X POST https://agent.supplygraph.ai/api/v1/agents/tariff_classification/run \
-  -H "Authorization: Bearer <YOUR_API_KEY>" \
-  -H "Content-Type: application/json" \
-  -d '{"text":"Cotton T-shirts for women, 100% cotton, made in Mexico", "stream": true}'
+| Integration | Endpoint | Best for | Documentation |
+|-------------|----------|----------|---------------|
+| **A2A** (recommended) | `https://agent.supplygraph.ai/a2a` | Agent orchestrators, A2A-native clients | [A2A Protocol](./a2a_mcp/a2a.md) · [Quick Example](./a2a_mcp/quick_example.md) |
+| **MCP** (recommended) | `https://mcp.supplygraph.ai/mcp` | Cursor, Claude Desktop, MCP-native IDEs | [MCP Protocol](./a2a_mcp/mcp.md) · [Quick Example](./a2a_mcp/quick_example.md) |
+| **Agent API** | `https://agent.supplygraph.ai/api/v1/agents/{agent_id}/run` | Traditional REST (`run` / `status` / `results`) | [Agent API](./agent-api/agent-api.md) · [Quick Example](./agent-api/quick_example.md) |
+
+All three use the same API key: `Authorization: Bearer {api_key}`.
+
+For a detailed comparison and SDK options, see the [Integration Guide](./a2a_mcp/integration.md).
+
+### Resource Discovery (ARD)
+
+Broader resource discovery (agents, MCP tools, documentation links) is published via **Agent Resource Discovery (ARD)**:
+
+```
+https://supplygraph.ai/.well-known/ai-catalog.json
 ```
 
-**Example Response:**
-```
-data: {"event": "stream", "data": {"task_id": "<system-generated-task-id>", "agent": "tariff_classification", "stage": "interpreting", "code": "THINKING", "progress": 0, "reasoning": ["Attempting to extract the HTS code and country of origin from the input text."], "timestamp": "2025-11-10T09:51:58.457382+00:00", "is_final": false}}
-
-data: {"event": "stream", "data": {"task_id": "<system-generated-task-id>", "agent": "tariff_classification", "stage": "interpreting", "code": "THINKING", "progress": 0, "reasoning": ["Matched 20 related HTS codes. Assessing their relevance and matching accuracy."], "timestamp": "2025-11-10T09:52:06.518056+00:00", "is_final": false}}
-
-data: {"event": "stream", "data": {"task_id": "<system-generated-task-id>", "agent": "tariff_classification", "stage": "interpreting", "code": "THINKING", "progress": 0, "reasoning": ["Processing in progress — please hang tight."], "timestamp": "2025-11-10T09:52:14.077191+00:00", "is_final": false}}
-
-data: {"success": true, "code": "TASK_ACCEPTED", "message": "Task accepted and queued for execution.", "data": {"task_id": "<system-generated-task-id>", "agent": "tariff_classification", "stage": "executing", "code": "TASK_ACCEPTED", "progress": 0, "reasoning": [], "timestamp": "2025-11-10T09:52:34.557890+00:00", "is_final": true, "content": "task accepted"}, "metadata": {"agent": "tariff_classification", "timestamp": "2025-11-10T09:52:34.557922+00:00"}, "errors": null}
-
-event: end
-data: [DONE]
-```
-> This is a streaming example for visibility into the agent’s thinking process.
-> For a non-streaming version, simply set `"stream": false`.
-
-### Step 2: Check Task Status
-**Purpose:** Query the current status of the task using the same `task_id`.
-```bash
-curl -N -X POST https://agent.supplygraph.ai/api/v1/agents/tariff_classification/run \
-     -H "Content-Type: application/json" \
-     -H "Authorization: Bearer <YOUR_API_KEY>" \
-     -d '{"stream": true, "task_id": "<system-generated-task-id>", "mode": "status"}'
-```
-
-**Example Response:**
-```text
-data: {"success": true, "code": "TASK_COMPLETED", "message": "Task completed successfully.", "data": {"task_id": "<system-generated-task-id>", "agent": "tariff_classification", "stage": "completed", "code": "TASK_COMPLETED", "progress": 100, "reasoning": [], "timestamp": "2025-11-10T10:03:50.442559+00:00", "is_final": true, "content": ""}, "metadata": {"agent": "tariff_classification", "timestamp": "2025-11-10T10:03:50.442601+00:00", "credits_used": 0.0}, "errors": null}
-
-event: end
-data: [DONE]
-```
-
-### Step 3: Retrieve the Final Results
-**Purpose:** Once the task is complete, request the final content.
-```bash
-curl -N -X POST https://agent.supplygraph.ai/api/v1/agents/tariff_classification/run \
-     -H "Content-Type: application/json" \
-     -H "Authorization: Bearer <YOUR_API_KEY>" \
-     -d '{"stream": true, "task_id": "<system-generated-task-id>", "mode": "results"}'
-```
-
-**Example Response:**
-```text
-data: {"success": true, "code": "TASK_COMPLETED", "message": "Task completed successfully.", "data": {"task_id": "<system-generated-task-id>", "agent": "tariff_classification", "stage": "completed", "code": "TASK_COMPLETED", "progress": 100, "reasoning": [], "timestamp": "2025-11-10T10:04:49.748779+00:00", "is_final": true, "content": "##Best match:\nHTS code: 6109.10.00.40\n\n##Other possible HTS codes include:\n-6109.10.00.70: This code is for 'T-shirts, singlets, tank tops and similar garments, knitted or crocheted > Of cotton > Women's or girls' > Other > Other'. While the primary description is for T-shirts, this code could apply if the T-shirts have features that do not fit the more specific T-shirt category, but it is less likely given the straightforward description.\n-6114.20.00.10: This code is for 'Other garments, knitted or crocheted > Of cotton > Tops > Women's or girls''. While the product is specifically a T-shirt, this code could be considered if the T-shirts are categorized more broadly as tops, but it is less specific than the primary code."}, "metadata": {"agent": "tariff_classification", "timestamp": "2025-11-10T10:04:49.748823+00:00", "credits_used": 10}, "errors": null}
-
-event: end
-data: [DONE]
-```
-
-
-## 5. Integration Options
-### Protocols
-
-| Protocol | Description | Docs |
-|------|------|------|
-| **A2A (Agent-to-Agent)** | Native protocol for autonomous agent workflows and communication | [A2A Protocol](./a2a.md) |
-| **MCP (Multi-Channel Protocol)** | Next-generation orchestration protocol for enterprise and multi-system environments | *(Coming Soon)* |
-
-### Developer Interfaces
-
-| Interface | Description | Docs |
-|------|------|------|
-| **Python SDK (A2A Client)** | Official Python wrapper built on top of the A2A protocol for rapid integration | [supplygraphai_a2a_sdk](https://github.com/SupplyGraphAI/supplygraphai_a2a_sdk) |
+See [A2A Protocol § ARD](./a2a_mcp/a2a.md) for details.
 
 
 
-
-## 6. Error Handling & Rate Limits
+## 5. Error Handling & Rate Limits
 
 All responses include a unified status field and optional `credits_used` key.  
 Common errors:
@@ -195,37 +137,29 @@ Common errors:
 | `UNAUTHORIZED` | API key missing or expired |
 | `INSUFFICIENT_CREDITS` | Not enough credits for this request |
 | `RATE_LIMITED` | Too many requests — try again later |
-| `INVALID_REQUEST` | Request is outside the current agent’s scope |
+| `INVALID_REQUEST` | Request is outside the current agent's scope |
+
+Protocol-specific error handling: [A2A](./a2a_mcp/a2a.md) · [MCP](./a2a_mcp/mcp.md) · [Agent API](./agent-api/agent-api.md)
 
 
-## 7. Next Steps
+## 6. Next Steps
 
 - Explore the available [AI Agents](../README.md#two-groups-of-ai-agents)  
-- Learn about [Agent-to-Agent Integration](./a2a.md)  
+- Run a quick example: [A2A / MCP](./a2a_mcp/quick_example.md) or [Agent API](./agent-api/quick_example.md)  
+- Read the [Integration Guide](./a2a_mcp/integration.md) to choose the right protocol
 
 
-## 8. Related Documentation
-Explore more about the SupplyGraph AI ecosystem:
+## 7. Related Documentation
 
-📘 **Getting Started Guide**  
-  https://github.com/SupplyGraphAI/supplygraph-ai/blob/main/docs/getting-started.md
-
-🤖 **Agent Specifications & Library**  
-  https://github.com/SupplyGraphAI/supplygraph-ai/tree/main/docs/agents
-
-🧠 **SupplyGraph AI Documentation Hub**  
-  https://github.com/SupplyGraphAI/supplygraph-ai
-
-📦 **Python A2A SDK (Official Repository)**  
-  https://github.com/SupplyGraphAI/supplygraphai_a2a_sdk
-
-🌐 **Official Website & Use Cases**  
-  https://www.supplygraph.ai
-
-📄 **Future Protocols & Enterprise Specifications** *(Coming Soon)*  
-  MCP, multi-agent orchestration & deployment whitepapers
+| Resource | Link |
+|----------|------|
+| Live Docs (GitHub Pages) | https://supplygraphai.github.io/supplygraph-ai/ |
+| Agent Library | https://supplygraphai.github.io/supplygraph-ai/agents/ |
+| ARD Catalog | https://supplygraph.ai/.well-known/ai-catalog.json |
+| Client SDKs | [a2a-sdk](https://pypi.org/project/a2a-sdk/) · [mcp](https://pypi.org/project/mcp/) · [supplygraphai_a2a_sdk](https://github.com/SupplyGraphAI/supplygraphai_a2a_sdk) (Agent API, optional) |
+| Official Website | https://www.supplygraph.ai |
 
 
 <p align="center">
-  © 2025 <b>SupplyGraph AI, Inc.</b> All rights reserved.
+  © 2025–2026 <b>SupplyGraph AI, Inc.</b> All rights reserved.
 </p>
