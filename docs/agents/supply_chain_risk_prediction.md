@@ -871,45 +871,19 @@ Optional query parameters: `historyLength`, `contextId` (see [a2a.md §5.3](../a
           "data": {
             "success": true,
             "task_id": "<task-id>",
-            "event": {
-              "event_id": "<event-id>",
-              "event_info": {
-                "event_date": "2026-06-22",
-                "event_type": "Supply Chain Disruption",
-                "event_summary": "A supply chain event that may affect the target company."
-              }
-            },
-            "company": {
-              "company_id": "<company-id>",
-              "company_name": "<company-name>",
-              "company_info": {
-                "industry": "<industry>",
-                "main_products": []
-              }
-            },
-            "assessment_result": {
-              "assessment_time": "2026-06-22T00:00:00Z",
-              "task_desc": "Company-level supply chain risk assessment for the target enterprise.",
-              "task_status": 2,
-              "total_node_count": 0,
-              "finished_node_count": 0,
-              "failed_node_count": 0,
-              "total_path_count": 0,
-              "key_path_count": 0,
-              "key_node_count": 0,
-              "impact_date": null,
-              "impact_end_date": null,
-              "risk_summary": "No material enterprise-level supply chain risk has been identified based on the latest available assessment.",
-              "final_interpretation": "The current assessment does not indicate a significant supply chain impact on the target company.",
-              "impact_result": {},
-              "path_risk_interpretation_list": [],
-              "impact_graph_data": {},
-              "analysis_dossier_text": "",
-              "create_time": "2026-06-22T00:00:00Z",
-              "update_time": "2026-06-22T00:00:00Z"
-            },
-            "node_assessment_list": [],
-            "dossier_paragraph_list": []
+            "event_id": "<event-id>",
+            "company_id": "<company-id>",
+            "company_name": "<company-name>",
+            "event_summary": "<event-summary>",
+            "event_date": "2026-06-22",
+            "event_type": "Supply Chain Disruption",
+            "impact_score": 0,
+            "assessment_confidence_score": 75,
+            "impact_date": null,
+            "impact_end_date": null,
+            "risk_brief": {},
+            "impact_result": {},
+            "path_risk_interpretation_list": []
           }
         }
       ]
@@ -919,57 +893,276 @@ Optional query parameters: `historyLength`, `contextId` (see [a2a.md §5.3](../a
 }
 ```
 
-## Response Fields
+The response payload inside `artifacts[].parts[].data` contains the company-specific ECRA (Enterprise Chain Risk Assessment) result.
 
-The fields below refer to the assessment payload inside `artifacts[].parts[].data` when `status.state` is `completed`.
+The output format is **JSONL-compatible structured JSON**, where each assessment record represents the evaluation result of **one event against one target company**.
 
-### `assessment_result.impact_result`
+#### Top-Level Response Fields
 
-Structured enterprise-level impact analysis result.
+| Field                           | Type           | Description                                               |
+| ------------------------------- | -------------- | --------------------------------------------------------- |
+| `task_id`                       | string         | ECRA task ID                                              |
+| `event_id`                      | string         | Event master ID (`master_event_id`)                       |
+| `company_id`                    | string         | Target company ID (`pid`)                                 |
+| `company_name`                  | string         | Target company name                                       |
+| `event_summary`                 | string         | Event summary                                             |
+| `event_date`                    | string / null  | Event occurrence date or first appearance date            |
+| `event_type`                    | string         | Event type                                                |
+| `impact_score`                  | number / null  | Overall impact score. See scoring definition below        |
+| `assessment_confidence_score`   | integer / null | Assessment confidence score. See scoring definition below |
+| `impact_date`                   | string / null  | Expected impact start date                                |
+| `impact_end_date`               | string / null  | Expected impact end date                                  |
+| `risk_brief`                    | object / null  | Human-readable risk brief structure                       |
+| `impact_result`                 | object / null  | Complete enterprise-level structured assessment result    |
+| `path_risk_interpretation_list` | array          | Complete path-level risk interpretation list              |
 
-It describes the overall supply chain impact on the target company. It may include fields such as `overall_summary`, `impact_direction`, `risk_level`, `impact_date`, `impact_end_date`, `key_nodes`, `key_paths`, `top_risk_nodes`, and `management_actions`.
+#### Impact Scoring Definitions
 
-If no material impact is identified, this field may be an empty object.
+##### `impact_score` (Impact Severity)
 
-### `assessment_result.path_risk_interpretation_list`
+* **Range:** `[-20, +20]`
+* **Meaning:**
 
-List of path-level risk interpretations.
+  * **Positive value:** adverse impact to the target company
+  * **Negative value:** beneficial impact to the target company
+  * **Larger absolute value:** stronger impact intensity
 
-Each item describes one supply chain propagation path, including whether the path is valid, whether it is a key path, the path risk level, key nodes on the path, risk transmission logic, supporting evidence, and mitigation suggestions.
+##### `assessment_confidence_score` (Assessment Confidence)
 
-If no valid propagation path is identified, this field may be an empty array.
+* **Range:** `[0, 100]`
+* **Meaning:** Confidence level of the assessment conclusion.
+* This score is independent from `impact_score` and does **not** represent impact severity.
+* Higher scores indicate stronger evidence and higher confidence.
+* Lower scores indicate insufficient evidence, uncertain transmission mechanisms, or more assumptions.
 
-### `assessment_result.impact_graph_data`
+##### `impact_date` / `impact_end_date`
 
-Graph data for supply chain impact visualization.
+* Defines the expected impact window.
+* Indicates when the impact may emerge or be mitigated.
+* Does **not** represent the event publication date.
 
-It is used by the frontend to render the event-to-company propagation graph. It may include `nodes`, `edges`, `paths`, and related display metadata.
+#### `risk_brief` (Risk Brief)
 
-If no graph data is available, this field may be an empty object.
+`risk_brief` is projected from the complete assessment result and provides a simplified structure for business users.
 
-### `assessment_result.analysis_dossier_text`
+It is designed for quick interpretation without requiring direct parsing of the full `impact_result` or path-level analysis data.
 
-Full analysis dossier text.
+##### First-Level Structure
 
-It contains the narrative assessment basis, including event background, target company information, node analysis, path analysis, risk conclusion, impact explanation, and recommended actions.
+| Field            | Description                                               |
+| ---------------- | --------------------------------------------------------- |
+| `schema_version` | Risk brief schema version                                 |
+| `meta`           | Basic task, event, and company information                |
+| `what_impact`    | What impact the target company receives                   |
+| `why_impact`     | Why the target company is affected (paths and mechanisms) |
+| `evidence_chain` | Signal chain and evidence chain                           |
+| `price_data`     | Commodity price data                                      |
 
-This field is intended for reading, export, archiving, or report generation.
+##### `risk_brief.meta`
 
-### `node_assessment_list`
+| Field          | Type   | Description                          |
+| -------------- | ------ | ------------------------------------ |
+| `task_id`      | string | ECRA task ID                         |
+| `event_id`     | string | Event ID                             |
+| `event_title`  | string | Event title or short display summary |
+| `company_id`   | string | Company ID                           |
+| `company_name` | string | Company name                         |
 
-List of node-level assessment records.
 
-Each item describes one evaluated supply chain node. It may include `node_id`, `node_info`, `node_task_params`, `status`, `node_risk_trace_id`, `error_msg`, `create_time`, and `update_time`.
+#### `risk_brief.what_impact` (What Impact the Target Company Receives)
 
-If no nodes are evaluated, this field may be an empty array.
+This section describes **what the target company is affected by**, including impacted products, impact direction, risk level, and supply chain impact mapping.
 
-### `dossier_paragraph_list`
+| Field                         | Type           | Description                                                                                                                       |
+| ----------------------------- | -------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| `affected_products`           | array          | List of affected Tier0 products or primary business products                                                                      |
+| `impact_score`                | number / null  | Same as top-level field. Range: `[-20, +20]`; positive = adverse impact, negative = beneficial impact                             |
+| `impact_direction`            | string / null  | Impact direction, such as `positive` / `negative`                                                                                 |
+| `impact_is_beneficial`        | boolean        | Whether the impact is beneficial to the target company                                                                            |
+| `risk_level`                  | string / null  | Adverse risk level, such as `high` / `medium` / `low`. This represents risk severity only and does not indicate benefit magnitude |
+| `impact_date`                 | string / null  | Expected impact start date (`YYYY-MM-DD`)                                                                                         |
+| `impact_end_date`             | string / null  | Expected impact end date                                                                                                          |
+| `assessment_confidence_score` | integer / null | Assessment confidence score (`0-100`)                                                                                             |
+| `assessment_confidence_level` | string / null  | Confidence level category, such as `high` / `medium` / `low`                                                                      |
+| `supply_chain_impact_map`     | object         | Impact mapping across six major supply chain business areas                                                                       |
+| `summary`                     | string         | Company-level impact summary                                                                                                      |
 
-List of structured dossier paragraphs.
+##### `what_impact.affected_products[]`
 
-Each item represents one paragraph extracted from the analysis dossier. It may include `paragraph_no`, `paragraph_title`, `paragraph_text`, `paragraph_level`, `paragraph_type`, `is_key_conclusion`, and `source_data`.
+| Field                   | Type          | Description                                                                |
+| ----------------------- | ------------- | -------------------------------------------------------------------------- |
+| `product`               | string        | Affected product or business segment name, typically a Tier0 product label |
+| `path_ids`              | string[]      | List of path IDs associated with this product                              |
+| `max_path_impact_score` | number / null | Maximum absolute `path_impact_score` among associated paths                |
 
-This field is useful for structured display, section-level retrieval, citation, and report generation. If dossier paragraphs are not requested or unavailable, it may be an empty array.
+##### `what_impact.supply_chain_impact_map`
+
+The keys typically represent supply chain business stages, including:
+
+* `procurement`
+* `production`
+* `cost`
+* `delivery`
+* `inventory`
+* `continuity`
+
+Each stage contains the following fields:
+
+| Field         | Type          | Description                              |
+| ------------- | ------------- | ---------------------------------------- |
+| `direction`   | string / null | Impact direction for this business stage |
+| `intensity`   | string / null | Qualitative impact intensity             |
+| `description` | string        | Brief description of the impact          |
+
+---
+
+#### `risk_brief.why_impact` (Why the Target Company Is Affected)
+
+This section explains the transmission logic from the event to the target company through supply chain paths and impact mechanisms.
+
+| Field        | Type   | Description                              |
+| ------------ | ------ | ---------------------------------------- |
+| `title`      | string | Section title: "Why Impact"              |
+| `paths`      | array  | Summary list of valid transmission paths |
+| `mechanisms` | array  | Deduplicated impact mechanism summaries  |
+
+##### `why_impact.paths[]`
+
+| Field                   | Type          | Description                                                                                                  |
+| ----------------------- | ------------- | ------------------------------------------------------------------------------------------------------------ |
+| `path_id`               | string        | Transmission path ID                                                                                         |
+| `node_chain`            | string        | Node chain describing the transmission path                                                                  |
+| `affected_product`      | string        | Target product or Tier0 label associated with the path                                                       |
+| `path_impact_score`     | number / null | Path-level impact score. Same semantics as enterprise-level score: positive = adverse, negative = beneficial |
+| `path_impact_direction` | string / null | Path-level impact direction                                                                                  |
+| `mechanism_type`        | string / null | Impact mechanism type, such as supply shortage transmission                                                  |
+| `event_exposed_node`    | string / null | Upstream node directly exposed to the event                                                                  |
+| `business_impact`       | string        | Brief business impact description                                                                            |
+| `final_interpretation`  | string        | Final interpretation of the path impact                                                                      |
+| `risk_visibility`       | string / null | Whether the impact has become visible, such as `visible`, `not_visible`, or `uncertain`                      |
+
+**Note:**
+`not_visible` does not mean that there is no impact. It indicates that the impact has not yet been observed or confirmed at the company level.
+
+##### `why_impact.mechanisms[]`
+
+| Field                   | Type          | Description                                                                                     |
+| ----------------------- | ------------- | ----------------------------------------------------------------------------------------------- |
+| `path_id`               | string        | Representative path ID                                                                          |
+| `affected_product`      | string        | Target product label                                                                            |
+| `mechanism_type`        | string / null | Impact mechanism type                                                                           |
+| `event_exposed_node`    | string / null | Node directly exposed to the event                                                              |
+| `event_effect_on_node`  | string / null | Event impact on the node, such as supply tightening or production interruption                  |
+| `company_exposure_role` | string / null | Role of the target company in the transmission chain                                            |
+| `direction_to_company`  | string / null | Impact direction transmitted to the company, such as `adverse`                                  |
+| `path_validity`         | string / null | Path validity assessment                                                                        |
+| `evidence_level`        | string / null | Evidence level, such as confirmed, reasonable inference, weak assumption, or pending validation |
+| `reasoning`             | string        | Mechanism reasoning chain                                                                       |
+| `requires_conditions`   | array         | Preconditions required for the impact mechanism to take effect                                  |
+| `node_chain`            | string        | Corresponding node chain                                                                        |
+
+---
+
+#### `risk_brief.evidence_chain` (Signal Chain / Evidence Chain)
+
+This section provides supporting evidence explaining upstream exposure and observed impact manifestation.
+
+| Field                       | Type     | Description                                                           |
+| --------------------------- | -------- | --------------------------------------------------------------------- |
+| `title`                     | string   | Display title                                                         |
+| `summary`                   | string   | Overall evidence summary                                              |
+| `exposure_paragraph`        | string   | Narrative description of upstream exposure                            |
+| `manifestation_paragraph`   | string   | Narrative description of impact manifestation                         |
+| `exposure_evidence`         | array    | Evidence items related to upstream exposure                           |
+| `manifestation_evidence`    | array    | Evidence items showing observed impact                                |
+| `supporting_evidence_other` | array    | Other supporting evidence, including price or market-related evidence |
+| `evidence_gaps`             | string[] | Description of current evidence gaps                                  |
+
+##### Evidence Item Structure
+
+The following structure applies to:
+
+* `exposure_evidence[]`
+* `manifestation_evidence[]`
+* `supporting_evidence_other[]`
+
+| Field                 | Type          | Description                                             |
+| --------------------- | ------------- | ------------------------------------------------------- |
+| `evidence_id`         | string / null | Evidence ID                                             |
+| `category`            | string / null | Evidence category, such as `exposure` or `price_market` |
+| `evidence_type`       | string / null | Evidence subtype                                        |
+| `claim`               | string        | Evidence statement or display text                      |
+| `verification_status` | string / null | Verification status, such as `verified`                 |
+| `provenance`          | string / null | Evidence source description                             |
+| `path_id`             | string / null | Associated transmission path                            |
+| `tier0_products`      | array         | Associated Tier0 product labels                         |
+| `urls`                | string[]      | Related URLs                                            |
+
+---
+
+#### `risk_brief.price_data` (Commodity Price Data)
+
+This section provides commodity price-related information associated with affected nodes and transmission paths.
+
+| Field   | Type   | Description                                    |
+| ------- | ------ | ---------------------------------------------- |
+| `title` | string | Display title: "Commodity Price Data Involved" |
+| `items` | array  | List of price-related data entries             |
+
+##### `price_data.items[]`
+
+| Field                     | Type          | Description                                                                                                       |
+| ------------------------- | ------------- | ----------------------------------------------------------------------------------------------------------------- |
+| `node_name`               | string / null | Node name with available price data (material or product)                                                         |
+| `path_id`                 | string / null | Associated transmission path ID                                                                                   |
+| `affected_product`        | string / null | Associated target product                                                                                         |
+| `has_price_data`          | boolean       | Whether usable price data is available                                                                            |
+| `as_of_date`              | string / null | Price data reference date                                                                                         |
+| `price_evidence_summary`  | string        | Summary of price evidence, including price increase, decrease, or volatility                                      |
+| `related_commodity_price` | array         | Related commodity price details (subset of original structure; item format may vary depending on the data source) |
+
+---
+
+#### Original Full-Detail Fields
+
+The following fields contain complete structured assessment details for downstream processing or advanced analysis.
+
+##### `impact_result`
+
+`impact_result` contains the complete enterprise-level structured assessment result.
+
+It may include:
+
+| Field                          | Description                                                 |
+| ------------------------------ | ----------------------------------------------------------- |
+| `overall_summary`              | Overall enterprise impact summary                           |
+| `supply_chain_impact_map`      | Detailed supply chain impact mapping                        |
+| `assessment_evidence`          | Assessment evidence and supporting information              |
+| Time-based integrated analysis | Temporal impact analysis and related assessment information |
+
+The structure may contain additional fields depending on the assessment scenario and data availability.
+
+---
+
+##### `path_risk_interpretation_list`
+
+`path_risk_interpretation_list` contains detailed risk interpretation results for each transmission path.
+
+Each path-level record may include:
+
+* Path validity assessment
+* Impact mechanism classification
+* Business impact interpretation
+* Supporting evidence
+* Related materials and nodes
+* Path-level risk reasoning
+
+**Path validity rule:**
+
+* `is_valid_path = true` indicates a valid transmission path included in the assessment.
+* `is_valid_path = false` indicates an invalid or unsupported transmission path and should not be considered as an effective risk transmission route.
+
+---
 
 ## Make Your First A2A Call
 
