@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "supplygraph": {
+      "url": "https://mcp.supplygraph.ai/mcp",
+      "headers": {
+        "Authorization": "Bearer ${env:SUPPLYGRAPH_API_KEY}"
+      }
+    }
+  }
+}
