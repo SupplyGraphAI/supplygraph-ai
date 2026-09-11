@@ -2,25 +2,22 @@
 
 ## Overview
 
-The **Procurement & Inventory Risk – Key component Focus** continuously monitors and analyzes upstream product or service risk events to determine whether, how, and to what extent the impact may propagate to a target company.
+The **Procurement & Inventory Risk – Key component Focus** continuously monitors the MPNs you cover. It watches whether supply-chain events and market signals are moving **price, lead time, and market inventory** for that specific part.
 
-It transforms fragmented global supply chain signals into **structured, auditable, and continuously updated product-driven risk warnings**, enabling organizations to monitor upstream product exposure in near real-time.
-
+Fragmented events, path evidence, and distributor quotes are turned into **structured, auditable, and continuously updated MPN-level risk warnings**, so you can see which components are under pressure and keep tracking how that pressure develops.
 
 ## Pain
 
-Enterprises need continuous visibility into critical upstream products and services — not only to know when key inputs at any tier are impacted by global supply chain events, but to determine whether, how, and to what extent that impact may propagate to their own business.
+Procurement and supply-chain teams need 24/7 visibility into critical MPNs — not only that a global event occurred, but whether **this part** is being hit, on which metric, and by how much.
 
-Without structured product-level risk propagation analysis, organizations often lack:
+Without MPN-level monitoring, organizations often lack:
 
-- Visibility into product-driven downstream risk  
-- Clear dependency paths from upstream products or services to the target company  
-- Quantified estimates of potential business impact  
-- Continuously updated warning signals  
-- Actionable recommendations before the risk reaches the enterprise  
+- A live view of price, lead time, and market-inventory risk on the parts they actually buy
+- A clear account of why an upstream event may transmit to a given MPN
+- Quantified impact on those three metrics, not a generic alert
+- Continuously updated warning signals after the first hit
 
-Traditional monitoring tools may detect upstream events, but they usually cannot explain how disruptions affecting specific products or services propagate through dependency paths to the target company.
-
+Traditional monitoring can surface an event. It usually cannot say whether that event is already showing up in **this MPN’s** market, or keep following the move after the first notice.
 
 ## Breakthrough
 
