@@ -10,12 +10,11 @@ Fragmented events, path evidence, and distributor quotes are turned into **struc
 
 Procurement and supply-chain teams need 24/7 visibility into critical MPNs — not only that a global event occurred, but whether **this part** is being hit, on which metric, and by how much.
 
-Without MPN-level monitoring, organizations often lack:
-
-- A live view of price, lead time, and market-inventory risk on the parts they actually buy
-- A clear account of why an upstream event may transmit to a given MPN
-- Quantified impact on those three metrics, not a generic alert
-- Continuously updated warning signals after the first hit
+Without MPN-level monitoring, teams are often left with:
+- Event alerts that never resolve to the parts they actually buy
+- No clear account of why an upstream shock may transmit to a given MPN
+- A generic warning instead of quantified movement in price, lead time, and market inventory
+- A first hit that is not followed as the situation develops
 
 Traditional monitoring can surface an event. It usually cannot say whether that event is already showing up in **this MPN’s** market, or keep following the move after the first notice.
 
